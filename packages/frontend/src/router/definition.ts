@@ -61,10 +61,6 @@ const routes: RouteDef[] = [{
 		name: 'avatarDecoration',
 		component: page(() => import('@/pages/settings/avatar-decoration.vue')),
 	}, {
-		path: '/official-tag',
-		name: 'officialTag',
-		component: page(() => import('@/pages/official-tag.vue')),
-	}, {
 		path: '/roles',
 		name: 'roles',
 		component: page(() => import('@/pages/settings/roles.vue')),
@@ -348,6 +344,10 @@ const routes: RouteDef[] = [{
 	path: '/install-extensions',
 	component: page(() => import('@/pages/install-extensions.vue')),
 	loginRequired: true,
+}, {
+	path: '/official-tag',
+	name: 'officialTag',
+	component: page(() => import('@/pages/official-tag.vue')),
 }, {
 	path: '/admin/user/:userId',
 	component: iAmModerator ? page(() => import('@/pages/admin-user.vue')) : page(() => import('@/pages/not-found.vue')),
