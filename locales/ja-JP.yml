@@ -1363,6 +1363,7 @@ doYouWantToAllowThisPlayToAccessYourAccount: "このPlayによるアカウント
 translateProfile: "プロフィールを翻訳する"
 _official_tag:
   title: "公式タグ"
+  navbar: "公式タグ"
 
 _nsfwOpenBehavior:
   click: "タップして開く"

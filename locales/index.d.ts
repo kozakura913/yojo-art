@@ -5472,6 +5472,10 @@ export interface Locale extends ILocale {
          * 公式タグ
          */
         "title": string;
+        /**
+         * 公式タグ
+         */
+        "navbar": string;
     };
     "_nsfwOpenBehavior": {
         /**

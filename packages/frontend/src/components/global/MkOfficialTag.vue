@@ -4,10 +4,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkA :to="`/tags/${props.tagString}`" class="tag_link _panel" tabindex="-1">
+<MkA :to="`/tags/${props.tagString}`" class="zqwpplbnj _panel" tabindex="-1">
 	<div class="banner" :style="bannerStyle">
 		<div class="fade"></div>
-		<div class="name"><i class="ti ti-device-tv"></i> {{ props.tagString }}</div>
+		<div class="name"><i class="ti ti-bookmark"></i> {{ props.tagString }}</div>
 	</div>
 	<article v-if="props.description">
 		<p :title="props.description">{{ props.description.length > 85 ? props.description.slice(0, 85) + '…' : props.description }}</p>
@@ -39,7 +39,7 @@ const bannerStyle = computed(() => {
 </script>
 
 <style lang="scss" module>
-.tag_link {
+.zqwpplbnj {
 	display: block;
 	overflow: hidden;
 	width: 100%;
