@@ -9,6 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<MkSpacer :contentMax="500">
 		<div class="_gaps">
+			<MkOfficialTag v-for="tag in official_tags" :key="tag.tag" :tagString="tag.tag"/>
 		</div>
 	</MkSpacer>
 </MkStickyContainer>
@@ -17,11 +18,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { i18n } from '@/i18n.js';
-import { instance } from '@/instance.js';
+
+const official_tags = [
+	{
+		tag: 'test',
+	},
+	{
+		tag: 'aaaa',
+	},
+];
 
 definePageMetadata(() => ({
 	title: i18n.ts._official_tag.title,
-	icon: 'ti ti-bookmark',
+	icon: 'ti ti-bookmarks',
 }));
 </script>
 
