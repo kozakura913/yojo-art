@@ -20,7 +20,7 @@ import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
 
 definePageMetadata(() => ({
-	title: i18n.ts.ads,
+	title: i18n.ts._official_tag.title,
 	icon: 'ti ti-bookmark',
 }));
 </script>

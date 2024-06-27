@@ -5467,6 +5467,12 @@ export interface Locale extends ILocale {
      * プロフィールを翻訳する
      */
     "translateProfile": string;
+    "_official_tag": {
+        /**
+         * 公式タグ
+         */
+        "title": string;
+    };
     "_nsfwOpenBehavior": {
         /**
          * タップして開く
