@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkA :to="`/tags/${props.tagString}`" class="zqwpplbnj _panel" tabindex="-1">
+<MkA :to="`/tags/${props.tagString}`" class="_panel" :class="$style.tag_link" tabindex="-1">
 	<div class="banner" :style="bannerStyle">
 		<div class="fade"></div>
 		<div class="name"><i class="ti ti-bookmark"></i> {{ props.tagString }}</div>
@@ -39,7 +39,7 @@ const bannerStyle = computed(() => {
 </script>
 
 <style lang="scss" module>
-.zqwpplbnj {
+.tag_link {
 	display: block;
 	overflow: hidden;
 	width: 100%;
