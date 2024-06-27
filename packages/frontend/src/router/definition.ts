@@ -61,6 +61,10 @@ const routes: RouteDef[] = [{
 		name: 'avatarDecoration',
 		component: page(() => import('@/pages/settings/avatar-decoration.vue')),
 	}, {
+		path: '/official-tag',
+		name: 'officialTag',
+		component: page(() => import('@/pages/official-tag.vue')),
+	}, {
 		path: '/roles',
 		name: 'roles',
 		component: page(() => import('@/pages/settings/roles.vue')),
