@@ -3066,6 +3066,7 @@ export type paths = {
   '/official-tags/show': {
     /**
      * official-tags/show
+
      * @description No description provided.
      *
      * **Credential required**: *No*
