@@ -475,6 +475,8 @@ import type {
 	NotesUserListTimelineRequest,
 	NotesUserListTimelineResponse,
 	NotificationsCreateRequest,
+	OfficialTagsGetRequest,
+	OfficialTagsUpdateRequest,
 	PagePushRequest,
 	PagesCreateRequest,
 	PagesCreateResponse,
@@ -939,6 +941,8 @@ export type Endpoints = {
 	'notifications/flush': { req: EmptyRequest; res: EmptyResponse };
 	'notifications/mark-all-as-read': { req: EmptyRequest; res: EmptyResponse };
 	'notifications/test-notification': { req: EmptyRequest; res: EmptyResponse };
+	'official_tags/get': { req: OfficialTagsGetRequest; res: EmptyResponse };
+	'official_tags/update': { req: OfficialTagsUpdateRequest; res: EmptyResponse };
 	'page-push': { req: PagePushRequest; res: EmptyResponse };
 	'pages/create': { req: PagesCreateRequest; res: PagesCreateResponse };
 	'pages/delete': { req: PagesDeleteRequest; res: EmptyResponse };
