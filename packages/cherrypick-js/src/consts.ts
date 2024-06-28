@@ -128,6 +128,7 @@ export const moderationLogTypes = [
 	'createAd',
 	'updateAd',
 	'deleteAd',
+	'updateOfficialTags',
 	'createAvatarDecoration',
 	'updateAvatarDecoration',
 	'deleteAvatarDecoration',
