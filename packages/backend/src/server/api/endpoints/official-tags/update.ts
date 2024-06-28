@@ -5,9 +5,15 @@
 
 import { Injectable } from '@nestjs/common';
 import { Endpoint } from '@/server/api/endpoint-base.js';
+import { ApiError } from '../../error.js';
 
 export const meta = {
-	tags: ['officialTags'],
+	tags: ['official-Tags'],
+
+	requireCredential: true,
+	requireModerator: true,
+	requireAdmin: true,
+	kind: 'updateOfficialTags',
 
 	limit: {
 		duration: 1000 * 60,
@@ -15,7 +21,13 @@ export const meta = {
 	},
 
 	errors: {
+		unimplemented: {
+			message: 'Unimplemented',
+			code: 'UN_IMPLEMENTED',
+			id: 'e842f9d1-b9e0-4e63-8230-0a1775457b27',
+		},
 	},
+	secure: true,
 } as const;
 
 export const paramDef = {
@@ -25,7 +37,7 @@ export const paramDef = {
 		header: { type: 'string', nullable: true },
 		icon: { type: 'string', nullable: true },
 	},
-	required: [],
+	required: ['body'],
 } as const;
 
 @Injectable()
@@ -33,28 +45,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 	constructor(
 	) {
 		super(meta, paramDef, async (ps, user, token) => {
+			throw new ApiError(meta.errors.unimplemented);
 		});
-		const official_tags = [
-			{
-				tag: 'test',
-				description: 'テストタグの説明文',
-				bannerUrl: 'https://misskey-files.kzkr.xyz/files/065f42e8-f03b-4c89-96a7-ec8b23650de0.png',
-			},
-			{
-				tag: 'aaaa',
-				description: 'あああああああああ',
-				bannerUrl: null,
-			},
-			{
-				tag: 'にゃーん',
-				description: 'にゃああああああ',
-				bannerUrl: null,
-			},
-		];
-		return {
-			exec: async () => {
-				return official_tags;
-			},
-		};
 	}
 }
