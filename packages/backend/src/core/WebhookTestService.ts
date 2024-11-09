@@ -36,6 +36,9 @@ function generateAbuseReport(override?: Partial<MiAbuseUserReport>): MiAbuseUser
 function generateDummyUser(override?: Partial<MiUser>): MiUser {
 	return {
 		id: 'dummy-user-1',
+		isIndexable: true,
+		searchableBy: 'public',
+		outbox: null,
 		updatedAt: new Date(Date.now() - oneDayMillis * 7),
 		lastFetchedAt: new Date(Date.now() - oneDayMillis * 5),
 		lastActiveDate: new Date(Date.now() - oneDayMillis * 3),
@@ -68,7 +71,6 @@ function generateDummyUser(override?: Partial<MiUser>): MiUser {
 		isHibernated: false,
 		isDeleted: false,
 		emojis: [],
-		score: 0,
 		host: null,
 		inbox: null,
 		sharedInbox: null,
@@ -83,6 +85,12 @@ function generateDummyUser(override?: Partial<MiUser>): MiUser {
 function generateDummyNote(override?: Partial<MiNote>): MiNote {
 	return {
 		id: 'dummy-note-1',
+		updatedAt: null,
+		updatedAtHistory: null,
+		noteEditHistory: [],
+		hasEvent: false,
+		disableRightClick: false,
+		searchableBy: 'public',
 		replyId: null,
 		reply: null,
 		renoteId: null,

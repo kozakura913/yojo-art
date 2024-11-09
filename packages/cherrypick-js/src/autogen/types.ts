@@ -4697,8 +4697,14 @@ export type components = {
       createdAt: string;
       /** @enum {string} */
       type: 'groupInvited';
-      /** Format: id */
-      invitation: string;
+      user: components['schemas']['UserLite'];
+      group: {
+        name: string;
+      };
+      invitation: {
+        /** Format: id */
+        id: string;
+      };
     };
     DriveFile: {
       /**

@@ -418,7 +418,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 								listId: list.id,
 								userId: user.id,
 							}).then(() => {
-								list.userIds?.splice(list.userIds?.indexOf(user.id), 1);
+								list.userIds?.splice(list.userIds.indexOf(user.id), 1);
 							});
 						}
 					}));
@@ -630,7 +630,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 			icon: 'ti ti-refresh',
 			text: i18n.ts.updateRemoteUser,
 			action: userInfoUpdate,
-		},{
+		}, {
 			icon: 'ti ti-refresh-dot',
 			text: i18n.ts.fetchOutbox,
 			action: userFetchOutbox,
