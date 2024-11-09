@@ -71,6 +71,7 @@ function generateDummyUser(override?: Partial<MiUser>): MiUser {
 		isHibernated: false,
 		isDeleted: false,
 		emojis: [],
+		score: 0,
 		host: null,
 		inbox: null,
 		sharedInbox: null,
@@ -85,6 +86,7 @@ function generateDummyUser(override?: Partial<MiUser>): MiUser {
 function generateDummyNote(override?: Partial<MiNote>): MiNote {
 	return {
 		id: 'dummy-note-1',
+		deleteAt: null,
 		updatedAt: null,
 		updatedAtHistory: null,
 		noteEditHistory: [],

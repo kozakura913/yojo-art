@@ -466,16 +466,6 @@ export const packedNotificationSchema = {
 				ref: 'UserLite',
 				optional: false, nullable: false,
 			},
-			group: {
-				type: 'object',
-				properties: {
-					name: {
-						type: 'string',
-						optional: false, nullable: false,
-					},
-				},
-				optional: false, nullable: false,
-			},
 			invitation: {
 				type: 'object',
 				properties: {
@@ -483,6 +473,16 @@ export const packedNotificationSchema = {
 						type: 'string',
 						optional: false, nullable: false,
 						format: 'id',
+					},
+					group: {
+						type: 'object',
+						properties: {
+							name: {
+								type: 'string',
+								optional: false, nullable: false,
+							},
+						},
+						optional: false, nullable: false,
 					},
 				},
 				optional: false, nullable: false,
