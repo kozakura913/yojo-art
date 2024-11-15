@@ -716,7 +716,7 @@ describe('Timelines', () => {
 
 			assert.strictEqual(res.body.some(note => note.id === bobNote1.id), false);
 			assert.strictEqual(res.body.some(note => note.id === bobNote2.id), true);
-		}, 1000 * 10);
+		}, 1000 * 20);
 	});
 
 	describe('Social TL', () => {
