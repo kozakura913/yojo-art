@@ -72,13 +72,10 @@ onMounted(() => {
 	text-align: center;
 	pointer-events: none;
 
-	&.reduceBlurEffect {
-		background: var(--panel);
-	}
-
 	@media (max-width: 500px) {
-		width: 100%;
-		top: 0;
+		&.reduceBlurEffect {
+			background: var(--panel);
+		}
 	}
 }
 </style>

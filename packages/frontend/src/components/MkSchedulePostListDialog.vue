@@ -40,8 +40,8 @@ import { i18n } from '@/i18n.js';
 import { infoImageUrl } from '@/instance.js';
 
 const emit = defineEmits<{
-	(ev: 'cancel'): void;
-}>();
+		(ev: 'cancel'): void;
+	}>();
 
 const dialogEl = ref();
 const cancel = () => {
@@ -58,3 +58,6 @@ function listUpdate() {
 	paginationEl.value.reload();
 }
 </script>
+
+	<style lang="scss" module>
+	</style>

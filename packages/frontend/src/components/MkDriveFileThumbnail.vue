@@ -4,14 +4,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div
-	ref="thumbnail"
-	:class="[
-		$style.root,
-		{ [$style.sensitiveHighlight]: highlightWhenSensitive && file.isSensitive },
-	]"
->
-	<ImgWithBlurhash v-if="isThumbnailAvailable" :hash="file.blurhash" :src="file.thumbnailUrl" :alt="file.comment" :title="file.name" :cover="fit !== 'contain'" :showAltIndicator="showAltIndicator"/>
+<div ref="thumbnail" :class="$style.root">
+	<ImgWithBlurhash v-if="isThumbnailAvailable" :hash="file.blurhash" :src="file.thumbnailUrl" :alt="file.name" :title="file.name" :cover="fit !== 'contain'"/>
 	<i v-else-if="is === 'image'" class="ti ti-photo" :class="$style.icon"></i>
 	<i v-else-if="is === 'video'" class="ti ti-video" :class="$style.icon"></i>
 	<i v-else-if="is === 'audio' || is === 'midi'" class="ti ti-file-music" :class="$style.icon"></i>
@@ -33,8 +27,6 @@ import ImgWithBlurhash from '@/components/MkImgWithBlurhash.vue';
 const props = defineProps<{
 	file: Misskey.entities.DriveFile;
 	fit: 'cover' | 'contain';
-	highlightWhenSensitive?: boolean;
-	showAltIndicator?: boolean;
 }>();
 
 const is = computed(() => {
@@ -73,18 +65,6 @@ const isThumbnailAvailable = computed(() => {
 	background: var(--panel);
 	border-radius: 8px;
 	overflow: clip;
-}
-
-.sensitiveHighlight::after {
-	content: "";
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	pointer-events: none;
-	border-radius: inherit;
-	box-shadow: inset 0 0 0 4px var(--warn);
 }
 
 .iconSub {

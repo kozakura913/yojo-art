@@ -1,20 +1,23 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and misskey-project, noridev, cherrypick-project, esurio
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
 <template>
-<MkContainer :naked="widgetProps.transparent" :showHeader="false">
-	<div class="_monospace" :class="[$style.root, {_panel: !widgetProps.transparent}]">
-		<MkDice
-			:showMinTotal="widgetProps.showMinTotal"
-			:showMaxTotal="widgetProps.showMaxTotal"
-			:showAverageTotal="widgetProps.showAverageTotal"
-		/>
-	</div>
-</MkContainer>
+<div class="_monospace" :class="[$style.root, {_panel: !widgetProps.transparent}]">
+	<MkDice
+		:showMinTotal="widgetProps.showMinTotal"
+		:showMaxTotal="widgetProps.showMaxTotal"
+		:showAverageTotal="widgetProps.showAverageTotal"
+	/>
+</div>
 </template>
 
 <script lang="ts" setup>
+import { Ref, ref } from 'vue';
 import { useWidgetPropsManager, WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
 import { GetFormResultType } from '@/scripts/form.js';
 import MkDice from '@/components/MkDice.vue';
-import MkContainer from '@/components/MkContainer.vue';
+import { i18n }	from '@/i18n.js';
 
 const name = 'dice';
 
@@ -53,11 +56,16 @@ defineExpose<WidgetComponentExpose>({
 	configure,
 	id: props.widget ? props.widget.id : null,
 });
+
 </script>
 
 <style lang="scss" module>
 .root {
 	position: relative;
 	padding: 16px 0;
+
+	> .input {
+		flex: 1 1 auto;
+	}
 }
 </style>

@@ -128,7 +128,9 @@ export class AvatarDecorationService implements OnApplicationShutdown {
 		const userHostUrl = `https://${user.host}`;
 		const showUserApiUrl = `${userHostUrl}/api/users/show`;
 
-		if (!instance || !['misskey', 'cherrypick', 'sharkey'].includes(<string>instance.softwareName)) return;
+		if (instance?.softwareName !== 'misskey' && instance?.softwareName !== 'cherrypick') {
+			return;
+		}
 
 		const res = await this.httpRequestService.send(showUserApiUrl, {
 			method: 'POST',

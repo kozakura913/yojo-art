@@ -41,8 +41,6 @@ const props = defineProps<{
 	user: Misskey.entities.User;
   showProfile?: boolean;
 }>();
-
-if (defaultStore.state.alwaysShowCw) showContent.value = true;
 </script>
 
 <style lang="scss" module>

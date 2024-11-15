@@ -33,7 +33,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useWidgetPropsManager, WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
-import type { MenuItem } from '@/types/menu.js';
 import { GetFormResultType } from '@/scripts/form.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -110,26 +109,11 @@ const choose = async (ev) => {
 			setSrc('list');
 		},
 	}));
-
-	const menuItems: MenuItem[] = [];
-
-	menuItems.push(...availableBasicTimelines().map(tl => ({
+	os.popupMenu([...availableBasicTimelines().map(tl => ({
 		text: i18n.ts._timelines[tl],
 		icon: basicTimelineIconClass(tl),
 		action: () => { setSrc(tl); },
-	})));
-
-	if (antennaItems.length > 0) {
-		menuItems.push({ type: 'divider' });
-		menuItems.push(...antennaItems);
-	}
-
-	if (listItems.length > 0) {
-		menuItems.push({ type: 'divider' });
-		menuItems.push(...listItems);
-	}
-
-	os.popupMenu(menuItems, ev.currentTarget ?? ev.target).then(() => {
+	})), antennaItems.length > 0 ? { type: 'divider' } : undefined, ...antennaItems, listItems.length > 0 ? { type: 'divider' } : undefined, ...listItems], ev.currentTarget ?? ev.target).then(() => {
 		menuOpened.value = false;
 	});
 };

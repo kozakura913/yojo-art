@@ -148,10 +148,6 @@ export const packedMetaLiteSchema = {
 			type: 'string',
 			optional: false, nullable: true,
 		},
-		youBlockedImageUrl: {
-			type: 'string',
-			optional: false, nullable: true,
-		},
 		iconUrl: {
 			type: 'string',
 			optional: false, nullable: true,
@@ -196,14 +192,6 @@ export const packedMetaLiteSchema = {
 						optional: false, nullable: false,
 					},
 				},
-			},
-		},
-		trustedLinkUrlPatterns: {
-			type: 'array',
-			optional: false, nullable: false,
-			items: {
-				type: 'string',
-				optional: false, nullable: false,
 			},
 		},
 		notesPerOneAd: {
@@ -276,10 +264,6 @@ export const packedMetaLiteSchema = {
 			enum: ['local', 'global'],
 			optional: false, nullable: false,
 			default: 'local',
-		},
-		maxFileSize: {
-			type: 'number',
-			optional: false, nullable: false,
 		},
 		reversiVersion: {
 			type: 'string',

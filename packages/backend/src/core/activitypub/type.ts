@@ -13,7 +13,6 @@ export interface IObject {
 	name?: string | null;
 	summary?: string;
 	_misskey_summary?: string;
-	_misskey_followedMessage?: string | null;
 	published?: string;
 	updated?: string;
 	cc?: ApObject;

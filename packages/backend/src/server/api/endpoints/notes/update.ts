@@ -23,7 +23,7 @@ export const meta = {
 	kind: 'write:notes',
 
 	limit: {
-		duration: ms('5min'),
+		duration: ms('1hour'),
 		max: 10,
 		minInterval: ms('1sec'),
 	},

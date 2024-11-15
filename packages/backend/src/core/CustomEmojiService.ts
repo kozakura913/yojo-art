@@ -78,7 +78,6 @@ export class CustomEmojiService implements OnApplicationShutdown {
 				force: true,
 			});
 		}
-
 		const emoji = await this.emojisRepository.insertOne({
 			id: this.idService.gen(),
 			updatedAt: new Date(),

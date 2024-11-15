@@ -50,7 +50,6 @@ type Source = {
 	redisForPubsub?: RedisOptionsSource;
 	redisForJobQueue?: RedisOptionsSource;
 	redisForTimelines?: RedisOptionsSource;
-	redisForReactions?: RedisOptionsSource;
 	redisForRemoteApis?: RedisOptionsSource;
 	meilisearch?: {
 		host: string;
@@ -166,7 +165,7 @@ export type Config = {
 	proxySmtp: string | undefined;
 	proxyBypassHosts: string[] | undefined;
 	allowedPrivateNetworks: string[] | undefined;
-	maxFileSize: number;
+	maxFileSize: number | undefined;
 	clusterLimit: number | undefined;
 	id: string;
 	outgoingAddress: string | undefined;
@@ -202,10 +201,8 @@ export type Config = {
 	authUrl: string;
 	driveUrl: string;
 	userAgent: string;
-	frontendEntry: string;
-	frontendManifestExists: boolean;
-	frontendEmbedEntry: string;
-	frontendEmbedManifestExists: boolean;
+	clientEntry: string;
+	clientManifestExists: boolean;
 	mediaProxy: string;
 	remoteProxy?: string;
 	externalMediaProxyEnabled: boolean;
@@ -214,7 +211,6 @@ export type Config = {
 	redisForPubsub: RedisOptions & RedisOptionsSource;
 	redisForJobQueue: RedisOptions & RedisOptionsSource;
 	redisForTimelines: RedisOptions & RedisOptionsSource;
-	redisForReactions: RedisOptions & RedisOptionsSource;
 	redisForRemoteApis: RedisOptions & RedisOptionsSource;
 	sentryForBackend: { options: Partial<Sentry.NodeOptions>; enableNodeProfiling: boolean; } | undefined;
 	sentryForFrontend: { options: Partial<Sentry.NodeOptions> } | undefined;
@@ -243,16 +239,10 @@ const path = process.env.CHERRYPICK_CONFIG_YML
 
 export function loadConfig(): Config {
 	const meta = JSON.parse(fs.readFileSync(`${_dirname}/../../../built/meta.json`, 'utf-8'));
-
-	const frontendManifestExists = fs.existsSync(_dirname + '/../../../built/_frontend_vite_/manifest.json');
-	const frontendEmbedManifestExists = fs.existsSync(_dirname + '/../../../built/_frontend_embed_vite_/manifest.json');
-	const frontendManifest = frontendManifestExists ?
-		JSON.parse(fs.readFileSync(`${_dirname}/../../../built/_frontend_vite_/manifest.json`, 'utf-8'))
+	const clientManifestExists = fs.existsSync(_dirname + '/../../../built/_vite_/manifest.json');
+	const clientManifest = clientManifestExists ?
+		JSON.parse(fs.readFileSync(`${_dirname}/../../../built/_vite_/manifest.json`, 'utf-8'))
 		: { 'src/_boot_.ts': { file: 'src/_boot_.ts' } };
-	const frontendEmbedManifest = frontendEmbedManifestExists ?
-		JSON.parse(fs.readFileSync(`${_dirname}/../../../built/_frontend_embed_vite_/manifest.json`, 'utf-8'))
-		: { 'src/boot.ts': { file: 'src/boot.ts' } };
-
 	const config = yaml.load(fs.readFileSync(path, 'utf-8')) as Source;
 
 	const url = tryCreateUrl(config.url ?? process.env.CHERRYPICK_URL ?? '');
@@ -305,7 +295,6 @@ export function loadConfig(): Config {
 		redisForPubsub: config.redisForPubsub ? convertRedisOptions(config.redisForPubsub, host) : redis,
 		redisForJobQueue: config.redisForJobQueue ? convertRedisOptions(config.redisForJobQueue, host) : redis,
 		redisForTimelines: config.redisForTimelines ? convertRedisOptions(config.redisForTimelines, host) : redis,
-		redisForReactions: config.redisForReactions ? convertRedisOptions(config.redisForReactions, host) : redis,
 		redisForRemoteApis: config.redisForRemoteApis ? convertRedisOptions(config.redisForRemoteApis, host) : redis,
 		sentryForBackend: config.sentryForBackend,
 		sentryForFrontend: config.sentryForFrontend,
@@ -314,7 +303,7 @@ export function loadConfig(): Config {
 		proxySmtp: config.proxySmtp,
 		proxyBypassHosts: config.proxyBypassHosts,
 		allowedPrivateNetworks: config.allowedPrivateNetworks,
-		maxFileSize: config.maxFileSize ?? 262144000,
+		maxFileSize: config.maxFileSize,
 		clusterLimit: config.clusterLimit,
 		outgoingAddress: config.outgoingAddress,
 		outgoingAddressFamily: config.outgoingAddressFamily,
@@ -336,10 +325,8 @@ export function loadConfig(): Config {
 			config.videoThumbnailGenerator.endsWith('/') ? config.videoThumbnailGenerator.substring(0, config.videoThumbnailGenerator.length - 1) : config.videoThumbnailGenerator
 			: null,
 		userAgent: `CherryPick/${version} (${config.url})`,
-		frontendEntry: frontendManifest['src/_boot_.ts'],
-		frontendManifestExists: frontendManifestExists,
-		frontendEmbedEntry: frontendEmbedManifest['src/boot.ts'],
-		frontendEmbedManifestExists: frontendEmbedManifestExists,
+		clientEntry: clientManifest['src/_boot_.ts'],
+		clientManifestExists: clientManifestExists,
 		perChannelMaxNoteCacheCount: config.perChannelMaxNoteCacheCount ?? 1000,
 		perUserNotificationsMaxCount: config.perUserNotificationsMaxCount ?? 500,
 		deactivateAntennaThreshold: config.deactivateAntennaThreshold ?? (1000 * 60 * 60 * 24 * 7),

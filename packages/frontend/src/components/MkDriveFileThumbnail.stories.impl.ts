@@ -4,8 +4,8 @@
  */
 
 import { StoryObj } from '@storybook/vue3';
-import { file } from '../../.storybook/fakes.js';
 import MkDriveFileThumbnail from './MkDriveFileThumbnail.vue';
+import { file } from '../../.storybook/fakes.js';
 export const Default = {
 	render(args) {
 		return {

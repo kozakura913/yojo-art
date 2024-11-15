@@ -3,13 +3,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { userExportableEntities } from '@/types.js';
 import { MiUser } from './User.js';
 import { MiNote } from './Note.js';
 import { MiUserGroupInvitation } from './UserGroupInvitation.js';
 import { MiAccessToken } from './AccessToken.js';
 import { MiRole } from './Role.js';
-import { MiDriveFile } from './DriveFile.js';
 
 export type MiNotification = {
 	type: 'note';
@@ -70,7 +68,6 @@ export type MiNotification = {
 	id: string;
 	createdAt: string;
 	notifierId: MiUser['id'];
-	message: string | null;
 } | {
 	type: 'groupInvited';
 	id: string;
@@ -88,12 +85,6 @@ export type MiNotification = {
 	createdAt: string;
 	achievement: string;
 } | {
-	type: 'exportCompleted';
-	id: string;
-	createdAt: string;
-	exportedEntity: typeof userExportableEntities[number];
-	fileId: MiDriveFile['id'];
-} | {
 	type: 'scheduleNote';
 	id: string;
 	createdAt: string;
@@ -106,7 +97,7 @@ export type MiNotification = {
 	/**
 	 * アプリ通知のbody
 	 */
-	customBody: string;
+	customBody: string | null;
 
 	/**
 	 * アプリ通知のheader
@@ -149,6 +140,6 @@ export type MiGroupedNotification = MiNotification | {
 	type: 'note:grouped';
 	id: string;
 	createdAt: string;
-	notifierIds: MiUser['id'][];
 	noteIds: string[];
+	notifierIds: MiUser['id'][];
 };

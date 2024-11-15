@@ -4,16 +4,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<img v-if="!useOsNativeEmojis" :class="$style.root" :src="url" :alt="props.emoji" decoding="async" @pointerenter="computeTitle" @click.stop="onClick"/>
+<img v-if="!useOsNativeEmojis" :class="[$style.root, { [$style.large]: defaultStore.state.largeNoteReactions }]" :src="url" :alt="props.emoji" decoding="async" @pointerenter="computeTitle" @click.stop="onClick"/>
 <span v-else :alt="props.emoji" @pointerenter="computeTitle" @click.stop="onClick">{{ colorizedNativeEmoji }}</span>
 </template>
 
 <script lang="ts" setup>
 import { computed, inject } from 'vue';
-import { colorizeEmoji, getEmojiName } from '@@/js/emojilist.js';
-import { char2fluentEmojiFilePath, char2twemojiFilePath } from '@@/js/emoji-base.js';
-import type { MenuItem } from '@/types/menu.js';
+import { char2fluentEmojiFilePath, char2twemojiFilePath } from '@/scripts/emoji-base.js';
 import { defaultStore } from '@/store.js';
+import { colorizeEmoji, getEmojiName } from '@/scripts/emojilist.js';
 import * as os from '@/os.js';
 import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
 import * as sound from '@/scripts/sound.js';
@@ -40,9 +39,7 @@ function computeTitle(event: PointerEvent): void {
 
 function onClick(ev: MouseEvent) {
 	if (props.menu) {
-		const menuItems: MenuItem[] = [];
-
-		menuItems.push({
+		os.popupMenu([{
 			type: 'label',
 			text: props.emoji,
 		}, {
@@ -52,20 +49,14 @@ function onClick(ev: MouseEvent) {
 				copyToClipboard(props.emoji);
 				os.success();
 			},
-		});
-
-		if (props.menuReaction && react) {
-			menuItems.push({
-				text: i18n.ts.doReaction,
-				icon: 'ti ti-plus',
-				action: () => {
-					react(props.emoji);
-					sound.playMisskeySfx('reaction');
-				},
-			});
-		}
-
-		os.popupMenu(menuItems, ev.currentTarget ?? ev.target);
+		}, ...(props.menuReaction && react ? [{
+			text: i18n.ts.doReaction,
+			icon: 'ti ti-plus',
+			action: () => {
+				react(props.emoji);
+				sound.playMisskeySfx('reaction');
+			},
+		}] : [])], ev.currentTarget ?? ev.target);
 	}
 }
 </script>
@@ -74,5 +65,10 @@ function onClick(ev: MouseEvent) {
 .root {
 	height: 1.1em;
 	vertical-align: -0.235em;
+
+	&.large {
+		height: 1.3em;
+		vertical-align: -0.4em;
+	}
 }
 </style>

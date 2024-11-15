@@ -64,7 +64,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<div :class="$style.other">
 							<MkA v-if="page.userId === $i?.id" v-tooltip="i18n.ts._pages.editThisPage" :to="`/pages/edit/${page.id}`" class="_button" :class="$style.generalActionButton"><i class="ti ti-pencil ti-fw"></i></MkA>
 							<button v-tooltip="i18n.ts.copyLink" class="_button" :class="$style.generalActionButton" @click="copyLink"><i class="ti ti-link ti-fw"></i></button>
-							<button v-tooltip="i18n.ts.getQRCode" class="_button" :class="$style.generalActionButton" @click="shareQRCode"><i class="ti ti-qrcode ti-fw"></i></button>
 							<button v-tooltip="i18n.ts.share" class="_button" :class="$style.generalActionButton" @click="share"><i class="ti ti-share ti-fw"></i></button>
 							<button v-if="$i" v-click-anime class="_button" :class="$style.generalActionButton" @mousedown="showMenu"><i class="ti ti-dots ti-fw"></i></button>
 						</div>
@@ -101,12 +100,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, watch, ref, defineAsyncComponent } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import { url } from '@@/js/config.js';
-import type { MenuItem } from '@/types/menu.js';
 import XPage from '@/components/page/page.vue';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
+import { url } from '@/config.js';
 import MkMediaImage from '@/components/MkMediaImage.vue';
 import MkImgWithBlurhash from '@/components/MkImgWithBlurhash.vue';
 import MkFollowButton from '@/components/MkFollowButton.vue';
@@ -123,6 +121,7 @@ import { instance } from '@/instance.js';
 import { getStaticImageUrl } from '@/scripts/media-proxy.js';
 import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
 import { useRouter } from '@/router/supplier.js';
+import { MenuItem } from '@/types/menu';
 
 const router = useRouter();
 
@@ -166,23 +165,18 @@ function fetchPage() {
 function share(ev: MouseEvent) {
 	if (!page.value) return;
 
-	const menuItems: MenuItem[] = [];
-
-	menuItems.push({
-		text: i18n.ts.shareWithNote,
-		icon: 'ti ti-pencil',
-		action: shareWithNote,
-	});
-
-	if (isSupportShare()) {
-		menuItems.push({
+	os.popupMenu([
+		{
+			text: i18n.ts.shareWithNote,
+			icon: 'ti ti-pencil',
+			action: shareWithNote,
+		},
+		...(isSupportShare() ? [{
 			text: i18n.ts.share,
 			icon: 'ti ti-share',
 			action: shareWithNavigator,
-		});
-	}
-
-	os.popupMenu(menuItems, ev.currentTarget ?? ev.target);
+		}] : []),
+	], ev.currentTarget ?? ev.target);
 }
 
 function copyLink() {
@@ -190,11 +184,6 @@ function copyLink() {
 
 	copyToClipboard(`${url}/@${page.value.user.username}/pages/${page.value.name}`);
 	os.success();
-}
-
-function shareQRCode() {
-	if (!page.value) return;
-	os.displayQRCode(`${url}/@${page.value.user.username}/pages/${page.value.name}`);
 }
 
 function shareWithNote() {
@@ -267,59 +256,51 @@ function reportAbuse() {
 function showMenu(ev: MouseEvent) {
 	if (!page.value) return;
 
-	const menuItems: MenuItem[] = [];
-
-	if ($i && $i.id === page.value.userId) {
-		menuItems.push({
-			icon: 'ti ti-pencil',
-			text: i18n.ts.editThisPage,
-			action: () => router.push(`/pages/edit/${page.value.id}`),
-		});
-
-		if ($i.pinnedPageId === page.value.id) {
-			menuItems.push({
+	const menu: MenuItem[] = [
+		...($i && $i.id === page.value.userId ? [
+			{
+				icon: 'ti ti-code',
+				text: i18n.ts._pages.viewSource,
+				action: () => router.push(`/@${props.username}/pages/${props.pageName}/view-source`),
+			},
+			...($i.pinnedPageId === page.value.id ? [{
 				icon: 'ti ti-pinned-off',
 				text: i18n.ts.unpin,
 				action: () => pin(false),
-			});
-		} else {
-			menuItems.push({
+			}] : [{
 				icon: 'ti ti-pin',
 				text: i18n.ts.pin,
 				action: () => pin(true),
-			});
-		}
-	} else if ($i && $i.id !== page.value.userId) {
-		menuItems.push({
-			icon: 'ti ti-code',
-			text: i18n.ts._pages.viewSource,
-			action: () => router.push(`/@${props.username}/pages/${props.pageName}/view-source`),
-		}, {
-			icon: 'ti ti-exclamation-circle',
-			text: i18n.ts.reportAbuse,
-			action: reportAbuse,
-		});
+			}]),
+		] : []),
+		...($i && $i.id !== page.value.userId ? [
+			{
+				icon: 'ti ti-exclamation-circle',
+				text: i18n.ts.reportAbuse,
+				action: reportAbuse,
+			},
+			...($i.isModerator || $i.isAdmin ? [
+				{
+					type: 'divider' as const,
+				},
+				{
+					icon: 'ti ti-trash',
+					text: i18n.ts.delete,
+					danger: true,
+					action: () => os.confirm({
+						type: 'warning',
+						text: i18n.ts.deleteConfirm,
+					}).then(({ canceled }) => {
+						if (canceled || !page.value) return;
 
-		if ($i.isModerator || $i.isAdmin) {
-			menuItems.push({
-				type: 'divider',
-			}, {
-				icon: 'ti ti-trash',
-				text: i18n.ts.delete,
-				danger: true,
-				action: () => os.confirm({
-					type: 'warning',
-					text: i18n.ts.deleteConfirm,
-				}).then(({ canceled }) => {
-					if (canceled || !page.value) return;
+						os.apiWithDialog('pages/delete', { pageId: page.value.id });
+					}),
+				},
+			] : []),
+		] : []),
+	];
 
-					os.apiWithDialog('pages/delete', { pageId: page.value.id });
-				}),
-			});
-		}
-	}
-
-	os.popupMenu(menuItems, ev.currentTarget ?? ev.target);
+	os.popupMenu(menu, ev.currentTarget ?? ev.target);
 }
 
 watch(() => path.value, fetchPage, { immediate: true });
@@ -452,12 +433,13 @@ definePageMetadata(() => ({
 		.pageBannerTitleUser {
 			--height: 32px;
 			flex-shrink: 0;
-			line-height: var(--height);
 
 			.avatar {
 				height: var(--height);
 				width: var(--height);
 			}
+
+			line-height: var(--height);
 		}
 
 		.pageBannerTitleSubActions {

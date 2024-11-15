@@ -187,11 +187,11 @@ export const paramDef = {
 				metadata: { type: 'object' },
 			},
 		},
-		scheduleNote: {
+		schedule: {
 			type: 'object',
 			nullable: false,
 			properties: {
-				scheduledAt: { type: 'integer', nullable: false },
+				expiresAt: { type: 'integer', nullable: false },
 			},
 		},
 	},
@@ -203,7 +203,7 @@ export const paramDef = {
 		{ required: ['mediaIds'] },
 		{ required: ['poll'] },
 	],
-	required: ['scheduleNote'],
+	required: ['schedule'],
 } as const;
 
 @Injectable()
@@ -322,27 +322,27 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			}
 
 			if (ps.poll) {
-				let scheduleNote_scheduledAt = Date.now();
-				if (typeof ps.scheduleNote.scheduledAt === 'number') {
-					scheduleNote_scheduledAt = ps.scheduleNote.scheduledAt;
+				let schedule_expiresAt = Date.now();
+				if (typeof ps.schedule.expiresAt === 'number') {
+					schedule_expiresAt = ps.schedule.expiresAt;
 				}
 				if (typeof ps.poll.expiresAt === 'number') {
-					if (ps.poll.expiresAt < scheduleNote_scheduledAt) {
+					if (ps.poll.expiresAt < schedule_expiresAt) {
 						throw new ApiError(meta.errors.cannotCreateAlreadyExpiredPoll);
 					}
 				} else if (typeof ps.poll.expiredAfter === 'number') {
-					ps.poll.expiresAt = scheduleNote_scheduledAt + ps.poll.expiredAfter;
+					ps.poll.expiresAt = schedule_expiresAt + ps.poll.expiredAfter;
 				}
 			}
-			if (typeof ps.scheduleNote.scheduledAt === 'number') {
-				if (ps.scheduleNote.scheduledAt < Date.now()) {
+			if (typeof ps.schedule.expiresAt === 'number') {
+				if (ps.schedule.expiresAt < Date.now()) {
 					throw new ApiError(meta.errors.cannotCreateAlreadyExpiredSchedule);
 				}
 			} else {
 				throw new ApiError(meta.errors.cannotCreateAlreadyExpiredSchedule);
 			}
 			const note:MiScheduleNoteType = {
-				createdAt: new Date(ps.scheduleNote.scheduledAt!).toISOString(),
+				createdAt: new Date(ps.schedule.expiresAt!).toISOString(),
 				files: files.map(f => f.id),
 				poll: ps.poll ? {
 					choices: ps.poll.choices,
@@ -370,17 +370,17 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				disableRightClick: ps.disableRightClick,
 			};
 
-			if (ps.scheduleNote.scheduledAt) {
+			if (ps.schedule.expiresAt) {
 				me.token = null;
 				const noteId = this.idService.gen(new Date().getTime());
 				await this.noteScheduleRepository.insert({
 					id: noteId,
 					note: note,
 					userId: me.id,
-					scheduledAt: new Date(ps.scheduleNote.scheduledAt),
+					expiresAt: new Date(ps.schedule.expiresAt),
 				});
 
-				const delay = new Date(ps.scheduleNote.scheduledAt).getTime() - Date.now();
+				const delay = new Date(ps.schedule.expiresAt).getTime() - Date.now();
 				await this.queueService.ScheduleNotePostQueue.add(String(delay), {
 					scheduleNoteId: noteId,
 				}, {

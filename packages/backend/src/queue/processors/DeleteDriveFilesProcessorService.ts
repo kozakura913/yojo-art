@@ -38,7 +38,6 @@ export class DeleteDriveFilesProcessorService {
 		this.logger.info(`Deleting drive files of ${job.data.user.id} ...`);
 
 		const user = await this.usersRepository.findOneBy({ id: job.data.user.id });
-		const isRemote = user ? this.userEntityService.isRemoteUser(user) : false;
 		if (user == null) {
 			return;
 		}
@@ -66,7 +65,8 @@ export class DeleteDriveFilesProcessorService {
 			cursor = files.at(-1)?.id ?? null;
 
 			for (const file of files) {
-				await this.driveService.deleteFileSync(file, undefined, isRemote);
+				const isRemote = file.user ? this.userEntityService.isRemoteUser(file.user) : false;
+				await this.driveService.deleteFileSync(file, false, isRemote);
 				deletedCount++;
 			}
 

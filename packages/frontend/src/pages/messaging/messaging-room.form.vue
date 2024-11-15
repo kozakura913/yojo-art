@@ -200,6 +200,7 @@ function saveDraft() {
 
 	drafts[draftKey.value] = {
 		updatedAt: new Date(),
+		 
 		data: {
 			text: text.value,
 			file: file.value,

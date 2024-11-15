@@ -226,10 +226,6 @@ export interface ReversiGameEventTypes {
 	canceled: {
 		userId: MiUser['id'];
 	};
-	reacted: {
-		userId: MiUser['id'];
-		reaction: string;
-	};
 }
 //#endregion
 
@@ -278,7 +274,7 @@ export interface InternalEventTypes {
 	avatarDecorationCreated: MiAvatarDecoration;
 	avatarDecorationDeleted: MiAvatarDecoration;
 	avatarDecorationUpdated: MiAvatarDecoration;
-	metaUpdated: { before?: MiMeta; after: MiMeta; };
+	metaUpdated: MiMeta;
 	followChannel: { userId: MiUser['id']; channelId: MiChannel['id']; };
 	unfollowChannel: { userId: MiUser['id']; channelId: MiChannel['id']; };
 	updateUserProfile: MiUserProfile;

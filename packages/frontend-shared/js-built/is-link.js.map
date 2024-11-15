@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../js/is-link.ts"],
+  "sourcesContent": ["/*\n * SPDX-FileCopyrightText: syuilo and misskey-project\n * SPDX-License-Identifier: AGPL-3.0-only\n */\n\nexport function isLink(el: HTMLElement) {\n\tif (el.tagName === 'A') return true;\n\tif (el.parentElement) {\n\t\treturn isLink(el.parentElement);\n\t}\n\treturn false;\n}\n"],
+  "mappings": "AAKO,SAAS,OAAO,IAAiB;AACvC,MAAI,GAAG,YAAY,IAAK,QAAO;AAC/B,MAAI,GAAG,eAAe;AACrB,WAAO,OAAO,GAAG,aAAa;AAAA,EAC/B;AACA,SAAO;AACR;",
+  "names": []
+}

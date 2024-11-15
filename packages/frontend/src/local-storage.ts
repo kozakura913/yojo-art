@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-export type Keys =
+type Keys =
 	'v' |
 	'basedMisskeyVersion' |
 	'lastVersion' |
@@ -42,24 +42,14 @@ export type Keys =
 	'lastEmojisFetchedAt' | // DEPRECATED, stored in indexeddb (13.9.0~)
 	'emojis' | // DEPRECATED, stored in indexeddb (13.9.0~);
 	`channelLastReadedAt:${string}` |
-	`idbfallback::${string}` |
 	'neverShowNoteEditInfo' |
 	'showPushNotificationDialog' |
 	'checkR18'
 
-// セッション毎に廃棄されるLocalStorage代替（セーフモードなどで使用できそう）
-//const safeSessionStorage = new Map<Keys, string>();
-
 export const miLocalStorage = {
-	getItem: (key: Keys): string | null => {
-		return window.localStorage.getItem(key);
-	},
-	setItem: (key: Keys, value: string): void => {
-		window.localStorage.setItem(key, value);
-	},
-	removeItem: (key: Keys): void => {
-		window.localStorage.removeItem(key);
-	},
+	getItem: (key: Keys): string | null => window.localStorage.getItem(key),
+	setItem: (key: Keys, value: string): void => window.localStorage.setItem(key, value),
+	removeItem: (key: Keys): void => window.localStorage.removeItem(key),
 	getItemAsJson: (key: Keys): any | undefined => {
 		const item = miLocalStorage.getItem(key);
 		if (item === null) {
@@ -67,7 +57,5 @@ export const miLocalStorage = {
 		}
 		return JSON.parse(item);
 	},
-	setItemAsJson: (key: Keys, value: any): void => {
-		miLocalStorage.setItem(key, JSON.stringify(value));
-	},
+	setItemAsJson: (key: Keys, value: any): void => window.localStorage.setItem(key, JSON.stringify(value)),
 };

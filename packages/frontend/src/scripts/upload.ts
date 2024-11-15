@@ -7,13 +7,12 @@ import { reactive, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { v4 as uuid } from 'uuid';
 import { readAndCompressImage } from '@misskey-dev/browser-image-resizer';
-import { apiUrl } from '@@/js/config.js';
 import { getCompressionConfig } from './upload/compress-config.js';
 import { defaultStore } from '@/store.js';
+import { apiUrl } from '@/config.js';
 import { $i } from '@/account.js';
 import { alert } from '@/os.js';
 import { i18n } from '@/i18n.js';
-import { instance } from '@/instance.js';
 
 type Uploading = {
 	id: string;
@@ -39,15 +38,6 @@ export function uploadFile(
 	if ($i == null) throw new Error('Not logged in');
 
 	if (folder && typeof folder === 'object') folder = folder.id;
-
-	if (file.size > instance.maxFileSize) {
-		alert({
-			type: 'error',
-			title: i18n.ts.failedToUpload,
-			text: i18n.ts.cannotUploadBecauseExceedsFileSizeLimit,
-		});
-		return Promise.reject();
-	}
 
 	return new Promise((resolve, reject) => {
 		const id = uuid();

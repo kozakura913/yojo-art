@@ -5,22 +5,19 @@
 
 import * as Misskey from 'cherrypick-js';
 import { markRaw } from 'vue';
-import { wsOrigin } from '@@/js/config.js';
 import { $i } from '@/account.js';
-// TODO: No WebsocketモードでStreamMockが使えそう
-//import { StreamMock } from '@/scripts/stream-mock.js';
+import { wsOrigin } from '@/config.js';
 
 // heart beat interval in ms
 const HEART_BEAT_INTERVAL = 1000 * 60;
 
-let stream: Misskey.IStream | null = null;
-let timeoutHeartBeat: number | null = null;
+let stream: Misskey.Stream | null = null;
+let timeoutHeartBeat: ReturnType<typeof setTimeout> | null = null;
 let lastHeartbeatCall = 0;
 
-export function useStream(): Misskey.IStream {
+export function useStream(): Misskey.Stream {
 	if (stream) return stream;
 
-	// TODO: No Websocketモードもここで判定
 	stream = markRaw(new Misskey.Stream(wsOrigin, $i ? {
 		token: $i.token,
 	} : null));
