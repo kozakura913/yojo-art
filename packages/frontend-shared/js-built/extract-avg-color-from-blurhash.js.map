@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../js/extract-avg-color-from-blurhash.ts"],
-  "sourcesContent": ["/*\n * SPDX-FileCopyrightText: syuilo and misskey-project\n * SPDX-License-Identifier: AGPL-3.0-only\n */\n\nexport function extractAvgColorFromBlurhash(hash: string) {\n\treturn typeof hash === 'string'\n\t\t? '#' + [...hash.slice(2, 6)]\n\t\t\t.map(x => '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz#$%*+,-.:;=?@[]^_{|}~'.indexOf(x))\n\t\t\t.reduce((a, c) => a * 83 + c, 0)\n\t\t\t.toString(16)\n\t\t\t.padStart(6, '0')\n\t\t: undefined;\n}\n"],
-  "mappings": "AAKO,SAAS,4BAA4B,MAAc;AACzD,SAAO,OAAO,SAAS,WACpB,MAAM,CAAC,GAAG,KAAK,MAAM,GAAG,CAAC,CAAC,EAC1B,IAAI,OAAK,sFAAsF,QAAQ,CAAC,CAAC,EACzG,OAAO,CAAC,GAAG,MAAM,IAAI,KAAK,GAAG,CAAC,EAC9B,SAAS,EAAE,EACX,SAAS,GAAG,GAAG,IACf;AACJ;",
-  "names": []
-}

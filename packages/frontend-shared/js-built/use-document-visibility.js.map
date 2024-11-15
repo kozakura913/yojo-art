@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../js/use-document-visibility.ts"],
-  "sourcesContent": ["/*\n * SPDX-FileCopyrightText: syuilo and misskey-project\n * SPDX-License-Identifier: AGPL-3.0-only\n */\n\nimport { onMounted, onUnmounted, ref } from 'vue';\nimport type { Ref } from 'vue';\n\nexport function useDocumentVisibility(): Ref<DocumentVisibilityState> {\n\tconst visibility = ref(document.visibilityState);\n\n\tconst onChange = (): void => {\n\t\tvisibility.value = document.visibilityState;\n\t};\n\n\tonMounted(() => {\n\t\tdocument.addEventListener('visibilitychange', onChange);\n\t});\n\n\tonUnmounted(() => {\n\t\tdocument.removeEventListener('visibilitychange', onChange);\n\t});\n\n\treturn visibility;\n}\n"],
-  "mappings": "AAKA,SAAS,WAAW,aAAa,WAAW;AAGrC,SAAS,wBAAsD;AACrE,QAAM,aAAa,IAAI,SAAS,eAAe;AAE/C,QAAM,WAAW,MAAY;AAC5B,eAAW,QAAQ,SAAS;AAAA,EAC7B;AAEA,YAAU,MAAM;AACf,aAAS,iBAAiB,oBAAoB,QAAQ;AAAA,EACvD,CAAC;AAED,cAAY,MAAM;AACjB,aAAS,oBAAoB,oBAAoB,QAAQ;AAAA,EAC1D,CAAC;AAED,SAAO;AACR;",
-  "names": []
-}
