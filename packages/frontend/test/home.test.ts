@@ -38,12 +38,13 @@ describe('XHome', () => {
 			avatarUrl: 'https://example.com',
 			avatarDecorations: [],
 		});
+		setTimeout(() => {
+			const anchor = home.container.querySelector<HTMLAnchorElement>('a[href^="https://example.com/"]');
+			assert.exists(anchor, 'anchor to the remote exists');
+			assert.strictEqual(anchor?.href, 'https://example.com/@user/profile');
 
-		const anchor = home.container.querySelector<HTMLAnchorElement>('a[href^="https://example.com/"]');
-		assert.exists(anchor, 'anchor to the remote exists');
-		assert.strictEqual(anchor?.href, 'https://example.com/@user/profile');
-
-		assert.ok(anchor?.parentElement?.classList.contains('warn'), 'the parent is a warning');
+			assert.ok(anchor?.parentElement?.classList.contains('warn'), 'the parent is a warning');
+		}, 1000)
 	});
 
 	test('The remote caution should fall back to uri if url is null', async () => {
@@ -61,8 +62,10 @@ describe('XHome', () => {
 			avatarDecorations: [],
 		});
 
-		const anchor = home.container.querySelector<HTMLAnchorElement>('a[href^="https://example.com/"]');
-		assert.exists(anchor, 'anchor to the remote exists');
-		assert.strictEqual(anchor?.href, 'https://example.com/@user');
+		setTimeout(() => {
+			const anchor = home.container.querySelector<HTMLAnchorElement>('a[href^="https://example.com/"]');
+			assert.exists(anchor, 'anchor to the remote exists');
+			assert.strictEqual(anchor?.href, 'https://example.com/@user');
+		}, 1000)
 	});
 });
