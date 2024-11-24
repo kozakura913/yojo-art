@@ -33,7 +33,7 @@ export const meta = {
 				optional: false, nullable: false,
 				items: {
 					type: 'string',
-					optional: false, nullable: true,
+					optional: false, nullable: false,
 				},
 			},
 		},
@@ -214,7 +214,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			glossaryConfig: glossaryConfig,
 		};
 		const [translateResponse] = await translationClient.translateText(translateRequest);
-		const translatedText = translateResponse.translations && translateResponse.translations.map(t => t.translatedText ?? null);
+		const translatedText = translateResponse.translations && translateResponse.translations.map(t => t.translatedText ?? '');
 		const detectedLanguageCode = translateResponse.translations && translateResponse.translations[0]?.detectedLanguageCode;
 
 		cleanup();

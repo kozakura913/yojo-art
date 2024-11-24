@@ -23423,7 +23423,7 @@ export type operations = {
         content: {
           'application/json': {
             sourceLang: string;
-            text: string;
+            text: string[];
           };
         };
       };
