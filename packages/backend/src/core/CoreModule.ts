@@ -866,7 +866,6 @@ const $ApGameService: Provider = { provide: 'ApGameService', useExisting: ApGame
 		$SearchService,
 		$AdvancedSearchService,
 		$ClipService,
-		$FlashService,
 		$FeaturedService,
 		$FanoutTimelineService,
 		$FanoutTimelineEndpointService,
