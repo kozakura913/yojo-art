@@ -128,17 +128,8 @@ describe('Note', () => {
 	describe('Other props', () => {
 		test('localOnly', async () => {
 			const note = (await alice.client.request('notes/create', { text: 'a', localOnly: true })).createdNote;
-			rejects(
-				async () => await bob.client.request('ap/show', { uri: `https://a.test/notes/${note.id}` }),
-				(err: any) => {
-					/**
-					 * FIXME: this error is not handled
-					 * @see https://github.com/misskey-dev/misskey/issues/12736
-					 */
-					strictEqual(err.code, 'INTERNAL_ERROR');
-					return true;
-				},
-			);
+			const show_note = await bob.client.request('ap/show', { uri: `https://a.test/notes/${note.id}` });
+			strictEqual(true, show_note.type === 'Note');
 		});
 	});
 
