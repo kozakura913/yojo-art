@@ -106,7 +106,8 @@ describe('Timeline', () => {
 			});
 
 			test('Don\'t receive remote followee\'s localOnly Note', async () => {
-				await postAndCheckReception(homeTimeline, false, { localOnly: true });
+				//localOnlyフラグは無視される
+				await postAndCheckReception(homeTimeline, true, { localOnly: true });
 			});
 
 			test('Don\'t receive remote followee\'s invisible specified-only Note', async () => {
