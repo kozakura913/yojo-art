@@ -28,7 +28,14 @@ export const meta = {
 		optional: true, nullable: false,
 		properties: {
 			sourceLang: { type: 'string' },
-			text: { type: 'string' },
+			text: { 
+				type: 'array',
+				optional: false, nullable: false,
+				items: {
+					type: 'string',
+					optional: false, nullable: true,
+				},
+			},
 		},
 	},
 
@@ -115,17 +122,17 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					translator: this.serverSettings.translatorType, // 修正点: 配列ではなく単一の文字列
 				};
 			} else if (this.serverSettings.translatorType === 'ctav3') {
-				if (this.serverSettings.ctav3SaKey == null) return Promise.resolve(204);
-				else if (this.serverSettings.ctav3ProjectId == null) return Promise.resolve(204);
-				else if (this.serverSettings.ctav3Location == null) return Promise.resolve(204);
-				translationResult = await this.apiCloudTranslationAdvanced(poll.choices, targetLang, this.serverSettings.ctav3SaKey, this.serverSettings.ctav3ProjectId, this.serverSettings.ctav3Location, this.serverSettings.ctav3Model, this.serverSettings.ctav3Glossary, this.serverSettings.translatorType);
+				if (this.serverSettings.ctav3SaKey == null) return;
+				else if (this.serverSettings.ctav3ProjectId == null) return;
+				else if (this.serverSettings.ctav3Location == null) return;
+				else translationResult = await this.apiCloudTranslationAdvanced(poll.choices, targetLang, this.serverSettings.ctav3SaKey, this.serverSettings.ctav3ProjectId, this.serverSettings.ctav3Location, this.serverSettings.ctav3Model, this.serverSettings.ctav3Glossary, this.serverSettings.translatorType);
 			} else {
 				throw new Error('Unsupported translator type');
 			}
 
 			return Promise.resolve({
 				sourceLang: translationResult.sourceLang || '',
-				text: translationResult.text || '',
+				text: translationResult.text || [],
 				translator: translationResult.translator || [],
 			});
 		});
@@ -170,15 +177,16 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		};
 	}
 
-	private async apiCloudTranslationAdvanced(text: string, targetLang: string, saKey: string, projectId: string, location: string, model: string | null, glossary: string | null, provider: string) {
+	private async apiCloudTranslationAdvanced(text: string[], targetLang: string, saKey: string, projectId: string, location: string, model: string | null, glossary: string | null, provider: string) {
 		const [path, cleanup] = await createTemp();
 		fs.writeFileSync(path, saKey);
 
 		const translationClient = new TranslationServiceClient({ keyFilename: path });
 
+		const detectText = text.join('\n');
 		const detectRequest = {
 			parent: `projects/${projectId}/locations/${location}`,
-			content: text,
+			content: detectText,
 		};
 
 		let detectedLanguage = null;
@@ -198,7 +206,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 		const translateRequest = {
 			parent: `projects/${projectId}/locations/${location}`,
-			contents: [text],
+			contents: text,
 			mimeType: 'text/plain',
 			sourceLanguageCode: null,
 			targetLanguageCode: detectedLanguage !== null ? detectedLanguage : targetLang,
@@ -206,7 +214,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			glossaryConfig: glossaryConfig,
 		};
 		const [translateResponse] = await translationClient.translateText(translateRequest);
-		const translatedText = translateResponse.translations && translateResponse.translations[0]?.translatedText;
+		const translatedText = translateResponse.translations && translateResponse.translations.map(t => t.translatedText ?? null);
 		const detectedLanguageCode = translateResponse.translations && translateResponse.translations[0]?.detectedLanguageCode;
 
 		cleanup();
