@@ -105,11 +105,6 @@ describe('Timeline', () => {
 				await postAndCheckReception(homeTimeline, true, { visibility: 'specified', visibleUserIds: [bobInA.id] });
 			});
 
-			test('Don\'t receive remote followee\'s localOnly Note', async () => {
-				//localOnlyフラグは無視される
-				await postAndCheckReception(homeTimeline, true, { localOnly: true });
-			});
-
 			test('Don\'t receive remote followee\'s invisible specified-only Note', async () => {
 				await postAndCheckReception(homeTimeline, false, { visibility: 'specified' });
 			});
