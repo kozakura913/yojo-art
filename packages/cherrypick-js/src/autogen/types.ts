@@ -4065,6 +4065,9 @@ export type components = {
       isSilenced: boolean;
       /** @example false */
       isSuspended: boolean;
+      isIndexable: boolean;
+      /** @enum {string|null} */
+      searchableBy: 'public' | 'followersAndReacted' | 'reactedOnly' | 'private';
       /** @example Hi masters, I am Ai! */
       description: string | null;
       location: string | null;

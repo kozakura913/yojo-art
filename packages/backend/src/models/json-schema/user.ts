@@ -258,6 +258,15 @@ export const packedUserDetailedNotMeOnlySchema = {
 			nullable: false, optional: false,
 			example: false,
 		},
+		isIndexable: {
+			type: 'boolean',
+			nullable: false, optional: false,
+		},
+		searchableBy: {
+			type: 'string',
+			nullable: true, optional: false,
+			enum: ['public', 'followersAndReacted', 'reactedOnly', 'private'],
+		},
 		description: {
 			type: 'string',
 			nullable: true, optional: false,
