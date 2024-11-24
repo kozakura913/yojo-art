@@ -262,6 +262,8 @@ function toPackedUserDetailedNotMe(user: MiUser, override?: Packed<'UserDetailed
 		isRenoteMuted: false,
 		notify: 'none',
 		withReplies: true,
+		isIndexable: true,
+		searchableBy: 'public',
 		...override,
 	};
 }
