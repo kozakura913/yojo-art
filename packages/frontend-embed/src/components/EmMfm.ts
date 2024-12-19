@@ -448,6 +448,14 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 				return [h('span', genEl(token.children, scale, true))];
 			}
 
+			case 'ul': {
+				return [h(EmUrl, {
+					key: Math.random(),
+					url: token.props.items[0],
+					rel: 'nofollow noopener',
+				})];
+			}
+
 			default: {
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				console.error('unrecognized ast type:', (token as any).type);
