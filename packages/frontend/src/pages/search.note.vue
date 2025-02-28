@@ -129,7 +129,6 @@ import MkInput from '@/components/MkInput.vue';
 import MkNotes from '@/components/MkNotes.vue';
 import MkRadios from '@/components/MkRadios.vue';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
-import MkInput from '@/components/MkInput.vue';
 
 const props = withDefaults(defineProps<{
 		query?: string;
