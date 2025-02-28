@@ -222,14 +222,14 @@ export class AdvancedSearchService {
 			this.opensearch?.indices.exists({
 				index: notesIndexname,
 			}).then((indexExists) => {
-				if (indexExists.statusCode === 404) [
+				if (indexExists.statusCode === 404) {
 					this.opensearch?.indices.create({
 						index: notesIndexname,
 						body: noteIndexBody,
 					}).catch((error) => {
 						this.logger.error(error);
-					}),
-				];
+					});
+				}
 			}).catch((error) => {
 				this.logger.error(error);
 			});
@@ -238,7 +238,7 @@ export class AdvancedSearchService {
 			this.opensearch?.indices.exists({
 				index: this.renoteIndex,
 			}).then((indexExists) => {
-				if (indexExists.statusCode === 404) [
+				if (indexExists.statusCode === 404) {
 					this.opensearch?.indices.create({
 						index: this.renoteIndex,
 						body: {
@@ -250,15 +250,15 @@ export class AdvancedSearchService {
 								},
 							},
 						},
-					}),
-				];
+					});
+				}
 			}).catch((error) => this.logger.error(error));
 
 			//reactionIndex
 			this.opensearch?.indices.exists({
 				index: this.reactionIndex,
 			}).then((indexExists) => {
-				if (indexExists.statusCode === 404) [
+				if (indexExists.statusCode === 404) {
 					this.opensearch?.indices.create({
 						index: this.reactionIndex,
 						body: {
@@ -271,15 +271,15 @@ export class AdvancedSearchService {
 								},
 							},
 						},
-					}),
-				];
+					});
+				};
 			}).catch((error) => this.logger.error(error));
 
 			//favoriteIndex
 			this.opensearch?.indices.exists({
 				index: this.favoriteIndex,
 			}).then((indexExists) => {
-				if (indexExists.statusCode === 404) [
+				if (indexExists.statusCode === 404) {
 					this.opensearch?.indices.create({
 						index: this.favoriteIndex,
 						body: {
@@ -291,15 +291,15 @@ export class AdvancedSearchService {
 								},
 							},
 						},
-					}),
-				];
+					});
+				};
 			}).catch((error) => this.logger.error(error));
 
 			//pollVoteIndex
 			this.opensearch?.indices.exists({
 				index: this.pollVoteIndex,
 			}).then((indexExists) => {
-				if (indexExists.statusCode === 404) [
+				if (indexExists.statusCode === 404) {
 					this.opensearch?.indices.create({
 						index: this.pollVoteIndex,
 						body: {
@@ -310,8 +310,8 @@ export class AdvancedSearchService {
 								},
 							},
 						},
-					}),
-				];
+					});
+				};
 			}).catch((error) => this.logger.error(error));
 		} else {
 			this.logger.info('OpenSearch is not available');
