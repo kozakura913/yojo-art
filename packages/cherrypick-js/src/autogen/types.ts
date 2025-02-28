@@ -9606,6 +9606,7 @@ export type operations = {
             urlPreviewRequireContentLength: boolean;
             urlPreviewUserAgent: string | null;
             urlPreviewSummaryProxyUrl: string | null;
+            urlPreviewDirectSummalyProxy: boolean;
             /** @enum {string} */
             federation: 'all' | 'specified' | 'none';
             federationHosts: string[];
@@ -9621,7 +9622,6 @@ export type operations = {
             moderatorInactivityLimitDays: number;
             bubbleInstances: string[];
             customRobotsTxt: string | null;
-            urlPreviewDirectSummalyProxy: boolean;
           };
         };
       };
