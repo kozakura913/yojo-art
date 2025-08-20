@@ -27,16 +27,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, markRaw, onActivated, onMounted, onUnmounted, ref, shallowRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import { useStream } from '@/stream.js';
 import { useRouter } from '@/router/supplier.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
-import { $i } from '@/account.js';
+import { definePageMetadata } from '@/utility/page-metadata.js';
+import { $i } from '@/i.js';
 import { globalEvents } from '@/events.js';
 import MkChatPreview from '@/components/MkChatPreview.vue';
 import MkPagination from '@/components/MkPagination.vue';
-import { flushNotification } from '@/scripts/check-nortification-delete.js';
+import { flushNotification } from '@/utility/check-nortification-delete.js';
 
 const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
 

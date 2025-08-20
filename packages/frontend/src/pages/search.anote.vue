@@ -111,7 +111,7 @@ import MkButton from '@/components/MkButton.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
@@ -120,24 +120,24 @@ import MkInput from '@/components/MkInput.vue';
 import FormSection from '@/components/form/section.vue';
 import { $i } from '@/account.js';
 import { instance } from '@/instance.js';
-import { emojiPicker } from '@/scripts/emoji-picker';
+import { emojiPicker } from '@/utility/emoji-picker';
 import { Paging } from '@/components/MkPagination.vue';
 
 const props = withDefaults(defineProps<{
-		query?: string;
-		userId?: string;
-		username?: string;
-		host?: string | null;
-		fileAttach?: string;
-		fileSensitive?: string;
-		reactions?: string;
-		reactionsExclude?: string;
-		following?: string;
-		excludeReply?: boolean;
-		excludeCw?: boolean;
-		excludeQuote?: boolean;
-		strictSearch?: boolean;
-	}>(), {
+	query?: string;
+	userId?: string;
+	username?: string;
+	host?: string | null;
+	fileAttach?: string;
+	fileSensitive?: string;
+	reactions?: string;
+	reactionsExclude?: string;
+	following?: string;
+	excludeReply?: boolean;
+	excludeCw?: boolean;
+	excludeQuote?: boolean;
+	strictSearch?: boolean;
+}>(), {
 	query: '',
 	userId: undefined,
 	username: undefined,

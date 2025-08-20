@@ -24,8 +24,6 @@ type PushNotificationDataSourceMap = {
 		note: Misskey.entities.Note;
 	};
 	readAllNotifications: undefined;
-	readAllMessagingMessages: undefined;
-	readAllMessagingMessagesOfARoom: { userId: string } | { groupId: string };
 };
 
 export type PushNotificationData<K extends keyof PushNotificationDataSourceMap> = {

@@ -67,14 +67,14 @@ import MkPagination from '@/components/MkPagination.vue';
 import MkDateSeparatedList from '@/components/MkDateSeparatedList.vue';
 import * as os from '@/os.js';
 import { useStream } from '@/stream.js';
-import * as sound from '@/scripts/sound.js';
+import * as sound from '@/utility/sound.js';
 import { i18n } from '@/i18n.js';
-import { $i } from '@/account.js';
-import { defaultStore } from '@/store.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
-import { vibrate } from '@/scripts/vibrate.js';
+import { $i } from '@/i.js';
+import { prefer } from '@/preferences.js';
+import { definePage } from '@/page.js';
+import { vibrate } from '@/utility/vibrate.js';
 import { miLocalStorage } from '@/local-storage.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 
@@ -93,7 +93,7 @@ const group = ref<Misskey.entities.UserGroup | null>(null);
 const typers = ref<Misskey.entities.User[]>([]);
 const connection = ref<Misskey.ChannelConnection<Misskey.Channels['messaging']> | null>(null);
 const showIndicator = ref(false);
-const animation = defaultStore.reactiveState;
+const animation = prefer.r;
 
 const pagination = ref<Paging | null>(null);
 
@@ -118,7 +118,6 @@ async function fetch() {
 			},
 			reversed: true,
 			isMessaging: true,
-			pageEl: rootEl.value,
 		};
 		connection.value = useStream().useChannel('messaging', {
 			otherparty: user.value.id,
@@ -135,7 +134,6 @@ async function fetch() {
 			},
 			reversed: true,
 			isMessaging: true,
-			pageEl: rootEl.value,
 		};
 		connection.value = useStream().useChannel('messaging', {
 			group: group.value.id,
@@ -149,7 +147,7 @@ async function fetch() {
 		typers.value = _typers.filter(u => u.id !== $i?.id);
 	});
 
-	document.addEventListener('visibilitychange', onVisibilitychange);
+	window.document.addEventListener('visibilitychange', onVisibilitychange);
 
 	nextTick(() => {
 		thisScrollToBottom();
@@ -217,7 +215,7 @@ function onMessage(message) {
 	const _isBottom = isBottomVisible(rootEl.value, 64);
 
 	pagingComponent.value.prepend(message);
-	if (message.userId !== $i?.id && !document.hidden) {
+	if (message.userId !== $i?.id && !window.document.hidden) {
 		connection.value?.send('read', {
 			id: message.id,
 		});
@@ -286,7 +284,7 @@ function notifyNewMessage() {
 }
 
 function onVisibilitychange() {
-	if (document.hidden) return;
+	if (window.document.hidden) return;
 	for (const message of pagingComponent.value.items) {
 		if (message.userId !== $i?.id && !message.isRead) {
 			connection.value?.send('read', {
@@ -302,19 +300,20 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
 	connection.value?.dispose();
-	document.removeEventListener('visibilitychange', onVisibilitychange);
+	window.document.removeEventListener('visibilitychange', onVisibilitychange);
 	if (scrollRemove.value) scrollRemove.value();
 });
-
-definePageMetadata(computed(() => !fetching.value ? user.value ? {
-	title: '',
-	icon: null,
-	userName: user,
-	avatar: user,
-} : {
-	title: group.value?.name,
-	icon: 'ti ti-users',
-} : null));
+if (!fetching.value) {
+	definePage(() => user.value ? {
+		title: '',
+		icon: null,
+		userName: user,
+		avatar: user,
+	} : {
+		title: group.value?.name,
+		icon: 'ti ti-users',
+	});
+}
 </script>
 
 <style lang="scss" module>
