@@ -711,6 +711,7 @@ const $officialTagRepository: Provider = {
 		$authSessionsRepository,
 		$accessTokensRepository,
 		$signinsRepository,
+		$messagingMessagesRepository,
 		$pagesRepository,
 		$pageLikesRepository,
 		$galleryPostsRepository,
