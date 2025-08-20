@@ -4286,9 +4286,6 @@ export type components = {
       followingVisibility: 'public' | 'followers' | 'private';
       /** @enum {string} */
       followersVisibility: 'public' | 'followers' | 'private';
-      /** @enum {string} */
-      chatScope: 'everyone' | 'following' | 'followers' | 'mutual' | 'none';
-      canChat: boolean;
       roles: components['schemas']['RoleLite'][];
       followedMessage?: string | null;
       memo: string | null;
@@ -22512,8 +22509,6 @@ export type operations = {
           followingVisibility?: 'public' | 'followers' | 'private';
           /** @enum {string} */
           followersVisibility?: 'public' | 'followers' | 'private';
-          /** @enum {string} */
-          chatScope?: 'everyone' | 'followers' | 'following' | 'mutual' | 'none';
           /** Format: misskey:id */
           pinnedPageId?: string | null;
           mutedWords?: (string[] | string)[];

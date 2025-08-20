@@ -1936,7 +1936,6 @@ _role:
     canImportFollowing: "Permitir importação de usuários seguidos"
     canImportMuting: "Permitir importação de silenciamentos"
     canImportUserLists: "Permitir importação de listas"
-    chatAvailability: "Permitir Conversas"
   _condition:
     roleAssignedTo: "Atribuído a cargos manuais"
     isLocal: "Usuário local"

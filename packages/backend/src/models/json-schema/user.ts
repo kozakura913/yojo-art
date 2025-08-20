@@ -391,15 +391,6 @@ export const packedUserDetailedNotMeOnlySchema = {
 			nullable: false, optional: false,
 			enum: ['public', 'followers', 'private'],
 		},
-		chatScope: {
-			type: 'string',
-			nullable: false, optional: false,
-			enum: ['everyone', 'following', 'followers', 'mutual', 'none'],
-		},
-		canChat: {
-			type: 'boolean',
-			nullable: false, optional: false,
-		},
 		roles: {
 			type: 'array',
 			nullable: false, optional: false,

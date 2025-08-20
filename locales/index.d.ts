@@ -8985,10 +8985,6 @@ export interface Locale extends ILocale {
              */
             "canImportUserLists": string;
             /**
-             * チャットを許可
-             */
-            "chatAvailability": string;
-            /**
              * サーバーサイドのノートの下書きの作成可能数
              */
             "noteDraftLimit": string;

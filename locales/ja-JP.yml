@@ -2326,7 +2326,6 @@ _role:
     canImportFollowing: "フォローのインポートを許可"
     canImportMuting: "ミュートのインポートを許可"
     canImportUserLists: "リストのインポートを許可"
-    chatAvailability: "チャットを許可"
     noteDraftLimit: "サーバーサイドのノートの下書きの作成可能数"
     canSetFederationAvatarShape: "アイコンの形設定の連合を許可"
     mutualLinkSectionLimit: "相互リンクのセクションの最大数"

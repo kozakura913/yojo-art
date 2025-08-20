@@ -1945,7 +1945,6 @@ _role:
     canImportFollowing: "Autoritza la importació de seguidors"
     canImportMuting: "Autoritza la importació de silenciats"
     canImportUserLists: "Autoritza la importació de llistes d'usuaris "
-    chatAvailability: "Es permet xatejar"
   _condition:
     roleAssignedTo: "Assignat a rols manuals"
     isLocal: "Usuari local"

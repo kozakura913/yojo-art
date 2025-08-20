@@ -2229,7 +2229,6 @@ _role:
     canImportFollowing: "Allow importing following"
     canImportMuting: "Allow importing muting"
     canImportUserLists: "Allow importing lists"
-    chatAvailability: "Allow Chat"
     noteDraftLimit: "Maximum number of server-side note drafts available"
     canSetFederationAvatarShape: "Allow federation of avatar shape settings"
   _condition:
