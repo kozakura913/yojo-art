@@ -674,6 +674,7 @@ const $officialTagRepository: Provider = {
 		$noteFavoritesRepository,
 		$noteThreadMutingsRepository,
 		$noteReactionsRepository,
+		$noteUnreadsRepository,
 		$noteDraftsRepository,
 		$pollsRepository,
 		$pollVotesRepository,
