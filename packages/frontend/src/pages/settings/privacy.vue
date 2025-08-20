@@ -79,9 +79,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</SearchMarker>
 		<SearchMarker :keywords="['indexable','index','search','yojo-art']">
 			<MkSwitch v-model="isIndexable" @update:modelValue="save()">
-				{{ i18n.ts.makeIndexable }}
-				<span class="_beta">yojo-art</span>
-				<template #caption>{{ i18n.ts.makeIndexableDescription }}</template>
+				<template #label><SearchLabel>{{ i18n.ts.makeIndexable }}<span class="_beta">yojo-art</span></SearchLabel></template>
+				<template #caption><SearchKeyword>{{ i18n.ts.makeIndexableDescription }}</SearchKeyword></template>
 			</MkSwitch>
 		</SearchMarker>
 		<SearchMarker :keywords="['searchable','index','search','yojo-art']">
