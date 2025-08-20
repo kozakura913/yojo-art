@@ -39,7 +39,7 @@ import { customEmojis, customEmojisMap } from '@/custom-emojis.js';
 import { prefer } from '@/preferences.js';
 import { DI } from '@/di.js';
 import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
-import { useRouter } from '@/router/supplier.js';
+import { useRouter } from '@/router.js';
 import { advanccedNotesSearchAvailable } from '@/utility/check-permissions.js';
 import { stealEmoji } from '@/utility/import-emoji.js';
 import { notesReactionsCreate } from '@/utility/check-reaction-create';

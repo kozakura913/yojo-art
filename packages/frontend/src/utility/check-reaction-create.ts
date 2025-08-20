@@ -4,12 +4,12 @@
  */
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
-import * as sound from '@/scripts/sound.js';
-import { defaultStore } from '@/store.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import * as sound from '@/utility/sound.js';
+import { prefer } from '@/preferences.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 
 export async function notesReactionsCreate(data:{ noteId: string, reaction: string }, opt = { mute: false }) {
-	if (defaultStore.state.checkReactionDialog === true ) {
+	if (prefer.s.checkReactionDialog === true ) {
 		const { canceled } = await os.confirm({
 			type: 'warning',
 			title: i18n.tsx._reactionConfirm.title({ emoji: data.reaction.replace('@.', '') }),

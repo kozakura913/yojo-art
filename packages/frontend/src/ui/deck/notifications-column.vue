@@ -19,7 +19,7 @@ import { updateColumn } from '@/deck.js';
 import XNotifications from '@/components/MkNotifications.vue';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
-import { flushNotification } from '@/scripts/check-nortification-delete.js';
+import { flushNotification } from '@/utility/check-nortification-delete.js';
 
 const props = defineProps<{
 	column: Column;

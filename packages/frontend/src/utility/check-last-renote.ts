@@ -4,10 +4,10 @@
  */
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
 
 export async function confirmRenote(renoteId:string) : Promise<boolean> {
-	if (defaultStore.state.checkMultipleRenote === false ) return false;
+	if (prefer.s.checkMultipleRenote === false ) return false;
 	const lastRenoteId = localStorage.getItem('lastRenoteId');
 	if (lastRenoteId) {
 		if (lastRenoteId === renoteId) {

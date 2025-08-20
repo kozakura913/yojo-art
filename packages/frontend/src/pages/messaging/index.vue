@@ -29,9 +29,9 @@ import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { useStream } from '@/stream.js';
-import { useRouter } from '@/router/supplier.js';
+import { useRouter } from '@/router.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/utility/page-metadata.js';
+import { definePage } from '@/page.js';
 import { $i } from '@/i.js';
 import { globalEvents } from '@/events.js';
 import MkChatPreview from '@/components/MkChatPreview.vue';
@@ -219,7 +219,7 @@ const headerTabs = computed(() => [{
 	icon: 'ti ti-users-group',
 }]);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.messaging,
 	icon: 'ti ti-messages',
 }));

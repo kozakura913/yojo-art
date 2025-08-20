@@ -230,7 +230,7 @@ watch(showAddMfmFunction, () => prefer.commit('enableQuickAddMfmFunction', showA
 const cw = ref<string | null>(props.initialCw ?? null);
 const localOnly = ref(props.initialLocalOnly ?? (prefer.s.rememberNoteVisibility ? store.s.localOnly : prefer.s.defaultNoteLocalOnly));
 const visibility = ref(props.initialVisibility ?? (prefer.s.rememberNoteVisibility ? store.s.visibility : prefer.s.defaultNoteVisibility));
-const searchableBy = ref(defaultStore.state.rememberNoteSearchbility ? prefer.s.searchbility : prefer.s.defaultNoteSearchbility);
+const searchableBy = ref(prefer.s.rememberNoteSearchbility ? prefer.s.searchbility : prefer.s.defaultNoteSearchbility);
 const visibleUsers = ref<Misskey.entities.UserDetailed[]>([]);
 if (props.initialVisibleUsers) {
 	props.initialVisibleUsers.forEach(u => pushVisibleUser(u));
@@ -241,7 +241,7 @@ const draghover = ref(false);
 const quoteId = ref<string | null>(null);
 const hasNotSpecifiedMentions = ref(false);
 const hideTag = computed(() => {
-	return defaultStore.state.hideTagUiTags;
+	return prefer.s.hideTagUiTags;
 });
 const recentHashtags = ref(JSON.parse(miLocalStorage.getItem('hashtags') ?? '[]'));
 const imeText = ref('');
@@ -634,13 +634,7 @@ function showOtherSettings() {
 			clear();
 		},
 	});
-	const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkPostFormOtherMenu.vue')), {
-		items: menuItems,
-		textLength: textLength.value,
-		src: otherSettingsButton.value,
-	}, {
-		closed: () => dispose(),
-	});
+	os.popupMenu(menuItems, otherSettingsButton.value);
 }
 //#endregion
 

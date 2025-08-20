@@ -72,10 +72,10 @@ const showingFiles = ref<Set<string>>(new Set());
 watch(() => props.note.files, () => {
 	if (!props.note.files) return;
 	for (const file of props.note.files) {
-		if (defaultStore.state.nsfw === 'force' || defaultStore.state.dataSaver.media) {
+		if (prefer.s.nsfw === 'force' || prefer.s.dataSaver.media) {
 			//nop
 		} else if (file.isSensitive) {
-			if (defaultStore.state.nsfw !== 'ignore') {
+			if (prefer.s.nsfw !== 'ignore') {
 				//nop
 			} else {
 				if (wasConfirmR18()) {

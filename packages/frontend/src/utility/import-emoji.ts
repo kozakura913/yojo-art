@@ -5,7 +5,7 @@
 import { defineAsyncComponent } from 'vue';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 
 export async function copyEmoji(emoji: any, showDialog = true): Promise<any | null> {
 	let readText = '';

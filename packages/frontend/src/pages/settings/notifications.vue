@@ -82,7 +82,7 @@ import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';
 import MkPushNotificationAllowButton from '@/components/MkPushNotificationAllowButton.vue';
 import MkFeatureBanner from '@/components/MkFeatureBanner.vue';
-import { flushNotification } from '@/scripts/check-nortification-delete.js';
+import { flushNotification } from '@/utility/check-nortification-delete.js';
 
 const $i = ensureSignin();
 

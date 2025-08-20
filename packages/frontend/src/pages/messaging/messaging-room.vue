@@ -59,7 +59,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, onMounted, nextTick, onBeforeUnmount, watch, shallowRef, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import { isBottomVisible, onScrollBottom, scrollToBottom } from '@@/js/scroll.js';
+import { isTailVisible, onScrollBottom, scrollToBottom } from '@@/js/scroll.js';
 import XMessage from './messaging-room.message.vue';
 import XForm from './messaging-room.form.vue';
 import type { Paging } from '@/components/MkPagination.vue';
@@ -210,9 +210,9 @@ function onDrop(ev: DragEvent): void {
 
 function onMessage(message) {
 	sound.playMisskeySfx('chat');
-	vibrate(defaultStore.state.vibrateChat ? [30, 30, 30] : []);
+	vibrate(prefer.s.vibrateChat ? [30, 30, 30] : []);
 
-	const _isBottom = isBottomVisible(rootEl.value, 64);
+	const _isBottom = isTailVisible(rootEl.value, 64);
 
 	pagingComponent.value.prepend(message);
 	if (message.userId !== $i?.id && !window.document.hidden) {

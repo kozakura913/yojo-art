@@ -221,7 +221,7 @@ const draghover = ref(false);
 const quoteId = ref<string | null>(null);
 const hasNotSpecifiedMentions = ref(false);
 const hideTag = computed(() => {
-	return defaultStore.state.hideTagUiTags;
+	return prefer.s.hideTagUiTags;
 });
 const recentHashtags = ref(JSON.parse(miLocalStorage.getItem('hashtags') ?? '[]'));
 const imeText = ref('');

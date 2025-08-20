@@ -30,7 +30,7 @@ import { store } from '@/store.js';
 import { useStream } from '@/stream.js';
 import * as os from '@/os.js';
 import { genEmbedCode } from '@/utility/get-embed-code.js';
-import { misskeyApi } from '@/scripts/misskey-api';
+import { misskeyApi } from '@/utility/misskey-api';
 import { MenuItem } from '@/types/menu';
 
 const props = defineProps<{

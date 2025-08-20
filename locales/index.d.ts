@@ -11868,10 +11868,6 @@ export interface Locale extends ILocale {
          */
         "roleAssigned": string;
         /**
-         * チャットルームへ招待されました
-         */
-        "chatRoomInvitationReceived": string;
-        /**
          * プッシュ通知の更新をしました
          */
         "emptyPushNotificationMessage": string;
@@ -11994,10 +11990,6 @@ export interface Locale extends ILocale {
              */
             "roleAssigned": string;
             /**
-             * チャットルームへ招待された
-             */
-            "chatRoomInvitationReceived": string;
-            /**
              * 実績の獲得
              */
             "achievementEarned": string;
@@ -12014,13 +12006,13 @@ export interface Locale extends ILocale {
              */
             "createToken": string;
             /**
-             * 通知のテスト
-             */
-            "test": string;
-            /**
              * 予約投稿に失敗
              */
             "scheduleNote": string;
+            /**
+             * 通知のテスト
+             */
+            "test": string;
             /**
              * 連携アプリからの通知
              */

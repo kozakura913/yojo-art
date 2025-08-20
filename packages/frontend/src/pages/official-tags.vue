@@ -18,7 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import { definePageMetadata } from '@/utility/page-metadata.js';
+import { definePage } from '@/page.js';
 import { i18n } from '@/i18n.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 
@@ -36,7 +36,7 @@ const official_tags = ref<Misskey.entities.OfficialTagsShowResponse>([]);
 })();
 
 if (props.setTitle) {
-	definePageMetadata(() => ({
+	definePage(() => ({
 		title: i18n.ts._official_tag.title,
 		icon: 'ti ti-bookmarks',
 	}));

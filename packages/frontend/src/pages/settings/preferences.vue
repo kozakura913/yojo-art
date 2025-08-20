@@ -726,10 +726,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 												<option value="specified">{{ i18n.ts._visibility.specified }}</option>
 											</MkSelect>
 										</MkPreferenceContainer>
-
-										<MkPreferenceContainer k="defaultNoteLocalOnly">
-											<MkSwitch v-model="defaultNoteLocalOnly">{{ i18n.ts._visibility.disableFederation }}</MkSwitch>
-										</MkPreferenceContainer>
 									</div>
 								</MkFolder>
 							</MkDisableSection>
