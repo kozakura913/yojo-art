@@ -116,6 +116,7 @@ import { GalleryPostEntityService } from './entities/GalleryPostEntityService.js
 import { HashtagEntityService } from './entities/HashtagEntityService.js';
 import { InstanceEntityService } from './entities/InstanceEntityService.js';
 import { InviteCodeEntityService } from './entities/InviteCodeEntityService.js';
+import { MessagingMessageEntityService } from './entities/MessagingMessageEntityService.js';
 import { ModerationLogEntityService } from './entities/ModerationLogEntityService.js';
 import { MutingEntityService } from './entities/MutingEntityService.js';
 import { RenoteMutingEntityService } from './entities/RenoteMutingEntityService.js';
@@ -275,6 +276,7 @@ const $GalleryPostEntityService: Provider = { provide: 'GalleryPostEntityService
 const $HashtagEntityService: Provider = { provide: 'HashtagEntityService', useExisting: HashtagEntityService };
 const $InstanceEntityService: Provider = { provide: 'InstanceEntityService', useExisting: InstanceEntityService };
 const $InviteCodeEntityService: Provider = { provide: 'InviteCodeEntityService', useExisting: InviteCodeEntityService };
+const $MessagingMessageEntityService: Provider = { provide: 'MessagingMessageEntityService', useExisting: MessagingMessageEntityService };
 const $ModerationLogEntityService: Provider = { provide: 'ModerationLogEntityService', useExisting: ModerationLogEntityService };
 const $MutingEntityService: Provider = { provide: 'MutingEntityService', useExisting: MutingEntityService };
 const $RenoteMutingEntityService: Provider = { provide: 'RenoteMutingEntityService', useExisting: RenoteMutingEntityService };
@@ -436,6 +438,7 @@ const $ApClipService: Provider = { provide: 'ApClipService', useExisting: ApClip
 		HashtagEntityService,
 		InstanceEntityService,
 		InviteCodeEntityService,
+		MessagingMessageEntityService,
 		ModerationLogEntityService,
 		MutingEntityService,
 		RenoteMutingEntityService,
@@ -593,6 +596,7 @@ const $ApClipService: Provider = { provide: 'ApClipService', useExisting: ApClip
 		$HashtagEntityService,
 		$InstanceEntityService,
 		$InviteCodeEntityService,
+		$MessagingMessageEntityService,
 		$ModerationLogEntityService,
 		$MutingEntityService,
 		$RenoteMutingEntityService,
@@ -750,6 +754,7 @@ const $ApClipService: Provider = { provide: 'ApClipService', useExisting: ApClip
 		HashtagEntityService,
 		InstanceEntityService,
 		InviteCodeEntityService,
+		MessagingMessageEntityService,
 		ModerationLogEntityService,
 		MutingEntityService,
 		RenoteMutingEntityService,
@@ -906,6 +911,7 @@ const $ApClipService: Provider = { provide: 'ApClipService', useExisting: ApClip
 		$HashtagEntityService,
 		$InstanceEntityService,
 		$InviteCodeEntityService,
+		$MessagingMessageEntityService,
 		$ModerationLogEntityService,
 		$MutingEntityService,
 		$RenoteMutingEntityService,
