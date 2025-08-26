@@ -18,6 +18,7 @@ import type { MiNoteReaction } from '@/models/NoteReaction.js';
 import type { MiEmoji } from '@/models/Emoji.js';
 import type { MiPoll } from '@/models/Poll.js';
 import type { MiPollVote } from '@/models/PollVote.js';
+import type { MiMessagingMessage } from '@/models/MessagingMessage.js';
 import { UserKeypairService } from '@/core/UserKeypairService.js';
 import { MfmService, type Appender } from '@/core/MfmService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
