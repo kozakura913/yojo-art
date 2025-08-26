@@ -949,7 +949,6 @@ export function getRenoteMenu(props: {
 						const result =	await confirmRenote(appearNote.id);
 						if (result) return;
 						misskeyApi('notes/create', {
-							localOnly,
 							visibility: 'home',
 							renoteId: appearNote.id,
 						}).then(() => {
@@ -967,7 +966,6 @@ export function getRenoteMenu(props: {
 					const result =	await confirmRenote(appearNote.id);
 					if (result) return;
 					misskeyApi('notes/create', {
-						localOnly,
 						visibility: 'followers',
 						renoteId: appearNote.id,
 					}).then(() => {
@@ -1066,7 +1064,6 @@ export async function getRenoteOnly(props: {
 			if (prefer.s.forceRenoteVisibilitySelection !== 'none') {
 				if (appearNote.visibility === 'public' && prefer.s.forceRenoteVisibilitySelection === 'public') { // renote to public
 					misskeyApi('notes/create', {
-						localOnly,
 						visibility: 'public',
 						renoteId: appearNote.id,
 					}).then(() => {
@@ -1074,7 +1071,6 @@ export async function getRenoteOnly(props: {
 					});
 				} else if (['home', 'public'].includes(appearNote.visibility) && prefer.s.forceRenoteVisibilitySelection === 'home') { // renote to home
 					misskeyApi('notes/create', {
-						localOnly,
 						visibility: 'home',
 						renoteId: appearNote.id,
 					}).then(() => {
@@ -1082,7 +1078,6 @@ export async function getRenoteOnly(props: {
 					});
 				} else if (appearNote.visibility === 'followers' && prefer.s.forceRenoteVisibilitySelection === 'followers') { // renote to followers
 					misskeyApi('notes/create', {
-						localOnly,
 						visibility: 'followers',
 						renoteId: appearNote.id,
 					}).then(() => {
@@ -1092,7 +1087,6 @@ export async function getRenoteOnly(props: {
 			} else {
 				if (appearNote.visibility === 'public') { // renote to public
 					misskeyApi('notes/create', {
-						localOnly,
 						visibility: 'public',
 						renoteId: appearNote.id,
 					}).then(() => {
@@ -1100,7 +1094,6 @@ export async function getRenoteOnly(props: {
 					});
 				} else if (['home', 'public'].includes(appearNote.visibility)) { // renote to home
 					misskeyApi('notes/create', {
-						localOnly,
 						visibility: 'home',
 						renoteId: appearNote.id,
 					}).then(() => {
@@ -1108,7 +1101,6 @@ export async function getRenoteOnly(props: {
 					});
 				} else if (appearNote.visibility === 'followers') { // renote to followers
 					misskeyApi('notes/create', {
-						localOnly,
 						visibility: 'followers',
 						renoteId: appearNote.id,
 					}).then(() => {
