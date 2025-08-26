@@ -582,6 +582,12 @@ export const PREF_DEF = {
 	enableChannelTimeline: {
 		default: true,
 	},
+	enableMediaTimeline: {
+		default: true,
+	},
+	enableTagTimeline: {
+		default: true,
+	},
 
 	// - Settings/Sounds & Vibrations
 	vibrate: {
