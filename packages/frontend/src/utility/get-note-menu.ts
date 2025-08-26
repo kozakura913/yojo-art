@@ -882,7 +882,6 @@ export function getRenoteMenu(props: {
 				}
 
 				const configuredVisibility = prefer.s.rememberNoteVisibility ? store.s.visibility : prefer.s.defaultNoteVisibility;
-				const localOnly = prefer.s.rememberNoteVisibility ? store.s.localOnly : prefer.s.defaultNoteLocalOnly;
 
 				let visibility = appearNote.visibility;
 				visibility = smallerVisibility(visibility, configuredVisibility);
@@ -895,7 +894,6 @@ export function getRenoteMenu(props: {
 
 				if (!props.mock) {
 					misskeyApi('notes/create', {
-						localOnly,
 						visibility,
 						renoteId: appearNote.id,
 					}).then(() => {
@@ -918,48 +916,11 @@ export function getRenoteMenu(props: {
 			});
 		}
 
-		normalExternalChannelRenoteItems.push({
-			type: 'parent',
-			icon: 'ti ti-repeat',
-			text: appearNote.channel ? i18n.ts.renoteToOtherChannel : i18n.ts.renoteToChannel,
-			children: async () => {
-				const channels = await favoritedChannelsCache.fetch();
-				return channels.filter((channel) => {
-					if (!appearNote.channelId) return true;
-					return channel.id !== appearNote.channelId;
-				}).map((channel) => ({
-					text: channel.name,
-					action: () => {
-						const el = props.renoteButton.value;
-						if (el && prefer.s.animation) {
-							const rect = el.getBoundingClientRect();
-							const x = rect.left + (el.offsetWidth / 2);
-							const y = rect.top + (el.offsetHeight / 2);
-							const { dispose } = os.popup(MkRippleEffect, { x, y }, {
-								end: () => dispose(),
-							});
-						}
-
-						if (!props.mock) {
-							misskeyApi('notes/create', {
-								renoteId: appearNote.id,
-								channelId: channel.id,
-							}).then(() => {
-								os.toast(i18n.tsx.renotedToX({ name: channel.name }));
-							});
-						}
-					},
-				}));
-			},
-		});
-
 		// Add visibility section
 		if (
 			prefer.s.renoteVisibilitySelection &&
 			!['followers', 'specified'].includes(appearNote.visibility)
 		) {
-			const localOnly = prefer.s.rememberNoteVisibility ? prefer.s.localOnly : prefer.s.defaultNoteLocalOnly;
-
 			// renote to public
 			if (appearNote.visibility === 'public') {
 				visibilityRenoteItems.push({
@@ -970,7 +931,6 @@ export function getRenoteMenu(props: {
 						if (result) return;
 
 						misskeyApi('notes/create', {
-							localOnly,
 							visibility: 'public',
 							renoteId: appearNote.id,
 						}).then(() => {
@@ -1077,7 +1037,6 @@ export async function getRenoteOnly(props: {
 		}
 
 		const configuredVisibility = prefer.s.rememberNoteVisibility ? prefer.s.visibility : prefer.s.defaultNoteVisibility;
-		const localOnly = prefer.s.rememberNoteVisibility ? prefer.s.localOnly : prefer.s.defaultNoteLocalOnly;
 
 		let visibility = appearNote.visibility;
 		visibility = smallerVisibility(visibility, configuredVisibility);
@@ -1090,7 +1049,6 @@ export async function getRenoteOnly(props: {
 			if (result) return;
 
 			misskeyApi('notes/create', {
-				localOnly,
 				visibility,
 				renoteId: appearNote.id,
 			}).then(() => {

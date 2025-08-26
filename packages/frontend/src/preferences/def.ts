@@ -110,6 +110,9 @@ export const PREF_DEF = {
 	syncDeviceDarkMode: {
 		default: true,
 	},
+	visibility: {
+		default: 'public' as (typeof Misskey.noteVisibilities)[number],
+	},
 	defaultNoteVisibility: {
 		default: 'public' as (typeof Misskey.noteVisibilities)[number],
 	},
