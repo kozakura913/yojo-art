@@ -12,6 +12,7 @@ import type { MiUserPublickey } from '@/models/UserPublickey.js';
 import { CacheService } from '@/core/CacheService.js';
 import { UtilityService } from '@/core/UtilityService.js';
 import type { MiNote } from '@/models/Note.js';
+import type { MiMessagingMessage } from '@/models/MessagingMessage.js';
 import { bindThis } from '@/decorators.js';
 import { MiLocalUser, MiRemoteUser } from '@/models/User.js';
 import { getApId } from './type.js';
@@ -45,6 +46,9 @@ export class ApDbResolverService implements OnApplicationShutdown {
 
 		@Inject(DI.usersRepository)
 		private usersRepository: UsersRepository,
+
+		@Inject(DI.messagingMessagesRepository)
+		private messagingMessagesRepository: MessagingMessagesRepository,
 
 		@Inject(DI.notesRepository)
 		private notesRepository: NotesRepository,
@@ -93,6 +97,23 @@ export class ApDbResolverService implements OnApplicationShutdown {
 			});
 		} else {
 			return await this.notesRepository.findOneBy({
+				uri: parsed.uri,
+			});
+		}
+	}
+
+	@bindThis
+	public async getMessageFromApId(value: string | IObject): Promise<MiMessagingMessage | null> {
+		const parsed = this.parseUri(value);
+
+		if (parsed.local) {
+			if (parsed.type !== 'notes') return null;
+
+			return await this.messagingMessagesRepository.findOneBy({
+				id: parsed.id,
+			});
+		} else {
+			return await this.messagingMessagesRepository.findOneBy({
 				uri: parsed.uri,
 			});
 		}
