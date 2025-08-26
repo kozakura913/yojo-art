@@ -1743,6 +1743,10 @@ export interface Locale extends ILocale {
      */
     "areYouSure": string;
     /**
+     * チャット
+     */
+    "messaging": string;
+    /**
      * 保存しました
      */
     "saved": string;
@@ -1791,13 +1795,17 @@ export interface Locale extends ILocale {
      */
     "messageRead": string;
     /**
+     * 送信済み
+     */
+    "messageSend": string;
+    /**
      * これより過去の履歴はありません
      */
     "noMoreHistory": string;
     /**
-     * チャットを始める
+     * チャットを開始
      */
-    "startChat": string;
+    "startMessaging": string;
     /**
      * {n}人が読みました
      */
@@ -2543,6 +2551,14 @@ export interface Locale extends ILocale {
      */
     "transfer": string;
     /**
+     * ユーザーとチャット
+     */
+    "messagingWithUser": string;
+    /**
+     * グループでチャット
+     */
+    "messagingWithGroup": string;
+    /**
      * タイトル
      */
     "title": string;
@@ -2582,6 +2598,10 @@ export interface Locale extends ILocale {
      * クリップボードのテキストが長いです。テキストファイルとして添付しますか？
      */
     "attachAsFileQuestion": string;
+    /**
+     * まだチャットはありません
+     */
+    "noMessagesYet": string;
     /**
      * 新しいメッセージがあります
      */
@@ -6295,6 +6315,14 @@ export interface Locale extends ILocale {
          */
         "notification": string;
         /**
+         * チャット
+         */
+        "chat": string;
+        /**
+         * チャット(バックグラウンド)
+         */
+        "chatBg": string;
+        /**
          * システムの触覚
          */
         "system": string;
@@ -6313,186 +6341,11 @@ export interface Locale extends ILocale {
          */
         "inactive": string;
     };
-    "_chat": {
+    "_messaging": {
         /**
-         * まだメッセージはありません
+         * ダイレクトメッセージ
          */
-        "noMessagesYet": string;
-        /**
-         * 新しいメッセージ
-         */
-        "newMessage": string;
-        /**
-         * 個人チャット
-         */
-        "individualChat": string;
-        /**
-         * 特定ユーザーとの一対一のチャットができます。
-         */
-        "individualChat_description": string;
-        /**
-         * ルームチャット
-         */
-        "roomChat": string;
-        /**
-         * 複数人でのチャットができます。
-         * また、個人チャットを許可していないユーザーとでも、相手が受け入れればチャットができます。
-         */
-        "roomChat_description": string;
-        /**
-         * ルームを作成
-         */
-        "createRoom": string;
-        /**
-         * ユーザーを招待してチャットを始めましょう
-         */
-        "inviteUserToChat": string;
-        /**
-         * 作成したルーム
-         */
-        "yourRooms": string;
-        /**
-         * 参加中のルーム
-         */
-        "joiningRooms": string;
-        /**
-         * 招待
-         */
-        "invitations": string;
-        /**
-         * 招待はありません
-         */
-        "noInvitations": string;
-        /**
-         * 履歴
-         */
-        "history": string;
-        /**
-         * 履歴はありません
-         */
-        "noHistory": string;
-        /**
-         * ルームはありません
-         */
-        "noRooms": string;
-        /**
-         * ユーザーを招待
-         */
-        "inviteUser": string;
-        /**
-         * 送信した招待
-         */
-        "sentInvitations": string;
-        /**
-         * 参加
-         */
-        "join": string;
-        /**
-         * 無視
-         */
-        "ignore": string;
-        /**
-         * ルームから退出
-         */
-        "leave": string;
-        /**
-         * メンバー
-         */
-        "members": string;
-        /**
-         * メッセージを検索
-         */
-        "searchMessages": string;
-        /**
-         * ホーム
-         */
-        "home": string;
-        /**
-         * 送信
-         */
-        "send": string;
-        /**
-         * 改行
-         */
-        "newline": string;
-        /**
-         * このルームをミュート
-         */
-        "muteThisRoom": string;
-        /**
-         * ルームを削除
-         */
-        "deleteRoom": string;
-        /**
-         * このサーバー、またはこのアカウントでチャットは有効化されていません。
-         */
-        "chatNotAvailableForThisAccountOrServer": string;
-        /**
-         * このサーバー、またはこのアカウントでチャットは読み取り専用となっています。新たに書き込んだり、チャットルームを作成・参加したりすることはできません。
-         */
-        "chatIsReadOnlyForThisAccountOrServer": string;
-        /**
-         * 相手のアカウントでチャット機能が使えない状態になっています。
-         */
-        "chatNotAvailableInOtherAccount": string;
-        /**
-         * このユーザーとのチャットを開始できません
-         */
-        "cannotChatWithTheUser": string;
-        /**
-         * チャットが使えない状態になっているか、相手がチャットを開放していません。
-         */
-        "cannotChatWithTheUser_description": string;
-        /**
-         * チャットする
-         */
-        "chatWithThisUser": string;
-        /**
-         * このユーザーはフォロワーからのみチャットを受け付けています。
-         */
-        "thisUserAllowsChatOnlyFromFollowers": string;
-        /**
-         * このユーザーは、このユーザーがフォローしているユーザーからのみチャットを受け付けています。
-         */
-        "thisUserAllowsChatOnlyFromFollowing": string;
-        /**
-         * このユーザーは相互フォローのユーザーからのみチャットを受け付けています。
-         */
-        "thisUserAllowsChatOnlyFromMutualFollowing": string;
-        /**
-         * このユーザーは誰からもチャットを受け付けていません。
-         */
-        "thisUserNotAllowedChatAnyone": string;
-        /**
-         * チャットを許可する相手
-         */
-        "chatAllowedUsers": string;
-        /**
-         * 自分からチャットメッセージを送った相手とはこの設定に関わらずチャットが可能です。
-         */
-        "chatAllowedUsers_note": string;
-        "_chatAllowedUsers": {
-            /**
-             * 誰でも
-             */
-            "everyone": string;
-            /**
-             * 自分のフォロワーのみ
-             */
-            "followers": string;
-            /**
-             * 自分がフォローしているユーザーのみ
-             */
-            "following": string;
-            /**
-             * 相互フォローのユーザーのみ
-             */
-            "mutual": string;
-            /**
-             * 誰も許可しない
-             */
-            "none": string;
-        };
+        "direct": string;
     };
     "_emojiPalette": {
         /**

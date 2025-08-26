@@ -30,7 +30,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 				[$style.t_exportCompleted]: notification.type === 'exportCompleted',
 				[$style.t_login]: notification.type === 'login',
 				[$style.t_createToken]: notification.type === 'createToken',
-				[$style.t_chatRoomInvitationReceived]: notification.type === 'chatRoomInvitationReceived',
 				[$style.t_roleAssigned]: notification.type === 'roleAssigned' && notification.role.iconUrl == null,
 			}]"
 		>
@@ -431,11 +430,6 @@ const rejectGroupInvitation = () => {
 }
 
 .t_createToken {
-	background: var(--eventOther);
-	pointer-events: none;
-}
-
-.t_chatRoomInvitationReceived {
 	background: var(--eventOther);
 	pointer-events: none;
 }
