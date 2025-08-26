@@ -744,6 +744,15 @@ export class ApRendererService {
 	}
 
 	@bindThis
+	public renderRead(user: { id: MiUser['id'] }, message: MiMessagingMessage): IRead {
+		return {
+			type: 'Read',
+			actor: `${this.config.url}/users/${user.id}`,
+			object: message.uri!,
+		};
+	}
+
+	@bindThis
 	public renderReject(object: string | IObject, user: { id: MiUser['id'] }): IReject {
 		return {
 			type: 'Reject',
