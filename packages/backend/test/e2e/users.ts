@@ -134,6 +134,7 @@ describe('ユーザー', () => {
 			hasUnreadSpecifiedNotes: user.hasUnreadSpecifiedNotes,
 			hasUnreadMentions: user.hasUnreadMentions,
 			hasUnreadAnnouncement: user.hasUnreadAnnouncement,
+			hasUnreadMessagingMessage: user.hasUnreadMessagingMessage,
 			hasUnreadAntenna: user.hasUnreadAntenna,
 			hasUnreadChannel: user.hasUnreadChannel,
 			hasUnreadNotification: user.hasUnreadNotification,
@@ -369,6 +370,7 @@ describe('ユーザー', () => {
 		assert.strictEqual(response.isDeleted, false);
 		assert.strictEqual(response.twoFactorBackupCodesStock, 'none');
 		assert.strictEqual(response.hideOnlineStatus, false);
+		assert.strictEqual(response.hasUnreadMessagingMessage, false);
 		assert.strictEqual(response.hasUnreadSpecifiedNotes, false);
 		assert.strictEqual(response.hasUnreadMentions, false);
 		assert.strictEqual(response.hasUnreadAnnouncement, false);

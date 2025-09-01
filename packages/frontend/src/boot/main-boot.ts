@@ -384,33 +384,33 @@ export async function mainBoot() {
 		});
 
 		main.on('unreadMention', () => {
-			updateAccountPartial({ hasUnreadMentions: true });
+			updateCurrentAccountPartial({ hasUnreadMentions: true });
 		});
 
 		main.on('readAllUnreadMentions', () => {
-			updateAccountPartial({ hasUnreadMentions: false });
+			updateCurrentAccountPartial({ hasUnreadMentions: false });
 		});
 
 		main.on('unreadSpecifiedNote', () => {
-			updateAccountPartial({ hasUnreadSpecifiedNotes: true });
+			updateCurrentAccountPartial({ hasUnreadSpecifiedNotes: true });
 		});
 
 		main.on('readAllUnreadSpecifiedNotes', () => {
-			updateAccountPartial({ hasUnreadSpecifiedNotes: false });
+			updateCurrentAccountPartial({ hasUnreadSpecifiedNotes: false });
 		});
 
 		main.on('readAllMessagingMessages', () => {
-			updateAccountPartial({ hasUnreadMessagingMessage: false });
+			updateCurrentAccountPartial({ hasUnreadMessagingMessage: false });
 		});
 
 		main.on('unreadMessagingMessage', () => {
-			updateAccountPartial({ hasUnreadMessagingMessage: true });
+			updateCurrentAccountPartial({ hasUnreadMessagingMessage: true });
 			sound.playMisskeySfx('chatBg');
 			vibrate(defaultStore.state.vibrateChatBg ? [50, 40] : []);
 		});
 
 		main.on('readAllAntennas', () => {
-			updateAccountPartial({ hasUnreadAntenna: false });
+			updateCurrentAccountPartial({ hasUnreadAntenna: false });
 		});
 
 		main.on('unreadAntenna', () => {

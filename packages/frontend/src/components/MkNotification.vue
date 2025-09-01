@@ -46,7 +46,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<i v-else-if="notification.type === 'exportCompleted'" class="ti ti-archive"></i>
 			<i v-else-if="notification.type === 'login'" class="ti ti-login-2"></i>
 			<i v-else-if="notification.type === 'createToken'" class="ti ti-key"></i>
-			<i v-else-if="notification.type === 'chatRoomInvitationReceived'" class="ti ti-messages"></i>
 			<template v-else-if="notification.type === 'roleAssigned'">
 				<img v-if="notification.role.iconUrl" style="height: 1.3em; vertical-align: -22%; border-radius: 0.4em;" :src="notification.role.iconUrl" alt=""/>
 				<i v-else class="ti ti-badges"></i>
@@ -65,7 +64,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<span v-if="notification.type === 'pollEnded'" :class="$style.headerText">{{ i18n.ts._notification.pollEnded }}</span>
 			<span v-else-if="notification.type === 'note'" :class="$style.headerText">{{ i18n.ts._notification.newNote }}: <MkUserName :user="notification.note.user"/></span>
 			<span v-else-if="notification.type === 'roleAssigned'" :class="$style.headerText">{{ i18n.ts._notification.roleAssigned }}</span>
-			<span v-else-if="notification.type === 'chatRoomInvitationReceived'" :class="$style.headerText">{{ i18n.ts._notification.chatRoomInvitationReceived }}</span>
 			<span v-else-if="notification.type === 'achievementEarned'" :class="$style.headerText">{{ i18n.ts._notification.achievementEarned }}</span>
 			<span v-else-if="notification.type === 'login'" :class="$style.headerText">{{ i18n.ts._notification.login }}</span>
 			<span v-else-if="notification.type === 'createToken'" :class="$style.headerText">{{ i18n.ts._notification.createToken }}</span>

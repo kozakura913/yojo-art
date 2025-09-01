@@ -75,7 +75,6 @@ export const widgets = [
 	'userList',
 	'clicker',
 	'birthdayFollowings',
-	'chat',
 	'search',
 	'dice',
 	'weather',

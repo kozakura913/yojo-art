@@ -249,6 +249,7 @@ import MkInfo from '@/components/MkInfo.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
 import { reloadAsk } from '@/utility/reload-ask.js';
 import { prefer } from '@/preferences.js';
+import { globalEvents } from '@/events';
 
 const $i = ensureSignin();
 

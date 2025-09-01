@@ -4343,6 +4343,7 @@ export type components = {
       hasUnreadAnnouncement: boolean;
       unreadAnnouncements: components['schemas']['Announcement'][];
       hasUnreadAntenna: boolean;
+      hasUnreadMessagingMessage: boolean;
       hasUnreadChannel: boolean;
       hasUnreadNotification: boolean;
       hasPendingReceivedFollowRequest: boolean;
@@ -22615,15 +22616,6 @@ export type operations = {
               userListId: string;
             }]>;
             roleAssigned?: OneOf<[{
-              /** @enum {string} */
-              type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
-            }, {
-              /** @enum {string} */
-              type: 'list';
-              /** Format: misskey:id */
-              userListId: string;
-            }]>;
-            chatRoomInvitationReceived?: OneOf<[{
               /** @enum {string} */
               type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
             }, {

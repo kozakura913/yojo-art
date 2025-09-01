@@ -608,7 +608,7 @@ function showOtherSettings() {
 	}
 
 	const menuItems:MenuItem[] = [];
-	menuDef.push(
+	menuItems.push(
 		{
 			type: 'component',
 			component: XTextCounter,
@@ -624,14 +624,14 @@ function showOtherSettings() {
 		}, { type: 'divider' },
 	);
 	if ($i.policies.noteDraftLimit > 0) {
-		menuDef.push({
+		menuItems.push({
 			type: 'switch',
 			text: i18n.ts.saveAsDraft,
 			icon: 'ti ti-pencil-minus',
 			ref: saveAsDraft,
 		}, { type: 'divider' });
 	}
-	menuDef.push(
+	menuItems.push(
 		{
 			icon: 'ti ti-help-circle',
 			text: i18n.ts._mfc.cheatSheet,
