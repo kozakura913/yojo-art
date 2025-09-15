@@ -135,7 +135,9 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20.16.0]
+        node-version-file:
+          - .node-version
+          - .github/min.node-version
 
     services:
       postgres:
@@ -162,13 +164,12 @@ jobs:
           opensearch_password: eF53xwF4NYjrcXXwZ2CHgpwFL
           port: 59200
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4.0.3
+        uses: pnpm/action-setup@v4.1.0
+      - name: Use Node.js
+        uses: actions/setup-node@v4.4.0
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version-file: ${{ matrix.node-version-file }}
           cache: 'pnpm'
-      - run: corepack enable
       - run: pnpm i --frozen-lockfile
       - name: Check pnpm-lock.yaml
         run: git diff --exit-code pnpm-lock.yaml
