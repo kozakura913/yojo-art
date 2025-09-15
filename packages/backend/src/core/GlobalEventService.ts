@@ -76,6 +76,14 @@ export interface MainEventTypes {
 	notificationFlushed: undefined;
 	notificationDeleted: MiNotification['id'];
 	unreadNotification: Packed<'Notification'>;
+	unreadMention: MiNote['id'];
+	readAllUnreadMentions: undefined;
+	unreadSpecifiedNote: MiNote['id'];
+	readAllUnreadSpecifiedNotes: undefined;
+	readAllMessagingMessages: undefined;
+	messagingMessage: Packed<'MessagingMessage'>;
+	unreadMessagingMessage: Packed<'MessagingMessage'>;
+	readAllAntennas: undefined;
 	unreadAntenna: MiAntenna;
 	readAllAnnouncements: undefined;
 	myTokenRegenerated: undefined;

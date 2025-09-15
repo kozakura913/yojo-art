@@ -119,7 +119,6 @@ export const ROLE_POLICIES = [
 	'canImportUserLists',
 	'noteDraftLimit',
 	'canSetFederationAvatarShape',
-	'fileSizeLimit',
 	'scheduleNoteMax',
 	'mutualLinkSectionLimit',
 	'mutualLinkLimit',

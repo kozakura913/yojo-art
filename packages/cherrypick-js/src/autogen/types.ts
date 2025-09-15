@@ -4213,7 +4213,6 @@ export type components = {
       isLocked: boolean;
       isBot?: boolean;
       isCat?: boolean;
-      isProxy?: boolean;
       requireSigninToViewContents?: boolean;
       makeNotesFollowersOnlyBefore?: number | null;
       makeNotesHiddenBefore?: number | null;
@@ -5575,7 +5574,6 @@ export type components = {
       canImportMuting: boolean;
       canImportUserLists: boolean;
       noteDraftLimit: number;
-      fileSizeLimit: number;
       canEditNote: boolean;
       scheduleNoteMax: number;
       canSetFederationAvatarShape: boolean;
