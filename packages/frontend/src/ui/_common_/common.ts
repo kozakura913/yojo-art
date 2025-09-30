@@ -144,11 +144,12 @@ export function openInstanceMenu(ev: MouseEvent) {
 		});
 	}
 	if (instance.statusUrl) {
+		const statusUrl = instance.statusUrl;
 		menuItems.push({
 			text: i18n.ts.statusUrl,
 			icon: 'ti ti-activity',
 			action: () => {
-				window.open(instance.statusUrl, '_blank', 'noopener');
+				window.open(statusUrl, '_blank', 'noopener');
 			},
 		});
 	}

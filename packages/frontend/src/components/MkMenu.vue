@@ -16,10 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@focusin.passive.stop="() => {}"
 >
 	<div
-		ref="itemsEl"
-		v-hotkey="keymap"
 		v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []"
-		tabindex="0"
 		class="_shadow"
 		:class="[
 			$style.menu,

@@ -23,6 +23,8 @@ type PushNotificationsTypes = {
 		note: Packed<'Note'>;
 	};
 	'readAllNotifications': undefined;
+	'readAllMessagingMessages': undefined;
+	'readAllMessagingMessagesOfARoom': { userId: string } | { groupId: string };
 };
 
 // Reduce length because push message servers have character limits
