@@ -116,6 +116,12 @@ export const PREF_DEF = {
 	defaultNoteVisibility: {
 		default: 'public' as (typeof Misskey.noteVisibilities)[number],
 	},
+	searchbility: {
+		default: 'public' as (typeof Misskey.noteSearchbility)[number],
+	},
+	defaultNoteSearchbility: {
+		default: 'public' as (typeof Misskey.noteSearchbility)[number],
+	},
 	defaultNoteLocalOnly: {
 		default: false,
 	},
@@ -124,6 +130,12 @@ export const PREF_DEF = {
 	},
 	rememberNoteVisibility: {
 		default: false,
+	},
+	rememberNoteSearchbility: {
+		default: false,
+	},
+	hideTagUiTags: {
+		default: true,
 	},
 	reportError: {
 		default: false,
@@ -372,7 +384,10 @@ export const PREF_DEF = {
 	'sound.on.reaction': {
 		default: { type: 'syuilo/bubble2', volume: 1 } as SoundStore,
 	},
-	'sound.on.chatMessage': {
+	'sound.on.chat': {
+		default: { type: 'syuilo/pope1', volume: 1 } as SoundStore,
+	},
+	'sound.on.chatBg': {
 		default: { type: 'syuilo/waon', volume: 1 } as SoundStore,
 	},
 
@@ -603,6 +618,12 @@ export const PREF_DEF = {
 		default: true,
 	},
 	'vibrate.on.system': {
+		default: true,
+	},
+	vibrateChat: {
+		default: true,
+	},
+	vibrateChatBg: {
 		default: true,
 	},
 

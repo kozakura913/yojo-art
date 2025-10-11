@@ -228,7 +228,6 @@ watch(showProfilePreview, () => prefer.commit('showProfilePreview', showProfileP
 const showAddMfmFunction = ref(prefer.s.enableQuickAddMfmFunction);
 watch(showAddMfmFunction, () => prefer.commit('enableQuickAddMfmFunction', showAddMfmFunction.value));
 const cw = ref<string | null>(props.initialCw ?? null);
-const localOnly = ref(props.initialLocalOnly ?? (prefer.s.rememberNoteVisibility ? store.s.localOnly : prefer.s.defaultNoteLocalOnly));
 const visibility = ref(props.initialVisibility ?? (prefer.s.rememberNoteVisibility ? store.s.visibility : prefer.s.defaultNoteVisibility));
 const searchableBy = ref(prefer.s.rememberNoteSearchbility ? prefer.s.searchbility : prefer.s.defaultNoteSearchbility);
 const visibleUsers = ref<Misskey.entities.UserDetailed[]>([]);

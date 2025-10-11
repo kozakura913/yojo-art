@@ -33,6 +33,7 @@ import { migrateOldSettings } from '@/pref-migrate.js';
 import { userName } from '@/filters/user.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import * as os from '@/os.js';
+import { vibrate } from '@/utility/vibrate.js';
 
 export async function mainBoot() {
 	const { isClientUpdated, isClientMigrated, lastVersion } = await common(async () => {
@@ -406,7 +407,7 @@ export async function mainBoot() {
 		main.on('unreadMessagingMessage', () => {
 			updateCurrentAccountPartial({ hasUnreadMessagingMessage: true });
 			sound.playMisskeySfx('chatBg');
-			vibrate(defaultStore.state.vibrateChatBg ? [50, 40] : []);
+			vibrate(prefer.s.vibrateChatBg ? [50, 40] : []);
 		});
 
 		main.on('readAllAntennas', () => {

@@ -468,6 +468,14 @@ export const store = markRaw(new Pizzax('base', {
 		where: 'device',
 		default: { type: 'syuilo/n-cea', volume: 1 },
 	},
+	sound_chat: {
+		where: 'device',
+		default: { type: 'syuilo/pope1', volume: 1 },
+	},
+	sound_chatBg: {
+		where: 'device',
+		default: { type: 'syuilo/waon', volume: 1 },
+	},
 	sound_noteEdited: {
 		where: 'device',
 		default: { type: 'syuilo/n-eca', volume: 1 },

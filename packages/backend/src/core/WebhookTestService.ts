@@ -497,6 +497,8 @@ export class WebhookTestService {
 			isRenoteMuted: false,
 			notify: 'none',
 			withReplies: true,
+			isIndexable: true,
+			searchableBy: 'public',
 			...override,
 		};
 	}

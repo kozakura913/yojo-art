@@ -80,9 +80,10 @@ export const operationTypes = [
 	'note',
 	'noteSchedulePost',
 	'noteEdited',
+	'chat',
+	'chatBg',
 	'notification',
 	'reaction',
-	'chatMessage',
 ] as const;
 
 /** サウンドの種類 */
@@ -205,10 +206,10 @@ export function createSourceNode(buffer: AudioBuffer, opts: {
 	pan?: number;
 	playbackRate?: number;
 }): {
-		soundSource: AudioBufferSourceNode;
-		panNode: StereoPannerNode;
-		gainNode: GainNode;
-	} {
+	soundSource: AudioBufferSourceNode;
+	panNode: StereoPannerNode;
+	gainNode: GainNode;
+} {
 	const panNode = ctx.createStereoPanner();
 	panNode.pan.value = opts.pan ?? 0;
 
