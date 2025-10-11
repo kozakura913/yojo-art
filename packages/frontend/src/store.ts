@@ -61,6 +61,10 @@ export const store = markRaw(new Pizzax('base', {
 		where: 'account',
 		default: false,
 	},
+	searchbility: {
+		where: 'deviceAccount',
+		default: 'public' as (typeof Misskey.noteSearchbility)[number],
+	},
 	defaultNoteSearchbility: {
 		where: 'account',
 		default: 'public' as (typeof Misskey.noteSearchbility)[number],
