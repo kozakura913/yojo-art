@@ -679,6 +679,9 @@ export const PREF_DEF = {
 	friendlyUiShowAvatarDecorationsInNavBtn: {
 		default: false,
 	},
+	checkReactionDialog: {
+		default: false,
+	},
 
 	// - Settings/Accessibility
 	showingAnimatedImages: {
