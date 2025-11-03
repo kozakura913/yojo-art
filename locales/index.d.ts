@@ -10087,9 +10087,13 @@ export interface Locale extends ILocale {
          */
         "reaction": string;
         /**
-         * チャットのメッセージ
+         * チャット
          */
-        "chatMessage": string;
+        "chat": string;
+        /**
+         * チャット(バックグラウンド)
+         */
+        "chatBg": string;
     };
     "_soundSettings": {
         /**

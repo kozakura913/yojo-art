@@ -2641,7 +2641,8 @@ _sfx:
   noteEdited: "ノートを編集"
   notification: "通知"
   reaction: "リアクション選択時"
-  chatMessage: "チャットのメッセージ"
+  chat: "チャット"
+  chatBg: "チャット(バックグラウンド)"
 
 _soundSettings:
   driveFile: "ドライブの音声を使用"
