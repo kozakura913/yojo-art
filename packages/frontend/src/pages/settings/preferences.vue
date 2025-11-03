@@ -733,7 +733,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<SearchMarker :keywords="['default', 'note', 'search']">
 							<MkDisableSection :disabled="rememberNoteSearchbility">
 								<MkFolder>
-									<template #label><SearchLabel>{{ i18n.ts.defaultNoteSearchbility }}</SearchLabel></template>
+									<template #label><SearchLabel>{{ i18n.ts.makeSearchableBy }}</SearchLabel></template>
 									<template v-if="defaultNoteSearchbility === 'public'" #suffix>{{ i18n.ts._searchbility.public }}</template>
 									<template v-else-if="defaultNoteSearchbility === 'followersAndReacted'" #suffix>{{ i18n.ts._searchbility.followersAndReacted }}</template>
 									<template v-else-if="defaultNoteSearchbility === 'reactedOnly'" #suffix>{{ i18n.ts._searchbility.reactedOnly }}</template>
