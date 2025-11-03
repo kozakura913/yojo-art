@@ -139,8 +139,9 @@ export function migrateOldSettings() {
 		prefer.commit('sound.on.notification', store.s.sound_notification as any);
 		prefer.commit('sound.on.reaction', store.s.sound_reaction as any);
 		prefer.commit('sound.on.chat', store.s.sound_chat as any);
-		prefer.commit('sound.on.chaBg', store.s.sound_chatBg as any);
+		//prefer.commit('sound.on.chaBg', store.s.sound_chatBg as any);
 		prefer.commit('defaultNoteVisibility', store.s.defaultNoteVisibility);
+		prefer.commit('defaultNoteSearchbility', store.s.defaultNoteSearchbility);
 		prefer.commit('defaultNoteLocalOnly', store.s.defaultNoteLocalOnly);
 		prefer.commit('showPreview', store.s.showPreview);
 
@@ -199,7 +200,7 @@ export function migrateOldSettings() {
 		prefer.commit('enableBubbleTimeline', store.s.enableBubbleTimeline);
 		prefer.commit('enableListTimeline', store.s.enableListTimeline);
 		prefer.commit('enableAntennaTimeline', store.s.enableAntennaTimeline);
-		prefer.commit('enableChannelTimeline', store.s.enableChannelTimeline);
+		//prefer.commit('enableChannelTimeline', store.s.enableChannelTimeline);
 
 		// - Settings/Sounds & Vibrations
 		prefer.commit('vibrate', store.s.vibrate);
