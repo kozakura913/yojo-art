@@ -141,7 +141,6 @@ export function migrateOldSettings() {
 		prefer.commit('sound.on.chat', store.s.sound_chat as any);
 		//prefer.commit('sound.on.chaBg', store.s.sound_chatBg as any);
 		prefer.commit('defaultNoteVisibility', store.s.defaultNoteVisibility);
-		prefer.commit('defaultNoteSearchbility', store.s.defaultNoteSearchbility);
 		prefer.commit('defaultNoteLocalOnly', store.s.defaultNoteLocalOnly);
 		prefer.commit('showPreview', store.s.showPreview);
 
@@ -201,6 +200,10 @@ export function migrateOldSettings() {
 		prefer.commit('enableListTimeline', store.s.enableListTimeline);
 		prefer.commit('enableAntennaTimeline', store.s.enableAntennaTimeline);
 		//prefer.commit('enableChannelTimeline', store.s.enableChannelTimeline);
+
+		// yojo-art
+		prefer.commit('rememberNoteSearchbility', store.s.rememberNoteSearchbility);
+		prefer.commit('defaultNoteSearchbility', store.s.defaultNoteSearchbility);
 
 		// - Settings/Sounds & Vibrations
 		prefer.commit('vibrate', store.s.vibrate);

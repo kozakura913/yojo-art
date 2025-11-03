@@ -44,14 +44,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { nextTick, shallowRef, ref, computed } from 'vue';
+import { nextTick, shallowRef, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkModal from '@/components/MkModal.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkDivider from '@/components/MkDivider.vue';
 import { i18n } from '@/i18n.js';
 import { prefer } from '@/preferences.js';
-import { store } from '@/store.js';
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 
@@ -66,7 +65,7 @@ const emit = defineEmits<{
 	(ev: 'closed'): void;
 }>();
 
-const rememberNoteSearchbility = computed(store.makeGetterSetter('rememberNoteSearchbility'));
+const rememberNoteSearchbility = prefer.model('rememberNoteSearchbility');
 
 const v = ref(props.currentSearchbility);
 
