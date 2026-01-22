@@ -16,7 +16,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@focusin.passive.stop="() => {}"
 >
 	<div
-		class="_shadow"
+		ref="itemsEl"
+		v-hotkey="keymap"
+		tabindex="0"
+		class="_popup _shadow"
 		:class="[
 			$style.menu,
 			{
