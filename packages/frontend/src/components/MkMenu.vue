@@ -36,9 +36,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 	>
 		<slot name="header"></slot>
 		<div
-			ref="itemsEl"
-			v-hotkey="keymap"
-			tabindex="0"
 			:class="$style.menuItems"
 		>
 			<template v-for="item in (items2 ?? [])">
