@@ -26309,70 +26309,6 @@ export interface operations {
             };
         };
     };
-    'i___followers-servers': {
-        responses: {
-            /** @description OK (with results) */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    'application/json': {
-                        servers: {
-                            host: string;
-                            name: string | null;
-                            followersCount: number;
-                        }[];
-                    };
-                };
-            };
-            /** @description Client error */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    'application/json': components['schemas']['Error'];
-                };
-            };
-            /** @description Authentication error */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    'application/json': components['schemas']['Error'];
-                };
-            };
-            /** @description Forbidden error */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    'application/json': components['schemas']['Error'];
-                };
-            };
-            /** @description I'm Ai */
-            418: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    'application/json': components['schemas']['Error'];
-                };
-            };
-            /** @description Internal server error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    'application/json': components['schemas']['Error'];
-                };
-            };
-        };
-    };
     i___gallery___likes: {
         requestBody: {
             content: {
@@ -30745,11 +30681,6 @@ export interface operations {
                     scheduledDelete?: {
                         deleteAt?: number | null;
                         deleteAfter?: number | null;
-                    } | null;
-                    deliveryTargets?: {
-                        /** @enum {string} */
-                        mode: 'include' | 'exclude';
-                        hosts: string[];
                     } | null;
                     /** @enum {string|null} */
                     searchableBy?: null | 'public' | 'followersAndReacted' | 'reactedOnly' | 'private';

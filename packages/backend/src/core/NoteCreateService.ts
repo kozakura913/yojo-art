@@ -459,8 +459,6 @@ export class NoteCreateService implements OnApplicationShutdown {
 		data.channel = undefined;
 		//このフォークではローカルのみを認めない
 		data.localOnly = undefined;
-		//暫定無効化
-		data.deliveryTargets = undefined;
 
 		if (data.createdAt == null) data.createdAt = new Date();
 		if (data.visibility == null) data.visibility = 'public';

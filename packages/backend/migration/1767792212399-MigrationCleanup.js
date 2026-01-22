@@ -8,13 +8,10 @@ export class MigrationCleanup1767792212399 {
 
     async up(queryRunner) {
         await queryRunner.query(`ALTER TABLE "poll_vote" DROP CONSTRAINT "FK_poll_vote_poll"`);
-        await queryRunner.query(`DROP INDEX "public"."IDX_note_deliveryTargets"`);
-        await queryRunner.query(`DROP INDEX "public"."IDX_note_draft_deliveryTargets"`);
         await queryRunner.query(`COMMENT ON COLUMN "abuse_report_resolver"."updatedAt" IS 'The updated date of the AbuseReportResolver.'`);
         await queryRunner.query(`COMMENT ON COLUMN "abuse_report_resolver"."expirationDate" IS 'The expiration date of the AbuseReportResolver'`);
         await queryRunner.query(`ALTER TABLE "user" ALTER COLUMN "canChat" DROP DEFAULT`);
         await queryRunner.query(`ALTER TABLE "channel" ALTER COLUMN "color" SET DEFAULT '#ffbcdc'`);
-        await queryRunner.query(`ALTER TABLE "note" ALTER COLUMN "deliveryTargets" SET DEFAULT '{}'`);
         await queryRunner.query(`COMMENT ON COLUMN "event"."metadata" IS 'metadata object describing the event. Follows https://schema.org/Event'`);
         await queryRunner.query(`ALTER TABLE "event" ALTER COLUMN "metadata" SET DEFAULT '{"@context":"https://schema.org/","@type":"Event"}'`);
         await queryRunner.query(`ALTER TABLE "meta" ALTER COLUMN "remoteObjectStorageUseSSL" SET NOT NULL`);
@@ -29,13 +26,11 @@ export class MigrationCleanup1767792212399 {
         await queryRunner.query(`ALTER TABLE "note_draft" ALTER COLUMN "eventMetadata" SET NOT NULL`);
         await queryRunner.query(`COMMENT ON COLUMN "note_draft"."eventMetadata" IS 'metadata object describing the event. Follows https://schema.org/Event'`);
         await queryRunner.query(`ALTER TABLE "note_draft" ALTER COLUMN "eventMetadata" SET DEFAULT '{"@context":"https://schema.org/","@type":"Event"}'`);
-        await queryRunner.query(`ALTER TABLE "note_draft" ALTER COLUMN "deliveryTargets" SET DEFAULT '{}'`);
         await queryRunner.query(`CREATE INDEX "IDX_72689e25ff8131746cb31ef9a1" ON "note_draft" ("eventStart") `);
     }
 
     async down(queryRunner) {
         await queryRunner.query(`DROP INDEX "public"."IDX_72689e25ff8131746cb31ef9a1"`);
-        await queryRunner.query(`ALTER TABLE "note_draft" ALTER COLUMN "deliveryTargets" DROP DEFAULT`);
         await queryRunner.query(`ALTER TABLE "note_draft" ALTER COLUMN "eventMetadata" SET DEFAULT '{}'`);
         await queryRunner.query(`COMMENT ON COLUMN "note_draft"."eventMetadata" IS NULL`);
         await queryRunner.query(`ALTER TABLE "note_draft" ALTER COLUMN "eventMetadata" DROP NOT NULL`);
@@ -50,13 +45,10 @@ export class MigrationCleanup1767792212399 {
         await queryRunner.query(`ALTER TABLE "meta" ALTER COLUMN "remoteObjectStorageUseSSL" DROP NOT NULL`);
         await queryRunner.query(`ALTER TABLE "event" ALTER COLUMN "metadata" SET DEFAULT '{}'`);
         await queryRunner.query(`COMMENT ON COLUMN "event"."metadata" IS 'metadata mapping for event with more user configurable optional information'`);
-        await queryRunner.query(`ALTER TABLE "note" ALTER COLUMN "deliveryTargets" DROP DEFAULT`);
         await queryRunner.query(`ALTER TABLE "channel" ALTER COLUMN "color" SET DEFAULT '#86b300'`);
         await queryRunner.query(`ALTER TABLE "user" ALTER COLUMN "canChat" SET DEFAULT true`);
         await queryRunner.query(`COMMENT ON COLUMN "abuse_report_resolver"."expirationDate" IS 'The expiration date of AbuseReportResolver'`);
         await queryRunner.query(`COMMENT ON COLUMN "abuse_report_resolver"."updatedAt" IS 'The updated date of AbuseReportResolver'`);
-        await queryRunner.query(`CREATE INDEX "IDX_note_draft_deliveryTargets" ON "note_draft" ("deliveryTargets") `);
-        await queryRunner.query(`CREATE INDEX "IDX_note_deliveryTargets" ON "note" ("deliveryTargets") `);
         await queryRunner.query(`ALTER TABLE "poll_vote" ADD CONSTRAINT "FK_poll_vote_poll" FOREIGN KEY ("noteId") REFERENCES "poll"("noteId") ON DELETE CASCADE ON UPDATE NO ACTION`);
     }
 }
