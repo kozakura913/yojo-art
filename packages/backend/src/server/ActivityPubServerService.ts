@@ -32,7 +32,6 @@ import { IActivity, IClip, IObject, IOrderedCollection, IOrderedCollectionPage }
 import { isQuote, isRenote } from '@/misc/is-renote.js';
 import * as Acct from '@/misc/acct.js';
 import { FanoutTimelineEndpointService } from '@/core/FanoutTimelineEndpointService.js';
-import { ActivityPubAccessControlService } from '@/core/ActivityPubAccessControlService.js';
 import { MfmService } from '@/core/MfmService.js';
 import { IdService } from '@/core/IdService.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
