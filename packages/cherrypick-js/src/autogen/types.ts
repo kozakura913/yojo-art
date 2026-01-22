@@ -4730,7 +4730,18 @@ export type components = {
             emojis?: {
                 [key: string]: string;
             };
-            event?: Record<string, never> | null;
+            event?: {
+                title: string;
+                /** Format: date-time */
+                start: string;
+                /** Format: date-time */
+                end: string | null;
+                metadata?: {
+                    '@type'?: string;
+                    location?: string;
+                    description?: string;
+                };
+            } | null;
             /**
              * Format: id
              * @example xxxxxxxxxx
@@ -4793,6 +4804,8 @@ export type components = {
             disableRightClick?: boolean;
             /** @enum {string} */
             visibility: 'public' | 'home' | 'followers' | 'specified';
+            /** @enum {string|null} */
+            searchableBy: 'public' | 'private' | 'followersAndReacted' | 'reactedOnly' | null;
             visibleUserIds: string[];
             fileIds: string[];
             files?: components['schemas']['DriveFile'][];
@@ -5070,7 +5083,7 @@ export type components = {
             createdAt: string;
             /** @enum {string} */
             type: 'note:grouped';
-            noteIds: string[];
+            noteIds: (string | null)[];
             users: components['schemas']['UserLite'][];
         } | {
             /** Format: id */
@@ -6060,7 +6073,11 @@ export type components = {
                 start: string;
                 /** Format: date-time */
                 end: string | null;
-                metadata: Record<string, never>;
+                metadata?: {
+                    '@type'?: string;
+                    location?: string;
+                    description?: string;
+                };
             } | null;
             fileIds?: string[];
             files?: components['schemas']['DriveFile'][];
@@ -6242,6 +6259,11 @@ export interface operations {
                 };
                 content: {
                     'application/json': {
+                        /**
+                         * Format: id
+                         * @example xxxxxxxxxx
+                         */
+                        id: string;
                         name: string;
                         targetUserPattern: string | null;
                         reporterPattern: string | null;
@@ -33101,7 +33123,7 @@ export interface operations {
                 'application/json': {
                     /** Format: misskey:id */
                     noteId: string;
-                    text: string;
+                    text: string | null;
                     fileIds?: string[];
                     mediaIds?: string[];
                     poll?: {
