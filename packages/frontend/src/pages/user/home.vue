@@ -30,7 +30,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 									<span v-if="'isAdmin' in user && user.isAdmin" v-tooltip="i18n.ts.administrator" style="color: var(--MI_THEME-badge);"><i class="ti ti-shield"></i></span>
 									<span v-if="user.isLocked" v-tooltip="i18n.ts.makeFollowManuallyApprove"><i class="ti ti-lock"></i></span>
 									<span v-if="user.isBot"><i class="ti ti-robot"></i></span>
-									<span v-if="'isProxy' in user && user.isProxy" v-tooltip="i18n.ts.proxyAccount"><i class="ti ti-ghost"></i></span>
 									<button v-if="$i && !isEditingMemo && !memoDraft" class="_button add-note-button" @click="showMemoTextarea">
 										<i class="ti ti-edit"/> {{ i18n.ts.addMemo }}
 									</button>
@@ -52,7 +51,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<span v-if="'isAdmin' in user && user.isAdmin" v-tooltip="i18n.ts.administrator" style="color: var(--MI_THEME-badge);"><i class="ti ti-shield"></i></span>
 								<span v-if="user.isLocked" v-tooltip="i18n.ts.makeFollowManuallyApprove"><i class="ti ti-lock"></i></span>
 								<span v-if="user.isBot"><i class="ti ti-robot"></i></span>
-								<span v-if="'isProxy' in user && user.isProxy" v-tooltip="i18n.ts.proxyAccount"><i class="ti ti-ghost"></i></span>
 							</div>
 						</div>
 						<div v-if="user.followedMessage != null" class="followedMessage">
@@ -111,18 +109,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</MkOmit>
 						</div>
 						<MkContainer v-if="user?.mutualLinkSections?.length > 0" :showHeader="false" :max-height="200" class="fields" :style="{borderRadius: 0}">
-						<div v-for="(section, index) in user?.mutualLinkSections" :key="index" :class="$style.mutualLinkSections">
-							<span v-if="section.name">{{ section.name }}</span>
-							<div :class="$style.mutualLinks">
-								<div v-for="mutualLink in section.mutualLinks" :key="mutualLink.id">
-									<MkLink :hideIcon="true" :url="mutualLink.url">
-										<img :class="$style.mutualLinkImg" :src="getProxiedImageUrl(mutualLink.imgSrc)" :alt="mutualLink.description"/>
-									</MkLink>
+							<div v-for="(section, index) in user?.mutualLinkSections" :key="index" :class="$style.mutualLinkSections">
+								<span v-if="section.name">{{ section.name }}</span>
+								<div :class="$style.mutualLinks">
+									<div v-for="mutualLink in section.mutualLinks" :key="mutualLink.id">
+										<MkLink :hideIcon="true" :url="mutualLink.url">
+											<img :class="$style.mutualLinkImg" :src="getProxiedImageUrl(mutualLink.imgSrc)" :alt="mutualLink.description"/>
+										</MkLink>
+									</div>
 								</div>
 							</div>
-						</div>
-					</MkContainer>
-					<div class="fields system">
+						</MkContainer>
+						<div class="fields system">
 							<dl v-if="user.location" class="field">
 								<dt class="name"><i class="ti ti-map-pin ti-fw"></i> {{ i18n.ts.location }}</dt>
 								<dd class="value">{{ user.location }}</dd>
@@ -353,7 +351,7 @@ async function translate(): Promise<void> {
 				title: err.message,
 				text: err.id,
 			});
-			return null;
+		return null;
 	});
 	translating.value = false;
 	translation.value = res;

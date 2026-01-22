@@ -4262,7 +4262,6 @@ export type components = {
             isLocked: boolean;
             isBot?: boolean;
             isCat?: boolean;
-            isProxy?: boolean;
             requireSigninToViewContents?: boolean;
             makeNotesFollowersOnlyBefore?: number | null;
             makeNotesHiddenBefore?: number | null;
@@ -30777,6 +30776,8 @@ export interface operations {
                         mode: 'include' | 'exclude';
                         hosts: string[];
                     } | null;
+                    /** @enum {string|null} */
+                    searchableBy?: null | 'public' | 'followersAndReacted' | 'reactedOnly' | 'private';
                 };
             };
         };

@@ -492,7 +492,6 @@ export class UserEntityService implements OnModuleInit {
 			})) : null;
 
 		const notificationsInfo = isMe && isDetailed ? await this.getNotificationsInfo(user.id) : null;
-		const proxy = await this.systemAccountService.fetch('proxy');
 
 		// TODO: 例えば avatarUrl: true など間違った型を設定しても型エラーにならないのをどうにかする(ジェネリクス使わない方法で実装するしかなさそう？)
 		const packed = {
@@ -515,7 +514,6 @@ export class UserEntityService implements OnModuleInit {
 			isLocked: user.isLocked,
 			isBot: user.isBot,
 			isCat: user.isCat,
-			isProxy: proxy.id === user.id,
 			requireSigninToViewContents: user.requireSigninToViewContents === false ? undefined : true,
 			makeNotesFollowersOnlyBefore: user.makeNotesFollowersOnlyBefore ?? undefined,
 			makeNotesHiddenBefore: user.makeNotesHiddenBefore ?? undefined,

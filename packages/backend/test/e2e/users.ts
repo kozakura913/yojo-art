@@ -41,7 +41,6 @@ describe('ユーザー', () => {
 			isLocked: user.isLocked,
 			isBot: user.isBot,
 			isCat: user.isCat,
-			isProxy: user.isProxy,
 			instance: user.instance,
 			emojis: user.emojis,
 			onlineStatus: user.onlineStatus,
@@ -318,7 +317,6 @@ describe('ユーザー', () => {
 		assert.strictEqual(response.isLocked, false);
 		assert.strictEqual(response.isBot, false);
 		assert.strictEqual(response.isCat, false);
-		assert.strictEqual(response.isProxy, false);
 		assert.strictEqual(response.instance, undefined);
 		assert.deepStrictEqual(response.emojis, {});
 		assert.strictEqual(response.onlineStatus, 'unknown');
