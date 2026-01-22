@@ -66,7 +66,6 @@ describe('NoteCreateService', () => {
 			hasEvent: false,
 			disableRightClick: false,
 			deleteAt: null,
-			deliveryTargets: null,
 			searchableBy: 'public',
 		};
 

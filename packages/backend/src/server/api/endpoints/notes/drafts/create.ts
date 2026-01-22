@@ -222,19 +222,6 @@ export const paramDef = {
 				deleteAfter: { type: 'integer', nullable: true, minimum: 1 },
 			},
 		},
-		deliveryTargets: {
-			type: 'object',
-			nullable: true,
-			properties: {
-				mode: { type: 'string', enum: ['include', 'exclude'] },
-				hosts: {
-					type: 'array',
-					items: { type: 'string' },
-					uniqueItems: true,
-				},
-			},
-			required: ['mode', 'hosts'],
-		},
 		searchableBy: { type: 'string', nullable: true, enum: [null, 'public', 'followersAndReacted', 'reactedOnly', 'private'] },
 	},
 	required: [],
@@ -273,7 +260,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				eventTitle: ps.event?.title ? ps.event.title! : null,
 				eventMetadata: ps.event?.metadata ? ps.event.metadata : null,
 				deleteAt: ps.scheduledDelete?.deleteAt ? new Date(ps.scheduledDelete.deleteAt) : ps.scheduledDelete?.deleteAfter ? new Date(Date.now() + ps.scheduledDelete.deleteAfter) : null,
-				deliveryTargets: ps.deliveryTargets ?? null,
 				searchableBy: ps.searchableBy ?? null,
 			}).catch((err) => {
 				if (err instanceof IdentifiableError) {

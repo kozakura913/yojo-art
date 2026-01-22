@@ -178,7 +178,6 @@ type Option = {
 	url?: string | null;
 	app?: MiApp | null;
 	deleteAt?: Date | null;
-	deliveryTargets?: { mode: 'include' | 'exclude'; hosts: string[] } | null;
 };
 
 @Injectable()
@@ -296,7 +295,6 @@ export class NoteCreateService implements OnApplicationShutdown {
 		apHashtags?: string[] | null;
 		apEmojis?: string[] | null;
 		deleteAt?: Date | null;
-		deliveryTargets?: { mode: 'include' | 'exclude'; hosts: string[] } | null;
 	}): Promise<MiNote> {
 		const visibleUsers = data.visibleUserIds.length > 0 ? await this.usersRepository.findBy({
 			id: In(data.visibleUserIds),
@@ -446,7 +444,6 @@ export class NoteCreateService implements OnApplicationShutdown {
 			apHashtags: data.apHashtags,
 			apEmojis: data.apEmojis,
 			deleteAt: data.deleteAt,
-			deliveryTargets: data.deliveryTargets,
 		});
 	}
 
@@ -644,7 +641,6 @@ export class NoteCreateService implements OnApplicationShutdown {
 			reactionAcceptance: data.reactionAcceptance ?? null,
 			disableRightClick: data.disableRightClick!,
 			deleteAt: data.deleteAt,
-			deliveryTargets: data.deliveryTargets ?? null,
 			visibility: data.visibility as any,
 			searchableBy: data.searchableBy as any,
 			visibleUserIds: data.visibility === 'specified'
@@ -909,8 +905,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 
 					// フォロワーに配送
 					if (['public', 'home', 'followers'].includes(note.visibility)) {
-						if (data.deliveryTargets) dm.addSelectiveFollowersRecipe(data.deliveryTargets);
-						else dm.addFollowersRecipe();
+						dm.addFollowersRecipe();
 					}
 
 					if (['public'].includes(note.visibility)) {

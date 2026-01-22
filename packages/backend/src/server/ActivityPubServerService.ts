@@ -91,7 +91,6 @@ export class ActivityPubServerService {
 		private userKeypairService: UserKeypairService,
 		private queryService: QueryService,
 		private fanoutTimelineEndpointService: FanoutTimelineEndpointService,
-		private activityPubAccessControlService: ActivityPubAccessControlService,
 		private mfmService: MfmService,
 		private idService: IdService,
 	) {
@@ -202,28 +201,12 @@ export class ActivityPubServerService {
 	}
 
 	@bindThis
-	private async applyAccessControl(request: FastifyRequest, reply: FastifyReply, allowLimitedHosts = false): Promise<boolean> {
-		const accessControl = await this.activityPubAccessControlService.checkAccess(request, allowLimitedHosts);
-		if (accessControl) {
-			reply.code(403);
-			reply.header('Content-Type', 'text/plain; charset=utf-8');
-			reply.send(`Access denied: ${accessControl.reason}`);
-			return true;
-		}
-		return false;
-	}
-
-	@bindThis
 	private async followers(
 		request: FastifyRequest<{ Params: { user: string; }; Querystring: { cursor?: string; page?: string; }; }>,
 		reply: FastifyReply,
 	) {
 		if (this.meta.federation === 'none') {
 			reply.code(403);
-			return;
-		}
-
-		if (await this.applyAccessControl(request, reply)) {
 			return;
 		}
 
@@ -324,10 +307,6 @@ export class ActivityPubServerService {
 			return;
 		}
 
-		if (await this.applyAccessControl(request, reply)) {
-			return;
-		}
-
 		const userId = request.params.user;
 
 		const cursor = request.query.cursor;
@@ -419,10 +398,6 @@ export class ActivityPubServerService {
 	private async featured(request: FastifyRequest<{ Params: { user: string; }; }>, reply: FastifyReply) {
 		if (this.meta.federation === 'none') {
 			reply.code(403);
-			return;
-		}
-
-		if (await this.applyAccessControl(request, reply)) {
 			return;
 		}
 
@@ -655,10 +630,6 @@ export class ActivityPubServerService {
 			return;
 		}
 
-		if (await this.applyAccessControl(request, reply)) {
-			return;
-		}
-
 		const userId = request.params.user;
 
 		const sinceId = request.query.since_id;
@@ -790,10 +761,6 @@ export class ActivityPubServerService {
 			return;
 		}
 
-		if (await this.applyAccessControl(request, reply, true)) {
-			return;
-		}
-
 		if (user == null) {
 			reply.code(404);
 			return;
@@ -881,10 +848,6 @@ export class ActivityPubServerService {
 				return;
 			}
 
-			if (await this.applyAccessControl(request, reply, true)) {
-				return;
-			}
-
 			const note = await this.notesRepository.findOneBy({
 				id: request.params.note,
 				visibility: In(['public', 'home']),
@@ -892,11 +855,6 @@ export class ActivityPubServerService {
 			});
 
 			if (note == null) {
-				reply.code(404);
-				return;
-			}
-
-			if (!await this.activityPubAccessControlService.checkNoteAccess(note, request)) {
 				reply.code(404);
 				return;
 			}
@@ -922,10 +880,6 @@ export class ActivityPubServerService {
 
 			if (this.meta.federation === 'none') {
 				reply.code(403);
-				return;
-			}
-
-			if (await this.applyAccessControl(request, reply, true)) {
 				return;
 			}
 
@@ -1033,10 +987,6 @@ export class ActivityPubServerService {
 				return;
 			}
 
-			if (await this.applyAccessControl(request, reply, true)) {
-				return;
-			}
-
 			const userId = request.params.user;
 
 			const user = await this.usersRepository.findOneBy({
@@ -1120,10 +1070,6 @@ export class ActivityPubServerService {
 				return;
 			}
 
-			if (await this.applyAccessControl(request, reply, true)) {
-				return;
-			}
-
 			const emoji = await this.emojisRepository.findOneBy({
 				host: IsNull(),
 				name: request.params.emoji,
@@ -1143,10 +1089,6 @@ export class ActivityPubServerService {
 		fastify.get<{ Params: { like: string; } }>('/likes/:like', async (request, reply) => {
 			if (this.meta.federation === 'none') {
 				reply.code(403);
-				return;
-			}
-
-			if (await this.applyAccessControl(request, reply, true)) {
 				return;
 			}
 
@@ -1173,10 +1115,6 @@ export class ActivityPubServerService {
 		fastify.get<{ Params: { follower: string; followee: string; } }>('/follows/:follower/:followee', async (request, reply) => {
 			if (this.meta.federation === 'none') {
 				reply.code(403);
-				return;
-			}
-
-			if (await this.applyAccessControl(request, reply, true)) {
 				return;
 			}
 
@@ -1208,10 +1146,6 @@ export class ActivityPubServerService {
 		fastify.get<{ Params: { followRequestId: string; } }>('/follows/:followRequestId', async (request, reply) => {
 			if (this.meta.federation === 'none') {
 				reply.code(403);
-				return;
-			}
-
-			if (await this.applyAccessControl(request, reply, true)) {
 				return;
 			}
 

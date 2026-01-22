@@ -2554,15 +2554,6 @@ export type paths = {
          */
         post: operations['i___favorites'];
     };
-    '/i/followers-servers': {
-        /**
-         * i/followers-servers
-         * @description No description provided.
-         *
-         *     **Credential required**: *Yes* / **Permission**: *read:following*
-         */
-        post: operations['i___followers-servers'];
-    };
     '/i/gallery/likes': {
         /**
          * i/gallery/likes
@@ -4774,12 +4765,6 @@ export type components = {
             myReaction?: string | null;
             /** Format: date-time */
             deleteAt?: string | null;
-            deliveryTargets?: {
-                /** @enum {string} */
-                mode: 'include' | 'exclude';
-                hosts?: string[] | null;
-            } | null;
-            hasDeliveryTargets: boolean;
         };
         NoteDraft: {
             /**
@@ -4834,11 +4819,6 @@ export type components = {
             isActuallyScheduled: boolean;
             /** Format: date-time */
             deleteAt?: string | null;
-            deliveryTargets?: {
-                /** @enum {string} */
-                mode: 'include' | 'exclude';
-                hosts?: string[] | null;
-            } | null;
         };
         NoteReaction: {
             /** Format: id */
@@ -30517,11 +30497,6 @@ export interface operations {
                         deleteAt?: number | null;
                         deleteAfter?: number | null;
                     } | null;
-                    deliveryTargets?: {
-                        /** @enum {string} */
-                        mode: 'include' | 'exclude';
-                        hosts: string[];
-                    } | null;
                 };
             };
         };
@@ -31026,11 +31001,6 @@ export interface operations {
                     scheduledDelete?: {
                         deleteAt?: number | null;
                         deleteAfter?: number | null;
-                    } | null;
-                    deliveryTargets?: {
-                        /** @enum {string} */
-                        mode: 'include' | 'exclude';
-                        hosts: string[];
                     } | null;
                 };
             };

@@ -110,7 +110,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<MkPollEditor v-if="poll && !props.updateMode && showForm" v-model="poll" @destroyed="poll = null"/>
 	<MkScheduledNoteDelete v-if="scheduledNoteDelete" v-model="scheduledNoteDelete" @destroyed="scheduledNoteDelete = null"/>
-	<!--<MkDeliveryTargetEditor v-if="deliveryTargets" v-model="deliveryTargets" @destroyed="deliveryTargets = null"/>-->
 	<MkNotePreview v-if="showPreview && showForm && textLength > 0" :class="$style.preview" :text="text" :files="files" :poll="poll ?? undefined" :useCw="useCw" :cw="cw" :user="postAccount ?? $i" :showProfile="showProfilePreview"/>
 	<div v-if="showingOptions && showForm" style="padding: 8px 16px;">
 	</div>
@@ -157,7 +156,6 @@ import type { MenuItem } from '@/types/menu.js';
 import type { PollEditorModelValue } from '@/components/MkPollEditor.vue';
 import type { UploaderItem } from '@/composables/use-uploader.js';
 import type { DeleteScheduleEditorModelValue } from '@/components/MkScheduledNoteDelete.vue';
-import type { DeliveryTargetEditorModelValue } from '@/components/MkDeliveryTargetEditor.vue';
 import { parseMfmCached } from '@/utility/mfm-cache.js';
 import MkNotePreview from '@/components/MkNotePreview.vue';
 import XPostFormAttaches from '@/components/MkPostFormAttaches.vue';
@@ -192,7 +190,6 @@ import { checkDragDataType, getDragData } from '@/drag-and-drop.js';
 import { useUploader } from '@/composables/use-uploader.js';
 import { haptic } from '@/utility/haptic.js';
 import * as sound from '@/utility/sound.js';
-import MkDeliveryTargetEditor from '@/components/MkDeliveryTargetEditor.vue';
 
 const $i = ensureSignin();
 
@@ -267,7 +264,6 @@ const justEndedComposition = ref(false);
 const renoteTargetNote: ShallowRef<PostFormProps['renote'] | null> = shallowRef(props.renote);
 const replyTargetNote: ShallowRef<PostFormProps['reply'] | null> = shallowRef(props.reply);
 const targetChannel = shallowRef(props.channel);
-const deliveryTargets = ref<DeliveryTargetEditorModelValue | null>(null);
 
 const serverDraftId = ref<string | null>(null);
 const postFormActions = getPluginHandlers('post_form_action');
@@ -469,7 +465,6 @@ function watchForDraft() {
 	watch(reactionAcceptance, () => saveDraft());
 	watch(scheduledAt, () => saveDraft());
 	watch(scheduledNoteDelete, () => saveDraft());
-	watch(deliveryTargets, () => saveDraft(), { deep: true });
 }
 
 function checkMissingMention() {
@@ -647,12 +642,6 @@ function showOtherSettings() {
 		action: () => {
 			toggleReactionAcceptance();
 		},
-	}, {
-		icon: 'ti ti-truck-delivery',
-		text: i18n.ts._deliveryTargetControl.deliveryTargetControl,
-		action: () => {
-			toggleDeliveryTargets();
-		},
 	}, { type: 'divider' }, /*{
 		type: 'button',
 		text: i18n.ts._drafts.saveToDraft,
@@ -747,7 +736,6 @@ function clear() {
 	scheduledNoteDelete.value = null;
 	saveToDraft.value = false;
 	disableRightClick.value = false;
-	deliveryTargets.value = null;
 }
 
 function onKeydown(ev: KeyboardEvent) {
@@ -919,7 +907,6 @@ function saveDraft() {
 			reactionAcceptance: reactionAcceptance.value,
 			scheduledAt: scheduledAt.value,
 			scheduledNoteDelete: scheduledNoteDelete.value,
-			deliveryTargets: deliveryTargets.value,
 		},
 	};
 
@@ -955,7 +942,6 @@ async function saveServerDraft(options: {
 		scheduledAt: scheduledAt.value,
 		isActuallyScheduled: options.isActuallyScheduled ?? false,
 		scheduledDelete: scheduledNoteDelete.value,
-		deliveryTargets: deliveryTargets.value,
 	}).then(() => {
 		if (scheduledAt.value != null && options.isActuallyScheduled === true) os.toast(i18n.ts.createSchedulePost, 'scheduled');
 		else os.toast(i18n.ts.noteDrafted, 'drafted');
@@ -1107,7 +1093,6 @@ async function post(ev?: MouseEvent) {
 		disableRightClick: disableRightClick.value,
 		noteId: props.updateMode ? props.initialNote?.id : undefined,
 		scheduledDelete: scheduledNoteDelete.value,
-		deliveryTargets: deliveryTargets.value,
 	};
 
 	if (withHashtags.value && hashtags.value && hashtags.value.trim() !== '') {
@@ -1402,7 +1387,6 @@ async function openAccountMenu(ev: MouseEvent) {
 				replyTargetNote.value = draft.reply;
 				reactionAcceptance.value = draft.reactionAcceptance;
 				scheduledAt.value = draft.scheduledAt ?? null;
-				deliveryTargets.value = draft.deliveryTargets ?? null;
 				if (draft.channel) targetChannel.value = draft.channel as unknown as Misskey.entities.Channel;
 
 				visibleUsers.value = [];
@@ -1546,15 +1530,12 @@ function formClick() {
 	}
 }
 
-function toggleDeliveryTargets() {
-	if (deliveryTargets.value) {
-		deliveryTargets.value = null;
-	} else {
-		deliveryTargets.value = {
-			mode: 'include',
-			hosts: [],
-		};
-	}
+function signin() {
+	const { dispose } = os.popup(XSigninDialog, {
+		autoSet: true,
+	}, {
+		closed: () => dispose(),
+	});
 }
 
 onMounted(() => {
@@ -1601,7 +1582,6 @@ onMounted(() => {
 				reactionAcceptance.value = draft.data.reactionAcceptance;
 				scheduledAt.value = draft.data.scheduledAt ?? null;
 				scheduledNoteDelete.value = draft.data.scheduledNoteDelete ?? null;
-				deliveryTargets.value = draft.data.deliveryTargets ?? null;
 			}
 		}
 
@@ -1651,7 +1631,6 @@ onMounted(() => {
 					deleteAfter: null,
 				};
 			}
-			deliveryTargets.value = init.deliveryTargets ?? null;
 		}
 
 		nextTick(() => watchForDraft());

@@ -37,13 +37,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<i v-else-if="note.reactionAcceptance === 'likeOnly'" v-tooltip="i18n.ts.likeOnly" class="ti ti-heart"></i>
 			</span>
 			<span v-if="note.localOnly" style="margin-right: 0.5em;"><i v-tooltip="i18n.ts._visibility['disableFederation']" class="ti ti-rocket-off"></i></span>
-			<span
-				v-if="note.deliveryTargets && (note.deliveryTargets.mode === 'include' || note.deliveryTargets.hosts?.length)"
-				v-tooltip="`${i18n.ts._deliveryTargetControl[note.deliveryTargets.mode === 'include' ? 'deliveryTargetsInclude' : 'deliveryTargetsExclude'] + ':' + (note.deliveryTargets.hosts?.length ? '\n' + note.deliveryTargets.hosts.join('\n') : '')}`"
-				style="margin-right: 0.5em;"
-			>
-				<i :class="note.deliveryTargets.mode === 'include' ? 'ti ti-truck' : 'ti ti-truck-filled'"></i>
-			</span>
 			<span v-if="note.channel" style="margin-right: 0.5em;"><i v-tooltip="note.channel.name" class="ti ti-device-tv"></i></span>
 			<div v-if="mock">
 				<MkTime :time="note.createdAt" colored/>
@@ -75,10 +68,6 @@ import { misskeyApi } from '@/utility/misskey-api.js';
 
 const props = defineProps<{
 	note: Misskey.entities.Note;
-	deliveryTargets?: {
-		mode: 'include' | 'exclude';
-		hosts: string[];
-	} | null;
 	notificationId?: string;
 }>();
 
