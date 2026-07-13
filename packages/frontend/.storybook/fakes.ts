@@ -298,8 +298,6 @@ export function userDetailed(id = 'someuserid', username = 'cherrypikist', host:
 		isAdmin: false,
 		isBlocked: false,
 		isBlocking: false,
-		isBot: false,
-		isCat: false,
 		isFollowed: false,
 		isFollowing: false,
 		isLocked: false,

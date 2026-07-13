@@ -51,8 +51,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</template>
 		</div>
 		<div v-else-if="!thin_ && !canBack && !(actions && actions.length > 0)" :class="$style.buttonsRight"/>
-		<div v-if="pageMetadata && pageMetadata.avatar && ($i && $i.id !== pageMetadata.userName?.id) && mainRouter.currentRoute.value.name === 'user' && !disableFollowButton && !notification" :class="$style.followButton">
-			<MkFollowButton :user="pageMetadata.avatar" :transparent="false" :full="!narrow"/>
+		<div v-if="pageMetadata && avatarUser && ($i && $i.id !== pageMetadata.userName?.id) && mainRouter.currentRoute.value.name === 'user' && !disableFollowButton && !notification" :class="$style.followButton">
+			<MkFollowButton :user="avatarUser" :transparent="false" :full="!narrow"/>
 		</div>
 	</div>
 	<div v-if="((narrow && !hideTitle) || isFriendly().value) && hasTabs" :class="[$style.lower, { [$style.slim]: narrow && !isFriendly().value, [$style.thin]: thin_, [$style.lowerFriendly]: isFriendly().value}]">
@@ -86,6 +86,7 @@ export type PageHeaderProps = {
 
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref, inject, useTemplateRef, computed } from 'vue';
+import * as Misskey from 'misskey-js';
 import { getScrollPosition, scrollToTop } from '@@/js/scroll.js';
 import XTabs from './MkPageHeader.tabs.vue';
 import { globalEvents } from '@/events.js';
@@ -116,6 +117,13 @@ const emit = defineEmits<{
 //const viewId = inject(DI.viewId);
 const injectedPageMetadata = inject(DI.pageMetadata, ref(null));
 const pageMetadata = computed(() => props.overridePageMetadata ?? injectedPageMetadata.value);
+
+const avatarUser = computed(() => {
+	if (pageMetadata.value?.avatar && 'bannerUrl' in pageMetadata.value.avatar) {
+		return pageMetadata.value.avatar as Misskey.entities.UserDetailed;
+	}
+	return null;
+});
 
 const hideTitle = computed(() => inject('shouldOmitHeaderTitle', false) || props.hideTitle || (props.canOmitTitle && props.tabs.length > 0));
 const thin_ = props.thin || inject('shouldHeaderThin', false);

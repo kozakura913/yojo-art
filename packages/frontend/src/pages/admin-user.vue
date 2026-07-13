@@ -405,7 +405,7 @@ async function unsetUserMutualLink() {
 	});
 	if (confirm.canceled) return;
 
-	await os.apiWithDialog('admin/unset-user-mutual-banner', {
+	await os.apiWithDialog('admin/unset-user-mutual-banner' as any, {
 		userId: user.value.id,
 	}).then(refreshUser);
 }

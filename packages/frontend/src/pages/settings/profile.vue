@@ -399,7 +399,7 @@ function save() {
 }
 
 function changeMutualLinkFile(ev: MouseEvent, sectionIndex: number, linkIndex: number) {
-	selectFile(ev.currentTarget ?? ev.target, i18n.ts.mutualLink).then(async (file) => {
+	selectFile({ anchorElement: ev.currentTarget ?? ev.target, label: i18n.ts.mutualLink }).then(async (file) => {
 		mutualLinkSections.value[sectionIndex].mutualLinks[linkIndex].imgSrc = file.url;
 		mutualLinkSections.value[sectionIndex].mutualLinks[linkIndex].fileId = file.id;
 	});

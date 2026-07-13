@@ -515,6 +515,9 @@ export const PREF_DEF = definePreferences({
 	'sound.on.reaction': {
 		default: { type: 'syuilo/bubble2', volume: 1 } as SoundStore,
 	},
+	'sound.on.chat': {
+		default: { type: 'syuilo/waon', volume: 1 } as SoundStore,
+	},
 	'sound.on.chatMessage': {
 		default: { type: 'syuilo/waon', volume: 1 } as SoundStore,
 	},

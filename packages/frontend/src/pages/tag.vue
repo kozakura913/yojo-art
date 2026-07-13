@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<PageWithHeader :key="headerActions" :actions="headerActions" :tabs="headerTabs">
+<PageWithHeader :key="props.tag" :actions="headerActions" :tabs="headerTabs">
 	<div class="_spacer" style="--MI_SPACER-w: 800px;">
 		<MkNotesTimeline :paginator="paginator"/>
 	</div>
@@ -126,8 +126,8 @@ onUnmounted(() => {
 function openStream() {
 	connection = stream.useChannel('hashtag', {
 		q: [[props.tag]],
-	});
-	connection.on('note', note => {
+	}) as Misskey.ChannelConnection;
+	connection!.on('note', note => {
 		note.value?.pagingComponent?.prepend(note);
 	});
 }
