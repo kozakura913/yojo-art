@@ -66,7 +66,7 @@ services:
         read_only: true
       - type: bind
         source: ../scripts/compile_config.js
-        target: /misskey/packages/backend/scripts/compile_config.js
+        target: /cherrypick/packages/backend/scripts/compile_config.js
         read_only: true
       - type: bind
         source: ../../misskey-js/built
@@ -78,11 +78,11 @@ services:
         read_only: true
       - type: bind
         source: ../../i18n/built
-        target: /misskey/packages/i18n/built
+        target: /cherrypick/packages/i18n/built
         read_only: true
       - type: bind
         source: ../../i18n/package.json
-        target: /misskey/packages/i18n/package.json
+        target: /cherrypick/packages/i18n/package.json
         read_only: true
       - type: bind
         source: ../../../package.json

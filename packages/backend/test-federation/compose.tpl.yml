@@ -92,7 +92,7 @@ services:
         read_only: true
       - type: bind
         source: ../../../patches
-        target: /misskey/patches
+        target: /cherrypick/patches
         read_only: true
       - type: bind
         source: ./certificates/rootCA.crt
