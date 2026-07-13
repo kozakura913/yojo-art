@@ -29,7 +29,7 @@ export const meta = {
 		properties: {
 			sourceLang: { type: 'string' },
 			text: { type: 'string' },
-			translator: { type: 'string', enum: ['deepl', 'ctav3', 'libretranslate'] },
+			translator: { type: 'string', enum: ['deepl', 'ctav3', 'libretranslate', 'web'] },
 		},
 	},
 
@@ -172,7 +172,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		const res = await this.httpRequestService.send(endpoint, {
 			method: 'POST',
 			headers: {
-					'Authorization': `DeepL-Auth-Key ${this.serverSettings.deeplAuthKey}`,
+				'Authorization': `DeepL-Auth-Key ${this.serverSettings.deeplAuthKey}`,
 				'Content-Type': 'application/x-www-form-urlencoded',
 				Accept: 'application/json, */*',
 			},

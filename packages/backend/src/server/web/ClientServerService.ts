@@ -844,8 +844,6 @@ export class ClientServerService {
 
 			return await HtmlTemplateService.replyHtml(reply, InfoCardPage({
 				version: this.config.version,
-				basedMisskeyVersion: this.config.basedMisskeyVersion,
-				basedCherrypickVersion: this.config.basedCherrypickVersion,
 				config: this.config,
 				meta: this.meta,
 			}));
@@ -855,16 +853,12 @@ export class ClientServerService {
 		fastify.get('/bios', async (request, reply) => {
 			return await HtmlTemplateService.replyHtml(reply, BiosPage({
 				version: this.config.version,
-				basedMisskeyVersion: this.config.basedMisskeyVersion,
-				basedCherrypickVersion: this.config.basedCherrypickVersion,
 			}));
 		});
 
 		fastify.get('/cli', async (request, reply) => {
 			return await HtmlTemplateService.replyHtml(reply, CliPage({
 				version: this.config.version,
-				basedMisskeyVersion: this.config.basedMisskeyVersion,
-				basedCherrypickVersion: this.config.basedCherrypickVersion,
 			}));
 		});
 

@@ -34314,7 +34314,7 @@ export interface operations {
                         sourceLang: string;
                         text: string;
                         /** @enum {string} */
-                        translator: 'deepl' | 'ctav3' | 'libretranslate';
+                        translator: 'deepl' | 'ctav3' | 'libretranslate' | 'web';
                     };
                 };
             };
