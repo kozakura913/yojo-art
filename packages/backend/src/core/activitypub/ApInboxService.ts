@@ -1303,7 +1303,7 @@ export class ApInboxService {
 			}
 		}
 
-		const unlock = await this.appLockService.getApLock(uri);
+		const unlock = await acquireApObjectLock(this.redisClient, uri);
 
 		try {
 			const target = await this.notesRepository.findOneBy({ uri: uri });

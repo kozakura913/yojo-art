@@ -66,13 +66,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					this.apiLoggerService.logger.warn(`id: ${job.id}, data: ${JSON.stringify(job.data)}`);
 					continue;
 				}
-
-				const found = res.find(x => x[0] === host);
-				if (found) {
-					found[1]++;
-				} else {
-					res.push([host, 1]);
-				}
 				counts.set(host, (counts.get(host) ?? 0) + 1);
 			}
 
