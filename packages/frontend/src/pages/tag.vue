@@ -32,7 +32,7 @@ import * as os from '@/os.js';
 import { genEmbedCode } from '@/utility/get-embed-code.js';
 import { Paginator } from '@/utility/paginator.js';
 import { misskeyApi } from '@/utility/misskey-api';
-import { MenuItem } from '@/types/menu';
+import type { MenuItem } from '@/types/menu';
 
 const props = defineProps<{
 	tag: string;
