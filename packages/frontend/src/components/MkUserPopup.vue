@@ -50,7 +50,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkA>
 				<MkA v-if="isFollowersVisibleForMe(user)" :class="$style.statusItem" :to="userPage(user, 'followers')">
 					<div :class="$style.statusItemLabel">{{ i18n.ts.followers }}</div>
-					<b>{{ number(user.followersCount) }}</b>
+					<div>{{ number(user.followersCount) }}</div>
 				</MkA>
 			</div>
 			<button class="_button" :class="[$style.menu, { [$style.isBlocked]: user.isBlocked || user.isBlocking }]" @click="showMenu"><i class="ti ti-dots"></i></button>

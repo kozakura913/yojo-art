@@ -370,7 +370,7 @@ onUnmounted(() => {
 	align-items: center;
 	justify-content: center;
 	height: var(--height);
-	width: calc(var(--height - 8px) - (var(--MI-margin)));
+	width: calc(var(--height) - 8px - (var(--MI-margin)));
 	box-sizing: border-box;
 	position: relative;
 	border-radius: 5px;
