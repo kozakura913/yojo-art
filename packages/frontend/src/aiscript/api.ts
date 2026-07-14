@@ -139,6 +139,11 @@ export function createAiScriptEnv(opts: { storageKey: string, token?: string }) 
 				actualToken = token.value;
 			}
 
+			// Mk:requestTokenで保存したスコープ付きトークンをフォールバックとして読み出す
+			if (actualToken == null) {
+				actualToken = miLocalStorage.getItem(`aiscriptSecure:${opts.storageKey}:${randomString}:accessToken`);
+			}
+
 			if (actualToken == null) {
 				actualToken = opts.token ?? null;
 			}
