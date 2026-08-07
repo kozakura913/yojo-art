@@ -944,9 +944,12 @@ type StoredDrafts = {
 			useCw: boolean;
 			cw: string | null;
 			visibility: 'public' | 'home' | 'followers' | 'specified';
-			localOnly: boolean;
 			files: Misskey.entities.DriveFile[];
 			poll: PollEditorModelValue | null;
+			saveToDraft: boolean;
+			searchableBy: 'public' | 'followersAndReacted' | 'reactedOnly' | 'private' | null;
+			event: Misskey.entities.Note['event'] | null;
+			scheduledNoteDelete: DeleteScheduleEditorModelValue | null;
 			visibleUserIds?: string[];
 			quoteId: string | null;
 			reactionAcceptance: 'likeOnly' | 'likeOnlyForRemote' | 'nonSensitiveOnly' | 'nonSensitiveOnlyForLocalLikeOnlyForRemote' | null;
@@ -1223,7 +1226,7 @@ async function post(ev?: PointerEvent) {
 			clear();
 		}
 
-		globalEvents.emit('notePosted', res.createdNote);
+		if (res && 'createdNote' in res) globalEvents.emit('notePosted', res.createdNote as Misskey.entities.Note);
 
 		nextTick(() => {
 			deleteDraft();
@@ -1360,29 +1363,10 @@ async function insertEmoji(ev: PointerEvent) {
 
 async function insertMfmFunction(ev: PointerEvent) {
 	if (textareaEl.value == null) return;
-	let pos = textareaEl.value.selectionStart ?? 0;
-	let posEnd = textareaEl.value.selectionEnd ?? text.value.length;
 	mfmFunctionPicker(
 		ev.currentTarget ?? ev.target,
-		(tag) => {
-			if (pos === posEnd) {
-				text.value = `${text.value.substring(0, pos)}$[${tag} ]${text.value.substring(pos)}`;
-				pos += tag.length + 3;
-				posEnd = pos;
-			} else {
-				text.value = `${text.value.substring(0, pos)}$[${tag} ${text.value.substring(pos, posEnd)}]${text.value.substring(posEnd)}`;
-				pos += tag.length + 3;
-				posEnd = pos;
-			}
-		},
-		() => {
-			nextTick(() => {
-				if (textareaEl.value) {
-					textareaEl.value.focus();
-					textareaEl.value.setSelectionRange(pos, posEnd);
-				}
-			});
-		},
+		textareaEl.value,
+		text,
 	);
 }
 
@@ -1636,7 +1620,7 @@ onMounted(() => {
 				cw.value = draft.data.cw;
 				saveToDraft.value = draft.data.saveToDraft;
 				visibility.value = draft.data.visibility;
-				searchableBy.value = draft.data.searchableBy;
+				if (draft.data.searchableBy != null) searchableBy.value = draft.data.searchableBy;
 				files.value = (draft.data.files || []).filter(draftFile => draftFile);
 				if (draft.data.poll) {
 					poll.value = draft.data.poll;
