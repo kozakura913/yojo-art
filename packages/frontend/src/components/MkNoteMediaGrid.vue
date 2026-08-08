@@ -71,19 +71,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import * as Misskey from 'misskey-js';
-import { eventFiltersIntegration } from '@sentry/vue';
-import * as os from '@/os.js';
 import { notePage } from '@/filters/note.js';
 import { i18n } from '@/i18n.js';
 import { prefer } from '@/preferences.js';
 import { shouldHideFileByDefault, canRevealFile } from '@/utility/sensitive-file.js';
 import bytes from '@/filters/bytes.js';
-import { confirmR18, wasConfirmR18 } from '@/utility/check-r18';
 
 import MkDriveFileThumbnail from '@/components/MkDriveFileThumbnail.vue';
-import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { userPage } from '@/filters/user.js';
 
 const props = defineProps<{
