@@ -1519,7 +1519,7 @@ const trustedDomains = ref(prefer.s.trustedDomains.join('\n'));
 
 // const fontSize = ref(miLocalStorage.getItem('fontSize'));
 const fontSize = prefer.model('fontSize');
-const fontSizeBefore = ref(miLocalStorage.getItem('fontSize') as '1' | '2' | '3' | null);
+const fontSizeBefore = ref(miLocalStorage.getItem('fontSize') as string | null);
 const useSystemFont = ref(miLocalStorage.getItem('useSystemFont') != null);
 const useBoldFont = ref(miLocalStorage.getItem('useBoldFont') === 'true');
 
@@ -1980,7 +1980,7 @@ watch(trustedDomains, () => {
 
 onMounted(() => {
 	if (fontSizeBefore.value == null) {
-		fontSizeBefore.value = String(fontSize.value) as '1' | '2' | '3' | null;
+		fontSizeBefore.value = String(fontSize.value);
 	}
 });
 

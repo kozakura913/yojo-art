@@ -50,6 +50,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts">
 import type { StyleValue } from 'vue';
 import type { OptionValue } from '@/types/option-value.js';
+import { haptic } from '@/utility/haptic.js';
 
 export type MkRadiosOption<T = OptionValue, S = string> = {
 	value: T;
@@ -88,6 +89,7 @@ function getKey(value: OptionValue): PropertyKey {
 function toggle(o: MkRadiosOption): void {
 	if (o.disabled) return;
 	model.value = o.value;
+	haptic();
 }
 </script>
 

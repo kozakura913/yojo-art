@@ -136,7 +136,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						:enableEmojiMenu="!!$i"
 						:enableEmojiMenuReaction="!!$i"
 						class="_selectable"
-						:enableAnimatedMfm="enableAnimatedMfm"
+						:enableAnimatedMfm="$i ? undefined : enableAnimatedMfm"
 					/>
 					<a v-if="appearNote.renote != null" :class="$style.rn">RN:</a>
 					<div v-if="prefer.s.showTranslateButtonInNote && (!prefer.s.useAutoTranslate || (!$i?.policies.canUseAutoTranslate || (prefer.s.useAutoTranslate && (appearNote.cw != null || !showContent)))) && instance.translatorAvailable && $i && $i.policies.canUseTranslator && (appearNote.text || appearNote.poll) && isForeignLanguage" style="padding: 5px 0; color: var(--MI_THEME-accent);">
@@ -203,7 +203,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkA v-if="appearNote.channel && !inChannel" :class="$style.channel" :to="`/channels/${appearNote.channel.id}`"><i class="ti ti-device-tv"></i> {{ appearNote.channel.name }}</MkA>
 			</div>
 			<div v-if="!$i && isAnimatedMfm" :class="$style.play_mfm_action">
-				<MkSwitch v-model="enableAnimatedMfmSwitch">
+				<MkSwitch v-model="enableAnimatedMfm">
 					<template #label>{{ i18n.ts.enableAnimatedMfm }}</template>
 				</MkSwitch>
 			</div>
@@ -233,6 +233,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					:noteId="appearNote.id"
 					:note="appearNote"
 					:maxNumber="16"
+					@mockUpdateMyReaction="emitUpdReaction"
 				/>
 				<template v-if="prefer.s.showReplyButtonInNoteFooter">
 					<button v-if="!note.isHidden" v-tooltip="i18n.ts.reply" class="_button" :class="$style.noteFooterButton" @click="reply()">
@@ -453,6 +454,11 @@ const props = withDefaults(defineProps<{
 	initialTab: 'replies',
 });
 
+const emit = defineEmits<{
+	(ev: 'reaction', emoji: string): void;
+	(ev: 'removeReaction', emoji: string): void;
+}>();
+
 const inChannel = inject('inChannel', null);
 
 let note = deepClone(props.note);
@@ -483,8 +489,7 @@ const { $note: $appearNote, subscribe: subscribeManuallyToNoteCapture } = useNot
 	parentNote: note,
 });
 
-const enableAnimatedMfm = $i ? undefined : computed(store.makeGetterSetter('animatedMfm'));
-const enableAnimatedMfmSwitch = computed(store.makeGetterSetter('animatedMfm'));
+const enableAnimatedMfm = computed(store.makeGetterSetter('animatedMfm'));
 
 const rootEl = useTemplateRef('rootEl');
 const menuButton = useTemplateRef('menuButton');
@@ -1041,6 +1046,14 @@ watch(() => tab.value, async (newTab) => {
 		await loadHistories();
 	}
 });
+
+function emitUpdReaction(emoji: string, delta: number) {
+	if (delta < 0) {
+		emit('removeReaction', emoji);
+	} else if (delta > 0) {
+		emit('reaction', emoji);
+	}
+}
 </script>
 
 <style lang="scss" module>
