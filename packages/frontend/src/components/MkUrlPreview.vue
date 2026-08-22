@@ -142,7 +142,7 @@ if (props.host === requestUrl.host && (requestUrl.pathname.startsWith('/clips/')
 	requestUrl = new URL(local + split[0] + '@' + (split.length >= 2 ? split[1] : props.host));
 	self = true;
 	url_string = requestUrl.toString();
-	requestUrl = new URL(props.url);
+	requestUrl = new URL(props.url, window.location.href);
 } else {
 	url_string = requestUrl.toString();
 }
@@ -220,10 +220,11 @@ window.fetch(`${instance.urlPreviewEndpoint}?url=${encodeURIComponent(requestUrl
 
 		fetching.value = false;
 		unknownUrl.value = false;
-		info.thumbnail = getProxiedImageUrlNullable(info.thumbnail, 'avatar', true);
-		info.icon = getProxiedImageUrlNullable(info.icon, 'emoji', true);
-
-		summalyResult.value = info;
+		summalyResult.value = {
+			...info,
+			thumbnail: getProxiedImageUrlNullable(info.thumbnail, 'avatar', true),
+			icon: getProxiedImageUrlNullable(info.icon, 'emoji', true),
+		};
 	});
 
 async function openBskyEmbed() {
