@@ -490,7 +490,7 @@ const { $note: $appearNote, subscribe: subscribeManuallyToNoteCapture } = useNot
 	parentNote: note,
 });
 
-const enableAnimatedMfm = computed(store.makeGetterSetter('animatedMfm'));
+const enableAnimatedMfm = prefer.model('animatedMfm');
 const rootEl = useTemplateRef('rootEl');
 const menuButton = useTemplateRef('menuButton');
 const renoteButton = useTemplateRef('renoteButton');

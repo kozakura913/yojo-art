@@ -187,7 +187,6 @@ import { confetti } from '@/utility/confetti.js';
 import { genId } from '@/utility/id.js';
 import { prefer } from '@/preferences.js';
 import { getStaticImageUrl } from '@/utility/media-proxy.js';
-import { store } from '@/store.js';
 
 const props = defineProps<{
 	game: Misskey.entities.ReversiGameDetailed;
@@ -509,7 +508,7 @@ function resetTimer() {
 	playAnimationTimer = window.setTimeout(() => playAnimation.value = false, 5000);
 }
 
-const _reactionEmojis = ref(store.r.reactions);
+const _reactionEmojis = ref(prefer.s.reactions);
 const reactionEmojis = computed(() => _reactionEmojis.value.slice(0, 10));
 
 const blackUserEl = ref<HTMLElement | null>(null);

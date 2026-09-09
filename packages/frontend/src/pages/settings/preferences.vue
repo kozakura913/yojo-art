@@ -1459,7 +1459,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<template #caption><SearchText>{{ i18n.ts._searchSite.description }}</SearchText></template>
 							</MkSelect>
 
-							<template v-if="store.s.searchEngine == 'other'">
+							<template v-if="prefer.s.searchEngine == 'other'">
 								<SearchMarker>
 									<MkInput v-model="searchEngineUrl">
 										<template #label><SearchLabel>{{ i18n.ts._searchSite.otherSearchEngine }}</SearchLabel> <span class="_beta">CherryPick</span></template>
@@ -1650,9 +1650,9 @@ const disableNyaize = prefer.model('disableNyaize');
 const requireRefreshBehavior = prefer.model('requireRefreshBehavior');
 const newNoteReceivedNotificationBehavior = prefer.model('newNoteReceivedNotificationBehavior');
 const externalNavigationWarning = prefer.model('externalNavigationWarning');
-const searchEngine = computed(store.makeGetterSetter('searchEngine'));
-const searchEngineUrl = computed(store.makeGetterSetter('searchEngineUrl'));
-const searchEngineUrlQuery = computed(store.makeGetterSetter('searchEngineUrlQuery'));
+const searchEngine = prefer.model('searchEngine');
+const searchEngineUrl = prefer.model('searchEngineUrl');
+const searchEngineUrlQuery = prefer.model('searchEngineUrlQuery');
 const removeModalBgColorForBlur = prefer.model('removeModalBgColorForBlur');
 const setFederationAvatarShape = prefer.model('setFederationAvatarShape');
 const showUnreadNotificationsCount = prefer.model('showUnreadNotificationsCount');

@@ -5,7 +5,7 @@
 
 import { ref, computed } from 'vue';
 import type { Ref } from 'vue';
-import * as mfm from 'mfm-js';
+import * as mfm from 'mfc-js';
 import * as Misskey from 'misskey-js';
 import { isLink } from '@@/js/is-link.js';
 import { shouldCollapsed } from '@@/js/collapsed.js';
@@ -19,6 +19,7 @@ import * as os from '@/os.js';
 import { reactionPicker } from '@/utility/reaction-picker.js';
 import { extractUrlFromMfm } from '@/utility/extract-url-from-mfm.js';
 import { getNoteClipMenu, getNoteMenu, getRenoteMenu, getAbuseNoteMenu, getCopyNoteLinkMenu } from '@/utility/get-note-menu.js';
+import type { TranslateStatus } from '@/utility/translate.js';
 import { noteEvents, useNoteCapture } from '@/composables/use-note-capture.js';
 import { deepClone } from '@/utility/clone.js';
 import { useTooltip } from '@/composables/use-tooltip.js';
@@ -141,8 +142,10 @@ export function useNote(
 	// 各種フラグ状態
 	const showContent = ref(false);
 	const isDeleted = ref(false);
-	const translating = ref(false);
+	const translateStatus = ref<TranslateStatus>('none');
 	const translation = ref<Misskey.entities.NotesTranslateResponse | null>(null);
+	const viewTextSource = ref(false);
+	const noNyaize = ref(false);
 
 	// ミュート判定
 	const muted = ref($i ? calculateMuteStatus(appearNote, $i, $i.mutedWords, inTimeline && !tl_withSensitive.value) : false);
@@ -220,7 +223,7 @@ export function useNote(
 		if (!isLoggedIn) return;
 		showMovedDialog();
 		if (els.renoteButton == null) return;
-		const { menu } = getRenoteMenu({
+		const { menu } = await getRenoteMenu({
 			note: rawNote,
 			renoteButton: els.renoteButton,
 			mock: props.mock,
@@ -341,8 +344,11 @@ export function useNote(
 		} else {
 			const { menu, cleanup } = getNoteMenu({
 				note: rawNote,
-				translating,
+				collapsed,
 				translation,
+				translateStatus,
+				viewTextSource,
+				noNyaize,
 				currentClip: currentClip?.value,
 				currentAntenna: currentAntenna?.value ?? undefined,
 			});
@@ -354,8 +360,10 @@ export function useNote(
 		if (props.mock || els.menuButton == null) return;
 		const { menu, cleanup } = getNoteMenu({
 			note: rawNote,
-			translating,
 			translation,
+			translateStatus,
+			viewTextSource,
+			noNyaize,
 			currentClip: currentClip?.value,
 			currentAntenna: currentAntenna?.value ?? undefined,
 		});
@@ -430,8 +438,10 @@ export function useNote(
 		isRenote,
 		showContent,
 		isDeleted,
-		translating,
+		translateStatus,
 		translation,
+		viewTextSource,
+		noNyaize,
 		muted,
 		hardMuted,
 		collapsed,

@@ -28,6 +28,7 @@ import { analytics, initAnalytics } from '@/analytics.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { fetchCustomEmojis } from '@/custom-emojis.js';
 import { prefer } from '@/preferences.js';
+import { migrateLegacyStoreValues } from '@/preferences/legacyStoreMigration.js';
 import { $i } from '@/i.js';
 import { launchPlugins } from '@/plugin.js';
 import { initTelemetry } from '@/telemetry.js';
@@ -136,6 +137,11 @@ export async function common(createVue: () => Promise<App<Element>>) {
 
 	await store.ready;
 	await deckStore.ready;
+
+	// 旧store (Pizzax) から preferences への一度だけの移行
+	if (!isSafeMode) {
+		await migrateLegacyStoreValues();
+	}
 
 	const fetchInstanceMetaPromise = fetchInstance();
 

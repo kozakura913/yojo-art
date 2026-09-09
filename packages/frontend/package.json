@@ -13,7 +13,7 @@
 		"test-and-coverage": "vitest --run --coverage --globals --config vitest.config.unit.ts",
 		"test:e2e": "playwright test --config playwright.config.ts",
 		"test:browser": "vitest --run --globals --config vitest.config.browser.ts",
-		"typecheck": "vue-tsc --noEmit",
+		"typecheck": "cross-env NODE_OPTIONS=--max-old-space-size=4096 vue-tsc --noEmit",
 		"eslint": "eslint --quiet \"src/**/*.{ts,vue}\"",
 		"lint": "pnpm typecheck && pnpm eslint",
 		"biome-lint": "pnpm typecheck && pnpm biome lint",
