@@ -218,7 +218,7 @@ const defaultDependencies: LogManagerDependencies = {
  * Loggerと出力先の間に置くことで、設定や共通情報の扱いを一か所へ集約します。
  */
 export class LogManager {
-	private backend: LogBackend;
+	private backends: LogBackend[];
 	private readonly dependencies: LogManagerDependencies;
 	private normalizationProfile: LogNormalizationProfile;
 	private traceContextProvider: LogTraceContextProvider | undefined;
@@ -236,7 +236,7 @@ export class LogManager {
 		dependencies: Partial<LogManagerDependencies> = {},
 		options: LogManagerOptions = {},
 	) {
-		this.backend = backend;
+		this.backends = [backend];
 		this.dependencies = {
 			...defaultDependencies,
 			...dependencies,
@@ -253,7 +253,12 @@ export class LogManager {
 	 * 作成済みのLoggerにも切り替えを反映するため、LogManager側で保持します。
 	 */
 	public setBackend(backend: LogBackend): void {
-		this.backend = backend;
+		this.backends = [backend];
+	}
+
+	/** 既存の出力先を保ったまま、追加の出力先を登録します (yojo-art: Cloud Logging 等)。 */
+	public addBackend(backend: LogBackend): void {
+		this.backends.push(backend);
 	}
 
 	/** 起動時の既定levelとdomain別levelを適用します。 */
@@ -290,10 +295,12 @@ export class LogManager {
 		if (this.shutdownPromise != null) return this.shutdownPromise;
 
 		this.shutdownPromise = (async () => {
-			try {
-				await this.backend.flush?.();
-			} finally {
-				await this.backend.close?.();
+			for (const backend of this.backends) {
+				try {
+					await backend.flush?.();
+				} finally {
+					await backend.close?.();
+				}
 			}
 		})();
 
@@ -364,7 +371,9 @@ export class LogManager {
 			...(normalizedError ? { error: normalizedError } : {}),
 		} as LogRecord;
 
-		this.backend.write(record);
+		for (const backend of this.backends) {
+			backend.write(record);
+		}
 	}
 
 	/** status classの設定を確認し、Access logの出力対象か判断します。 */
@@ -409,6 +418,8 @@ export class LogManager {
 			...(resolvedTraceContext ?? {}),
 		};
 
-		this.backend.writeAccess?.(record);
+		for (const backend of this.backends) {
+			backend.writeAccess?.(record);
+		}
 	}
 }
