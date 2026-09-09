@@ -19,7 +19,6 @@ allowBuilds:
   '@sentry/profiling-node': true
   '@sentry-internal/node-cpu-profiler': true
   '@sentry/node-cpu-profiler': true
-  argon2: true
   bufferutil: true
   canvas: true
   core-js: true
@@ -32,6 +31,8 @@ allowBuilds:
   utf-8-validate: true
   v-code-diff: true
   vue-demi: true
+  # argon2 is bundled with prebuilds, but its install script calls cross-env which pnpm does not link
+  argon2: false
   exifreader: false
   protobufjs: false
 minimumReleaseAge: 10080 # delay 7days to mitigate supply-chain attack
