@@ -438,7 +438,7 @@ import { userPage } from '@/filters/user.js';
 import number from '@/filters/number.js';
 import * as os from '@/os.js';
 import * as sound from '@/utility/sound.js';
-import { misskeyApi } from '@/utility/misskey-api.js';
+import { misskeyApi, misskeyApiGet } from '@/utility/misskey-api.js';
 import { reactionPicker } from '@/utility/reaction-picker.js';
 import { extractUrlFromMfm } from '@/utility/extract-url-from-mfm.js';
 import { $i } from '@/i.js';
@@ -480,13 +480,14 @@ const props = withDefaults(defineProps<{
 	mock: false,
 });
 
-provide(DI.mock, props.mock);
-
 const emit = defineEmits<{
 	(ev: 'reaction', emoji: string): void;
 	(ev: 'removeReaction', emoji: string): void;
 }>();
 
+provide(DI.mock, props.mock);
+
+// 周辺コンテキストのインジェクト
 const inTimeline = inject<boolean>('inTimeline', false);
 const tl_withSensitive = inject<Ref<boolean>>('tl_withSensitive', ref(true));
 const inChannel = inject(DI.inChannel, null);
@@ -523,7 +524,6 @@ const { $note: $appearNote, subscribe: subscribeManuallyToNoteCapture } = useNot
 });
 
 const enableAnimatedMfm = $i ? true : computed(store.makeGetterSetter('animatedMfm'));
-
 const rootEl = useTemplateRef('rootEl');
 const menuButton = useTemplateRef('menuButton');
 const renoteButton = useTemplateRef('renoteButton');
@@ -609,6 +609,7 @@ function checkMute(noteToCheck: Misskey.entities.Note, mutedWords: Array<string 
 }
 /* eslint-enable no-redeclare */
 
+// キーボードショートカットマップ
 const keymap = {
 	'r': () => {
 		if (renoteCollapsed.value) return;
@@ -711,9 +712,10 @@ if (!props.mock) {
 
 	if (appearNote.reactionAcceptance === 'likeOnly') {
 		useTooltip(reactButton, async (showing) => {
-			const reactions = await misskeyApi('notes/reactions', {
+			const reactions = await misskeyApiGet('notes/reactions', {
 				noteId: appearNote.id,
 				limit: 10,
+				_cacheKey_: $appearNote.reactionCount,
 			});
 
 			const users = reactions.map(x => x.user);

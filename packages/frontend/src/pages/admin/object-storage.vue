@@ -70,7 +70,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 								</SearchMarker>
 
 								<SearchMarker>
-									<MkInput v-model="objectStorageForm.state.objectStorageSecretKey" type="password">
+									<MkInput v-model="objectStorageForm.state.objectStorageSecretKey" type="password" autocomplete="new-password">
 										<template #prefix><i class="ti ti-key"></i></template>
 										<template #label>Secret key<span v-if="objectStorageForm.modifiedStates.objectStorageSecretKey" class="_modified">{{ i18n.ts.modified }}</span></template>
 									</MkInput>

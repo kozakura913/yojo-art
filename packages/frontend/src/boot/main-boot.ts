@@ -27,7 +27,6 @@ import { makeHotkey } from '@/utility/hotkey.js';
 import { addCustomEmoji, removeCustomEmojis, updateCustomEmojis } from '@/custom-emojis.js';
 import { prefer } from '@/preferences.js';
 import { updateCurrentAccountPartial } from '@/accounts.js';
-import { migrateOldSettings } from '@/pref-migrate.js';
 import { unisonReload } from '@/utility/unison-reload.js';
 import { isBirthday } from '@/utility/is-birthday.js';
 import { userName } from '@/filters/user.js';
@@ -75,17 +74,13 @@ export async function mainBoot() {
 
 		// prefereces migration
 		// TODO: そのうち消す
-		if (lastVersion && (compareVersions('1.6.0', lastVersion) === 1)) {
-			console.log('Preferences migration');
-
-			migrateOldSettings();
+		if (isClientMigrated && $i) {
+			miLocalStorage.removeItem('neverShowDonationInfo');
+			miLocalStorage.removeItem('latestDonationInfoShownAt');
+			const { dispose } = popup(defineAsyncComponent(() => import('@/components/MkMigrated.vue')), {}, {
+				closed: () => dispose(),
+			});
 		}
-	}	else if (isClientMigrated && $i) {
-		miLocalStorage.removeItem('neverShowDonationInfo');
-		miLocalStorage.removeItem('latestDonationInfoShownAt');
-		const { dispose } = popup(defineAsyncComponent(() => import('@/components/MkMigrated.vue')), {}, {
-			closed: () => dispose(),
-		});
 	}
 
 	try {
