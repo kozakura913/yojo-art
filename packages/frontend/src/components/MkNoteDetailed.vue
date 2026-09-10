@@ -198,7 +198,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<div v-if="isEnabledUrlPreview">
 						<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="true" :host="appearNote.user.host" style="margin-top: 6px;"/>
 					</div>
-					<div v-if="appearNote.renote" :class="$style.quote"><MkNoteSimple :note="appearNote.renote" :class="$style.quoteNote"/></div>
+					<div v-if="appearNote.renoteId" :class="$style.quote"><MkNoteSimple :note="appearNote?.renote ?? null" :class="$style.quoteNote"/></div>
 				</div>
 				<MkA v-if="appearNote.channel && !inChannel" :class="$style.channel" :to="`/channels/${appearNote.channel.id}`"><i class="ti ti-device-tv"></i> {{ appearNote.channel.name }}</MkA>
 			</div>
@@ -409,7 +409,7 @@ import { checkWordMute } from '@/utility/check-word-mute.js';
 import { userPage } from '@/filters/user.js';
 import { notePage } from '@/filters/note.js';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/utility/misskey-api.js';
+import { misskeyApi, misskeyApiGet } from '@/utility/misskey-api.js';
 import * as sound from '@/utility/sound.js';
 import { reactionPicker } from '@/utility/reaction-picker.js';
 import { extractUrlFromMfm } from '@/utility/extract-url-from-mfm.js';
@@ -490,8 +490,7 @@ const { $note: $appearNote, subscribe: subscribeManuallyToNoteCapture } = useNot
 	parentNote: note,
 });
 
-const enableAnimatedMfm = computed(store.makeGetterSetter('animatedMfm'));
-
+const enableAnimatedMfm = prefer.model('animatedMfm');
 const rootEl = useTemplateRef('rootEl');
 const menuButton = useTemplateRef('menuButton');
 const renoteButton = useTemplateRef('renoteButton');
@@ -535,6 +534,7 @@ const pleaseLoginContext = computed<OpenOnRemoteOptions>(() => ({
 	url: `https://${host}/notes/${appearNote.id}`,
 }));
 
+// キーボードショートカットマップ
 const keymap = {
 	'r': () => reply(),
 	'e|a|plus': () => react(),
@@ -614,9 +614,10 @@ useTooltip(renoteButton, async (showing) => {
 
 if (appearNote.reactionAcceptance === 'likeOnly') {
 	useTooltip(reactButton, async (showing) => {
-		const reactions = await misskeyApi('notes/reactions', {
+		const reactions = await misskeyApiGet('notes/reactions', {
 			noteId: appearNote.id,
 			limit: 10,
+			_cacheKey_: $appearNote.reactionCount,
 		});
 
 		const users = reactions.map(x => x.user);
