@@ -7,7 +7,7 @@ import util from 'util';
 import stripAnsi from 'strip-ansi';
 import type { Log } from '@google-cloud/logging';
 import type { LogBackend } from './LogBackend.js';
-import type { LogRecord } from './types.js';
+import type { LogRecord, LogLevel } from './types.js';
 
 /**
  * 正規化済みのログをGoogle Cloud Loggingへ出力するための出力先です。
@@ -21,15 +21,21 @@ export class CloudLoggingBackend implements LogBackend {
 	}
 
 	public write(record: LogRecord): void {
-		// `fatal`はCloud Loggingのseverityへ存在しないため、`error`として扱います。
-		const severity = record.level === 'fatal' ? 'error' : record.level;
+		// Cloud LoggingのLogSeverityは`warn`ではなく`WARNING`。`fatal`は存在しないため`ERROR`として扱います。
+		const severityMap: Record<LogLevel, string> = {
+			debug: 'DEBUG',
+			info: 'INFO',
+			warn: 'WARNING',
+			error: 'ERROR',
+			fatal: 'ERROR',
+		};
 
 		const logMessage = stripAnsi(record.message);
 		const metadata = {
-			severity: severity.toUpperCase(),
+			severity: severityMap[record.level],
+			timestamp: new Date(record.timestamp),
 			resource: {
 				type: 'global',
-				timestamp: new Date(record.timestamp),
 			},
 			labels: {
 				name: record.loggerName,
