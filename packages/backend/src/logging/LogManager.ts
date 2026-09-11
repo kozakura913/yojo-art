@@ -258,6 +258,12 @@ export class LogManager {
 
 	/** 既存の出力先を保ったまま、追加の出力先を登録します (yojo-art: Cloud Logging 等)。 */
 	public addBackend(backend: LogBackend): void {
+		// 同一プロセスで複数のNestアプリが起動する場合 (disableClustering等) でも、
+		// dedupeKeyを持つ出力先が二重登録されてログが重複送信されないようにします。
+		if (backend.dedupeKey != null
+			&& this.backends.some(existing => existing.dedupeKey === backend.dedupeKey)) {
+			return;
+		}
 		this.backends.push(backend);
 	}
 

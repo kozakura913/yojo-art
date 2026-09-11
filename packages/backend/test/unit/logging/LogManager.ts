@@ -5,7 +5,7 @@
 
 import { describe, expect, test, vi } from 'vitest';
 import type { LogBackend } from '@/logging/LogBackend.js';
-import type { AccessLogRecord, AccessLogRecordInput, LogRecordInput, LogTraceContext } from '@/logging/types.js';
+import type { AccessLogRecord, AccessLogRecordInput, LogRecord, LogRecordInput, LogTraceContext } from '@/logging/types.js';
 import { LogManager } from '@/logging/LogManager.js';
 
 /** テストで使う最小構成のログ入力を作成します。 */
@@ -320,6 +320,40 @@ describe('LogManager', () => {
 
 		expect(write).not.toHaveBeenCalled();
 		expect(replacementWrite).toHaveBeenCalledOnce();
+	});
+
+	test('does not register a backend with a known dedupeKey twice', () => {
+		const { manager, write } = createManager();
+
+		class CloudLikeBackend implements LogBackend {
+			public readonly dedupeKey = 'cloudLike';
+			public readonly records: LogRecord[] = [];
+			public write(record: LogRecord): void { this.records.push(record); }
+		}
+		const added = new CloudLikeBackend();
+		const duplicate = new CloudLikeBackend();
+
+		manager.addBackend(added);
+		manager.addBackend(duplicate);
+		manager.write(createInput());
+
+		expect(write).toHaveBeenCalledOnce();
+		expect(added.records).toHaveLength(1);
+		expect(duplicate.records).toHaveLength(0);
+	});
+
+	test('registers backends without a dedupeKey independently', () => {
+		const { manager, write } = createManager();
+		const first = vi.fn<LogBackend['write']>();
+		const second = vi.fn<LogBackend['write']>();
+
+		manager.addBackend({ write: first });
+		manager.addBackend({ write: second });
+		manager.write(createInput());
+
+		expect(write).toHaveBeenCalledOnce();
+		expect(first).toHaveBeenCalledOnce();
+		expect(second).toHaveBeenCalledOnce();
 	});
 
 	test('flushes and closes the backend once during shutdown', async () => {

@@ -10,6 +10,12 @@ import type { AccessLogRecord, LogRecord } from './types.js';
  * Loggerを特定の出力形式へ依存させず、後から出力先を追加できるようにします。
  */
 export interface LogBackend {
+	/**
+	 * 追加登録時に同じキーの出力先が既にあれば登録をスキップします。
+	 * 同一キーを持つ出力先の二重登録を防ぎたい出力先だけが設定します。
+	 */
+	readonly dedupeKey?: string;
+
 	/** ログを一件出力します。 */
 	write(record: LogRecord): void;
 
