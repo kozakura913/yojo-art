@@ -347,7 +347,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<button v-if="appearNote.reactionAcceptance !== 'likeOnly' && $appearNote.myReaction == null && prefer.s.showLikeButtonInNoteFooter" ref="heartReactButton" v-tooltip="i18n.ts.like" :class="$style.footerButton" class="_button" @click.stop="heartReact()">
 					<i class="ti ti-heart"></i>
 				</button>
-				<button v-if="prefer.s.showDoReactionButtonInNoteFooter" ref="reactButton" v-tooltip="appearNote.reactionAcceptance === 'likeOnly' && $appearNote.myReaction != null ? i18n.ts.unlike : $appearNote.myReaction != null ? i18n.ts.editReaction : appearNote.reactionAcceptance === 'likeOnly' ? i18n.ts.like : i18n.ts.doReaction" :class="$style.footerButton" class="_button" @click.stop="toggleReact()">
+				<button v-if="prefer.s.showDoReactionButtonInNoteFooter" ref="reactButton" v-tooltip="appearNote.reactionAcceptance === 'likeOnly' && $appearNote.myReaction != null ? i18n.ts.unlike : $appearNote.myReaction != null ? i18n.ts.editReaction : appearNote.reactionAcceptance === 'likeOnly' ? i18n.ts.like : i18n.ts.doReaction" :class="$style.footerButton" class="_button" @click.stop="handleToggleReact()">
 					<i v-if="appearNote.reactionAcceptance === 'likeOnly' && $appearNote.myReaction != null" class="ti ti-heart-filled" style="color: var(--MI_THEME-love);"></i>
 					<i v-else-if="$appearNote.myReaction != null" class="ti ti-mood-edit" style="color: var(--MI_THEME-accent);"></i>
 					<i v-else-if="appearNote.reactionAcceptance === 'likeOnly'" class="ti ti-heart"></i>
@@ -405,12 +405,26 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, provide, ref, useTemplateRef } from 'vue';
-import * as Misskey from 'misskey-js';
-import { shouldAnimatedMfm } from '@@/js/collapsed.js';
+import { computed, inject, ref, useTemplateRef, provide } from 'vue';
 import type { Ref } from 'vue';
+import * as Misskey from 'misskey-js';
+import { concat } from '@@/js/array.js';
+import { useNote } from '@/composables/use-note.js';
+import { prefer } from '@/preferences.js';
+import { i18n } from '@/i18n.js';
+import { $i } from '@/i.js';
+import { userPage } from '@/filters/user.js';
+import { notePage } from '@/filters/note.js';
+import number from '@/filters/number.js';
+import { getNoteSummary } from '@/utility/get-note-summary.js';
+import { isEnabledUrlPreview } from '@/utility/url-preview.js';
+import { focusPrev, focusNext } from '@/utility/focus.js';
+import { instance } from '@/instance.js';
+import { store } from '@/store.js';
+import { DI } from '@/di.js';
 import type { Keymap } from '@/utility/hotkey.js';
-import type { MenuItem } from '@/types/menu.js';
+
+// コンポーネント外部の依存関係
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkNoteSub from '@/components/MkNoteSub.vue';
 import MkNoteHeader from '@/components/MkNoteHeader.vue';
@@ -423,23 +437,6 @@ import MkUrlPreview from '@/components/MkUrlPreview.vue';
 import MkEvent from '@/components/MkEvent.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkButton from '@/components/MkButton.vue';
-import { focusPrev, focusNext } from '@/utility/focus.js';
-import { userPage } from '@/filters/user.js';
-import { notePage } from '@/filters/note.js';
-import number from '@/filters/number.js';
-import { misskeyApi } from '@/utility/misskey-api.js';
-import * as os from '@/os.js';
-import { getNoteSummary } from '@/utility/get-note-summary.js';
-import { isEnabledUrlPreview } from '@/utility/url-preview.js';
-import { getAbuseNoteMenu, getCopyNoteLinkMenu } from '@/utility/get-note-menu.js';
-import { prefer } from '@/preferences.js';
-import { i18n } from '@/i18n.js';
-import { instance } from '@/instance.js';
-import { store } from '@/store.js';
-import { $i } from '@/i.js';
-import { globalEvents } from '@/events.js';
-import { DI } from '@/di.js';
-import { useNote } from '@/composables/use-note.js';
 
 const props = withDefaults(defineProps<{
 	note: Misskey.entities.Note;
@@ -464,7 +461,7 @@ provide(DI.mock, props.mock);
 const inTimeline = inject<boolean>('inTimeline', false);
 const tl_withSensitive = inject<Ref<boolean>>('tl_withSensitive', ref(true));
 const inChannel = inject(DI.inChannel, null);
-const currentClip = inject<Ref<Misskey.entities.Clip | null> | null>('currentClip', null);
+const currentClip = inject<Ref<Misskey.entities.Clip> | null>('currentClip', null);
 const currentAntenna = inject<Ref<Misskey.entities.Antenna | null> | null>('currentAntenna', null);
 
 // Template Refsの定義
@@ -478,6 +475,7 @@ const quoteButton = useTemplateRef('quoteButton');
 const clipButton = useTemplateRef('clipButton');
 const galleryEl = useTemplateRef('galleryEl');
 
+// コンポーサブルの呼び出し
 const {
 	note,
 	appearNote,
@@ -494,27 +492,31 @@ const {
 	collapsed,
 	renoteCollapsed,
 	replyCollapsed,
+	isMFM,
+	isAnimatedMfm,
+	enableAnimatedMfm,
 	expandOnNoteClick,
-	isMyRenote,
+
 	parsed,
 	urls,
 	isLong,
-	isMFM,
-	isForeignLanguage,
 	canRenote,
-	collapseLabel,
 	replyTo,
+	isForeignLanguage,
+
 	renote,
 	renoteOnly,
 	quote,
 	reply,
 	react,
-	toggleReact,
+	reactViaMfmEmoji,
 	heartReact,
+	translate,
+	toggleReact,
 	onContextmenu,
 	showMenu,
 	clip,
-	translate,
+	showRenoteMenu,
 	noteClick,
 	noteDblClick,
 	blur,
@@ -530,21 +532,36 @@ const {
 }, {
 	inTimeline,
 	tl_withSensitive,
+	inChannel,
 	currentClip,
 	currentAntenna,
 	autoTranslateSkipLong: true,
-	emit: (ev, emoji) => {
-		if (ev === 'reaction') {
-			emit('reaction', emoji);
-		} else {
-			emit('removeReaction', emoji);
-		}
-	},
 });
 
+// provide
+provide(DI.mfmEmojiReactCallback, reactViaMfmEmoji);
+
+// MkNote固有
 const showSoftWordMutedWord = computed(() => prefer.s.showSoftWordMutedWord);
-const enableAnimatedMfm = $i ? true : prefer.model('animatedMfm');
-const isAnimatedMfm = $i ? undefined : shouldAnimatedMfm(appearNote);
+
+const collapseLabel = computed(() => {
+	return concat([
+		appearNote.files && appearNote.files.length !== 0 ? [i18n.tsx._cw.files({ count: appearNote.files.length })] : [],
+	] as string[][]).join(' / ');
+});
+
+function handleToggleReact() {
+	toggleReact((reaction) => {
+		if ($appearNote.myReaction === reaction) {
+			emit('removeReaction', reaction);
+		} else {
+			emit('reaction', reaction);
+			$appearNote.reactions[reaction] = 1;
+			$appearNote.reactionCount++;
+			$appearNote.myReaction = reaction;
+		}
+	});
+}
 
 // キーボードショートカットマップ
 const keymap = {
@@ -586,7 +603,7 @@ const keymap = {
 			replyCollapsed.value = false;
 		} else if (appearNote.cw != null) {
 			showContent.value = !showContent.value;
-		} else if (isLong.value || isMFM.value) {
+		} else if (isLong.value || isMFM) {
 			collapsed.value = !collapsed.value;
 		}
 	},
@@ -596,72 +613,23 @@ const keymap = {
 	},
 	'up|k|shift+tab': {
 		allowRepeat: true,
-		callback: () => focusPrev(rootEl.value),
+		callback: () => focusBefore(),
 	},
 	'down|j|tab': {
 		allowRepeat: true,
-		callback: () => focusNext(rootEl.value),
+		callback: () => focusAfter(),
 	},
 } as const satisfies Keymap;
 
-async function showRenoteMenu(): Promise<void> {
-	if (props.mock) {
-		return;
-	}
-
-	function getUnrenote(): MenuItem {
-		return {
-			text: i18n.ts.unrenote,
-			icon: 'ti ti-trash',
-			danger: true,
-			action: () => {
-				misskeyApi('notes/delete', {
-					noteId: note.id,
-				}).then(() => {
-					globalEvents.emit('noteDeleted', note.id);
-				});
-			},
-		};
-	}
-
-	const renoteDetailsMenu: MenuItem[] = [{
-		type: 'link',
-		text: i18n.ts.renoteDetails,
-		icon: 'ti ti-info-circle',
-		to: notePage(note),
-	}];
-
-	if (
-		props.note.channelId != null &&
-		(inChannel == null || props.note.channelId !== inChannel.value)
-	) {
-		renoteDetailsMenu.push({
-			type: 'link',
-			text: i18n.ts.viewRenotedChannel,
-			icon: 'ti ti-device-tv',
-			to: `/channels/${props.note.channelId}`,
-		});
-	}
-
-	if (isMyRenote.value) {
-		os.popupMenu([
-			...renoteDetailsMenu,
-			getCopyNoteLinkMenu(note, i18n.ts.copyLinkRenote),
-			{ type: 'divider' },
-			getUnrenote(),
-		], renoteTime.value);
-	} else {
-		os.popupMenu([
-			...renoteDetailsMenu,
-			getCopyNoteLinkMenu(note, i18n.ts.copyLinkRenote),
-			{ type: 'divider' },
-			getAbuseNoteMenu(note, i18n.ts.reportAbuseRenote),
-			...(($i?.isModerator || $i?.isAdmin) ? [getUnrenote()] : []),
-		], renoteTime.value);
-	}
+function focusBefore() {
+	focusPrev(rootEl.value);
 }
 
-function emitUpdReaction(emoji: string, delta: number): void {
+function focusAfter() {
+	focusNext(rootEl.value);
+}
+
+function emitUpdReaction(emoji: string, delta: number) {
 	if (delta < 0) {
 		emit('removeReaction', emoji);
 	} else if (delta > 0) {

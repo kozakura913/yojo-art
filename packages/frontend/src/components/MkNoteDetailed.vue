@@ -382,11 +382,24 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, markRaw, ref, useTemplateRef, watch } from 'vue';
+import { computed, inject, markRaw, provide, ref, useTemplateRef, watch } from 'vue';
 import * as Misskey from 'misskey-js';
-import { shouldAnimatedMfm } from '@@/js/collapsed.js';
+import { useNote } from '@/composables/use-note.js';
+import { prefer } from '@/preferences.js';
+import { i18n } from '@/i18n.js';
+import { $i } from '@/i.js';
+import { userPage } from '@/filters/user.js';
+import { notePage } from '@/filters/note.js';
+import { isEnabledUrlPreview } from '@/utility/url-preview.js';
+import { Paginator } from '@/utility/paginator.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
+import { deviceKind } from '@/utility/device-kind.js';
+import { store } from '@/store.js';
+import { instance } from '@/instance.js';
+import { DI } from '@/di.js';
 import type { Keymap } from '@/utility/hotkey.js';
-import type { MenuItem } from '@/types/menu.js';
+
+// コンポーネント外部の依存関係
 import MkNoteSub from '@/components/MkNoteSub.vue';
 import MkNoteSimple from '@/components/MkNoteSimple.vue';
 import MkReactionsViewer from '@/components/MkReactionsViewer.vue';
@@ -396,31 +409,14 @@ import MkPoll from '@/components/MkPoll.vue';
 import MkUrlPreview from '@/components/MkUrlPreview.vue';
 import MkInstanceTicker from '@/components/MkInstanceTicker.vue';
 import MkEvent from '@/components/MkEvent.vue';
+import MkInfo from '@/components/MkInfo.vue';
+import MkNoteHistory from '@/components/MkNoteHistory.vue';
+import MkSwitch from '@/components/MkSwitch.vue';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
 import MkPagination from '@/components/MkPagination.vue';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkPostForm from '@/components/MkPostFormSimple.vue';
-import MkInfo from '@/components/MkInfo.vue';
-import MkNoteHistory from '@/components/MkNoteHistory.vue';
-import MkSwitch from '@/components/MkSwitch.vue';
-import { userPage } from '@/filters/user.js';
-import { notePage } from '@/filters/note.js';
-import { isEnabledUrlPreview } from '@/utility/url-preview.js';
-import { Paginator } from '@/utility/paginator.js';
-import { misskeyApi } from '@/utility/misskey-api.js';
-import * as os from '@/os.js';
-import { globalEvents } from '@/events.js';
-import { deviceKind } from '@/utility/device-kind.js';
-import { prefer } from '@/preferences.js';
-import { i18n } from '@/i18n.js';
-import { instance } from '@/instance.js';
-import { store } from '@/store.js';
-import { $i } from '@/i.js';
-import { DI } from '@/di.js';
-import { getAbuseNoteMenu } from '@/utility/get-note-menu.js';
-import { pleaseLogin } from '@/utility/please-login.js';
-import { useNote } from '@/composables/use-note.js';
 
 const MOBILE_THRESHOLD = 500;
 const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
@@ -437,6 +433,7 @@ const emit = defineEmits<{
 	(ev: 'removeReaction', emoji: string): void;
 }>();
 
+// 周辺コンテキストのインジェクト
 const inChannel = inject(DI.inChannel, null);
 
 // Template Refsの定義
@@ -450,6 +447,7 @@ const quoteButton = useTemplateRef('quoteButton');
 const clipButton = useTemplateRef('clipButton');
 const galleryEl = useTemplateRef('galleryEl');
 
+// コンポーサブルの呼び出し
 const {
 	note,
 	appearNote,
@@ -463,24 +461,27 @@ const {
 	viewTextSource,
 	noNyaize,
 	muted,
+	canRenote,
 	parsed,
 	urls,
-	isForeignLanguage,
 	showTicker,
-	canRenote,
-	isMyRenote,
-	pleaseLoginContext,
+	isAnimatedMfm,
+	enableAnimatedMfm,
+	isForeignLanguage,
+
 	renote,
 	renoteOnly,
 	quote,
 	reply,
 	react,
-	toggleReact,
+	reactViaMfmEmoji,
 	heartReact,
+	translate,
+	undoReact,
 	onContextmenu,
 	showMenu,
 	clip,
-	translate,
+	showRenoteMenu,
 	blur,
 } = useNote(props, {
 	rootEl,
@@ -492,11 +493,13 @@ const {
 	quoteButton,
 	clipButton,
 }, {
+	inChannel,
 });
 
-const enableAnimatedMfm = prefer.model('animatedMfm');
-const isAnimatedMfm = $i ? true : shouldAnimatedMfm(appearNote);
+// provide
+provide(DI.mfmEmojiReactCallback, reactViaMfmEmoji);
 
+// MkNoteDetailed固有
 const tab = ref(props.initialTab);
 const reactionTabType = ref<string | null>(null);
 
@@ -515,18 +518,10 @@ const reactionsPaginator = markRaw(new Paginator('notes/reactions', {
 	})),
 }));
 
-const histories = ref<Misskey.entities.NoteHistory[]>([]);
-const historiesLoading = ref(false);
-const historiesLoaded = ref(false);
-const historiesLoadError = ref(false);
-const histories_untilId = ref<Misskey.entities.NoteHistory['id']>();
-const history_list_end = ref(false);
-const history_raw = ref(false);
-
 const replies = ref<Misskey.entities.Note[]>([]);
 const repliesLoaded = ref(false);
 
-function loadReplies(): void {
+function loadReplies() {
 	repliesLoaded.value = true;
 	misskeyApi('notes/children', {
 		noteId: appearNote.id,
@@ -536,7 +531,7 @@ function loadReplies(): void {
 	});
 }
 
-function loadRepliesSimple(): void {
+function loadRepliesSimple() {
 	misskeyApi('notes/children', {
 		noteId: appearNote.id,
 		limit: 3,
@@ -553,7 +548,7 @@ if (tab.value === 'replies' && !repliesLoaded.value) {
 const conversation = ref<Misskey.entities.Note[]>([]);
 const conversationLoaded = ref(false);
 
-function loadConversation(): void {
+function loadConversation() {
 	conversationLoaded.value = true;
 	if (appearNote.replyId == null) return;
 	misskeyApi('notes/conversation', {
@@ -565,11 +560,19 @@ function loadConversation(): void {
 
 if (appearNote.reply && appearNote.reply.replyId && prefer.s.autoLoadMoreConversation) loadConversation();
 
-function showOnRemote(): void {
+function showOnRemote() {
 	if (props.note.user.instance !== undefined) window.open(props.note.url ?? props.note.uri, '_blank', 'noopener');
 }
 
-async function loadHistories(): Promise<void> {
+const histories = ref<Misskey.entities.NoteHistory[]>([]);
+const historiesLoading = ref(false);
+const historiesLoaded = ref(false);
+const historiesLoadError = ref(false);
+const histories_untilId = ref<Misskey.entities.NoteHistory['id']>();
+const history_list_end = ref(false);
+const history_raw = ref(false);
+
+async function loadHistories() {
 	if (historiesLoading.value) return;
 	historiesLoading.value = true;
 	historiesLoadError.value = false;
@@ -628,45 +631,12 @@ watch(() => tab.value, async (newTab) => {
 	}
 });
 
-async function showRenoteMenu(): Promise<void> {
-	if (!isMyRenote.value) {
-		os.popupMenu([getAbuseNoteMenu(note, i18n.ts.reportAbuseRenote)], renoteTime.value);
-		return;
+function toggleReact() {
+	if (appearNote.myReaction == null) {
+		react();
+	} else {
+		undoReact();
 	}
-
-	const isLoggedIn = await pleaseLogin({ openOnRemote: pleaseLoginContext.value });
-	if (!isLoggedIn) return;
-
-	const menu: MenuItem[] = [];
-
-	if (isMyRenote.value) {
-		menu.push({
-			text: i18n.ts.unrenote,
-			icon: 'ti ti-trash',
-			danger: true,
-			action: () => {
-				misskeyApi('notes/delete', {
-					noteId: note.id,
-				}).then(() => {
-					globalEvents.emit('noteDeleted', note.id);
-				});
-			},
-		});
-	}
-
-	if (
-		props.note.channelId != null &&
-		(inChannel == null || props.note.channelId !== inChannel.value)
-	) {
-		menu.push({
-			type: 'link',
-			text: i18n.ts.viewRenotedChannel,
-			icon: 'ti ti-device-tv',
-			to: `/channels/${props.note.channelId}`,
-		});
-	}
-
-	os.popupMenu(menu, renoteTime.value);
 }
 
 // キーボードショートカットマップ
@@ -693,7 +663,7 @@ const keymap = {
 	},
 } as const satisfies Keymap;
 
-function emitUpdReaction(emoji: string, delta: number): void {
+function emitUpdReaction(emoji: string, delta: number) {
 	if (delta < 0) {
 		emit('removeReaction', emoji);
 	} else if (delta > 0) {
