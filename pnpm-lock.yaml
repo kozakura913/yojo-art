@@ -1059,8 +1059,8 @@ importers:
         specifier: 0.30.21
         version: 0.30.21
       oxc-walker:
-        specifier: 1.0.0
-        version: 1.0.0(oxc-parser@0.127.0)(rolldown@1.1.5)
+        specifier: 1.1.1
+        version: 1.1.1(@oxc-project/types@0.139.0)(oxc-parser@0.127.0)(rolldown@1.1.5)
       rolldown:
         specifier: 1.1.5
         version: 1.1.5
@@ -7685,6 +7685,20 @@ packages:
       oxc-parser: '>=0.98.0'
       rolldown: '>=1.0.0'
     peerDependenciesMeta:
+      oxc-parser:
+        optional: true
+      rolldown:
+        optional: true
+
+  oxc-walker@1.1.1:
+    resolution: {integrity: sha512-Hwd7dq28zu/Er99+bpWp16CGwFrhyalJh0W3JOB7XpPvgWo3MqMi2ksWGKuzzA9zt50mJ2pIUwR5lpAdZ9ACNQ==}
+    peerDependencies:
+      '@oxc-project/types': '>=0.98.0'
+      oxc-parser: '>=0.98.0'
+      rolldown: '>=1.0.0'
+    peerDependenciesMeta:
+      '@oxc-project/types':
+        optional: true
       oxc-parser:
         optional: true
       rolldown:
@@ -17047,6 +17061,12 @@ snapshots:
     dependencies:
       magic-regexp: 0.11.0
     optionalDependencies:
+      oxc-parser: 0.127.0
+      rolldown: 1.1.5
+
+  oxc-walker@1.1.1(@oxc-project/types@0.139.0)(oxc-parser@0.127.0)(rolldown@1.1.5):
+    optionalDependencies:
+      '@oxc-project/types': 0.139.0
       oxc-parser: 0.127.0
       rolldown: 1.1.5
 
