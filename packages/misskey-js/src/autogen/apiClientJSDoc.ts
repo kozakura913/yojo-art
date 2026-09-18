@@ -5382,7 +5382,7 @@ declare module '../api.js' {
     /**
      * Show statistics about a user.
      * 
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'users/stats', P extends Endpoints[E]['req']>(
       endpoint: E,
