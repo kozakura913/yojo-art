@@ -1,7 +1,7 @@
 import assert, { deepStrictEqual, strictEqual } from 'assert';
 import { describe, test, beforeAll, vi } from 'vitest';
 import * as Misskey from 'misskey-js';
-import { addCustomEmoji, createAccount, type LoginUser, resolveRemoteUser, waitForFollowRelation, WAIT_FOR_FEDERATION, fetchAdmin, requestFederationTestNote, waitForRemoteEmoji, waitFor } from './utils.js';
+import { addCustomEmoji, createAccount, type LoginUser, resolveRemoteUser, waitForFollowRelation, WAIT_FOR_FEDERATION, fetchAdmin, requestFederationTestNote, waitForRemoteEmoji, waitFor, sleep } from './utils.js';
 
 /**
  * リモートユーザーのプロフィール更新(users/show)がpredicateを満たすまでポーリングして待つ。

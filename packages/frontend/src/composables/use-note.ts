@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import * as Misskey from 'misskey-js';
 import { isLink } from '@@/js/is-link.js';
 import { shouldCollapsed, shouldMfmCollapsed, shouldAnimatedMfm } from '@@/js/collapsed.js';
@@ -283,7 +283,7 @@ export function useNote(
 		return false;
 	})();
 
-	if (prefer.s.useAutoTranslate && instance.translatorAvailable && $i && $i.policies.canUseTranslator && $i.policies.canUseAutoTranslate && (!autoTranslateSkipLong || !isLong.value) && (appearNote.cw == null || showContent.value) && appearNote.text && isForeignLanguage) translate(true);
+	if (prefer.s.useAutoTranslate && instance.translatorAvailable && $i && $i.policies.canUseTranslator && $i.policies.canUseAutoTranslate && (!autoTranslateSkipLong || !isLong) && (appearNote.cw == null || showContent.value) && appearNote.text && isForeignLanguage) translate(true);
 
 	function noteClick(ev: MouseEvent): void {
 		if (!expandOnNoteClick || window.getSelection()?.toString() !== '' || prefer.s.expandOnNoteClickBehavior === 'doubleClick') ev.stopPropagation();
@@ -317,7 +317,7 @@ export function useNote(
 		haptic();
 
 		if (props.mock) return;
-		const isLoggedIn = await pleaseLogin({ openOnRemote: pleaseLoginContext.value });
+		const isLoggedIn = await pleaseLogin({ openOnRemote: pleaseLoginContext });
 		if (!isLoggedIn) return;
 		showMovedDialog();
 		if (els.renoteButton == null) return;
@@ -332,7 +332,7 @@ export function useNote(
 	function quote(): void {
 		haptic();
 
-		pleaseLogin({ openOnRemote: pleaseLoginContext.value });
+		pleaseLogin({ openOnRemote: pleaseLoginContext });
 		if (!$i) return;
 		if (props.mock) return;
 		if (appearNote.channel) {
@@ -500,7 +500,7 @@ export function useNote(
 	function heartReact(): void {
 		haptic();
 
-		pleaseLogin({ openOnRemote: pleaseLoginContext.value });
+		pleaseLogin({ openOnRemote: pleaseLoginContext });
 		showMovedDialog();
 
 		if (props.mock) return;
