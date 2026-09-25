@@ -23,7 +23,7 @@ describe('auto-deleteNotes delivers AP Delete to followers', () => {
 		port: 5432,
 		user: 'postgres',
 		password: 'postgres',
-		database: 'cherrypick',
+		database: 'misskey',
 	};
 
 	function genBackdatedAidxId(daysAgo: number): string {
