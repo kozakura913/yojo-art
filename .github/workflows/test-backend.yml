@@ -133,11 +133,7 @@ jobs:
       - name: Build
         run: pnpm build
       - name: Test
-        run: |
-          ulimit -s 16384
-          pnpm --filter backend ${{ matrix.coverage && 'test-and-coverage:e2e' || 'test:e2e' }}
-        env:
-          NODE_OPTIONS: '--stack-size=2048'
+        run: pnpm --filter backend ${{ matrix.coverage && 'test-and-coverage:e2e' || 'test:e2e' }}
       - name: Upload to Codecov
         if: ${{ matrix.coverage }}
         uses: codecov/codecov-action@v7
