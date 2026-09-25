@@ -45,7 +45,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						/>
 					</div>
 					<div v-if="props.newNote.files && props.newNote.files.length > 0 && !raw" style="display: flex; justify-content: center;">
-						<MkMediaList :mediaList="props.newNote.files" style="width: 70%;"/>
+						<MkMediaList :mediaList="props.newNote.files" :user="props.newNote.user" style="width: 70%;"/>
 					</div>
 					<div v-if="newNote.poll" style="margin-top: 8px;">
 						<MkPoll

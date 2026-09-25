@@ -21,25 +21,6 @@ export async function setup(project: TestProject) {
 	await (await loadServer()).setup();
 }
 
-async function launchApp() {
-	console.log('starting application...');
-
-	app = await NestFactory.createApplicationContext(MainModule, {
-		logger: new NestLogger(),
-	});
-	serverService = app.get(ServerService);
-	await serverService.launch();
-}
-
-async function disposeApp() {
-	process.env = JSON.parse(originEnv);
-
-	await serverService.dispose();
-	await app.close();
-
-	await killTestServer();
-}
-
 /**
  * テスト用のサーバインスタンスを停止する
  */

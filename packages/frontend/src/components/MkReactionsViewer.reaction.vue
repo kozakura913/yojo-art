@@ -68,6 +68,9 @@ const buttonEl = useTemplateRef('buttonEl');
 
 const emojiName = computed(() => getEmojiNameFromReaction(props.reaction));
 
+// リモート絵文字の `name@host` から host を除いた名前 (ローカル絵文字では emojiName と同じ)
+const reactionName = computed(() => emojiName.value.split('@')[0]);
+
 const emojiHost = computed(() => {
 	const r = props.reaction.replaceAll(':', '');
 	return r.split('@')[1];
@@ -75,9 +78,9 @@ const emojiHost = computed(() => {
 
 const router = useRouter();
 
-const alternative: ComputedRef<string | null> = computed(() => prefer.s.reactableRemoteReactionEnabled ? (customEmojis.value.find(it => it.name === emojiName.value)?.name ?? null) : null);
+const alternative: ComputedRef<string | null> = computed(() => prefer.s.reactableRemoteReactionEnabled ? (customEmojis.value.find(it => it.name === reactionName.value)?.name ?? null) : null);
 
-const reactionLabel = computed(() => props.reaction.startsWith(':') ? `:${emojiName.value}:` : props.reaction);
+const reactionLabel = computed(() => props.reaction.startsWith(':') ? `:${reactionName.value}:` : props.reaction);
 const canGetInfo = computed(() => props.reaction.startsWith(':'));
 const canImport = computed(() =>
 	$i != null &&
@@ -85,7 +88,7 @@ const canImport = computed(() =>
 	props.reaction.startsWith(':') &&
 	!!emojiHost.value &&
 	emojiHost.value !== '.' &&
-	!customEmojisMap.has(emojiName.value),
+	!customEmojisMap.has(reactionName.value),
 );
 
 const isLocalCustomEmoji = computed(() => isLocalCustomEmojiReaction(props.reaction));
@@ -196,8 +199,8 @@ function stealReaction(ev: PointerEvent) {
 			icon: 'ti ti-info-circle',
 			action: async () => {
 				const { dispose } = os.popup(MkCustomEmojiDetailedDialog, {
-					emoji: await misskeyApiGet('emoji', isLocalCustomEmoji.value ? {	name: emojiName.value } : {
-						name: emojiName.value,
+					emoji: await misskeyApiGet('emoji', isLocalCustomEmoji.value ? {	name: reactionName.value } : {
+						name: reactionName.value,
 						host: emojiHost.value,
 					}),
 				}, {
@@ -207,12 +210,12 @@ function stealReaction(ev: PointerEvent) {
 		});
 	}
 
-	if (customEmojis.value.find(it => it.name === emojiName.value)?.name) {
+	if (customEmojis.value.find(it => it.name === reactionName.value)?.name) {
 		menuItems.push({
 			text: i18n.ts.copy,
 			icon: 'ti ti-copy',
 			action: () => {
-				copyToClipboard(`:${emojiName.value}:`);
+				copyToClipboard(`:${reactionName.value}:`);
 			},
 		});
 	}
@@ -223,8 +226,8 @@ function stealReaction(ev: PointerEvent) {
 			icon: 'ti ti-plus',
 			action: async () => {
 				await os.apiWithDialog('admin/emoji/steal', {
-					name: emojiName.value,
-					host: emojiName.value,
+					name: reactionName.value,
+					host: emojiHost.value,
 				});
 			},
 		}, {
@@ -232,13 +235,13 @@ function stealReaction(ev: PointerEvent) {
 			icon: 'ti ti-mood-plus',
 			action: async () => {
 				await os.apiWithDialog('admin/emoji/steal', {
-					name: emojiName.value,
-					host: emojiName.value,
+					name: reactionName.value,
+					host: emojiHost.value,
 				});
 
 				await misskeyApi('notes/reactions/create', {
 					noteId: props.note.id,
-					reaction: `:${emojiName.value}:`,
+					reaction: `:${reactionName.value}:`,
 				});
 			},
 		});
@@ -302,8 +305,8 @@ async function menu(ev: PointerEvent) {
 			icon: 'ti ti-info-circle',
 			action: async () => {
 				const { dispose } = os.popup(MkCustomEmojiDetailedDialog, {
-					emoji: await misskeyApiGet('emoji', isLocalCustomEmoji.value ? {	name: emojiName.value } : {
-						name: emojiName.value,
+					emoji: await misskeyApiGet('emoji', isLocalCustomEmoji.value ? {	name: reactionName.value } : {
+						name: reactionName.value,
 						host: emojiHost.value,
 					}),
 				}, {
@@ -313,12 +316,12 @@ async function menu(ev: PointerEvent) {
 		});
 	}
 
-	if (customEmojis.value.find(it => it.name === emojiName.value)?.name) {
+	if (customEmojis.value.find(it => it.name === reactionName.value)?.name) {
 		menuItems.push({
 			text: i18n.ts.copy,
 			icon: 'ti ti-copy',
 			action: () => {
-				copyToClipboard(`:${emojiName.value}:`);
+				copyToClipboard(`:${reactionName.value}:`);
 			},
 		});
 	}
@@ -329,7 +332,7 @@ async function menu(ev: PointerEvent) {
 			icon: 'ti ti-plus',
 			action: async () => {
 				await os.apiWithDialog('admin/emoji/steal', {
-					name: emojiName.value,
+					name: reactionName.value,
 					host: emojiHost.value,
 				});
 			},
@@ -338,13 +341,13 @@ async function menu(ev: PointerEvent) {
 			icon: 'ti ti-mood-plus',
 			action: async () => {
 				await os.apiWithDialog('admin/emoji/steal', {
-					name: emojiName.value,
+					name: reactionName.value,
 					host: emojiHost.value,
 				});
 
 				await misskeyApi('notes/reactions/create', {
 					noteId: props.note.id,
-					reaction: `:${emojiName.value}:`,
+					reaction: `:${reactionName.value}:`,
 				});
 			},
 		});
