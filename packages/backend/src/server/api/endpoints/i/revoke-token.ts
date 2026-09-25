@@ -11,6 +11,8 @@ import { DI } from '@/di-symbols.js';
 import { ApiError } from '../../error.js';
 
 export const meta = {
+	tags: ['account'],
+
 	description: 'Revoke an access token of the authenticated user. Requires credential. When called with an access token (third-party app), only the token currently in use can be revoked.',
 
 	// アクセストークン自身を失効させられるようにするため requireCredential は使わず、
